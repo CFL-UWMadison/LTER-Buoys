@@ -1,0 +1,280 @@
+'CR1000 Series Datalogger
+'C:\Campbellsci\WorkingDir\Progs\TroutCell\TroutCell.CR1
+'Date: 7/8/15
+'program author: twm
+
+SequentialMode
+AngleDegrees
+
+'\\\\\\\\\\\\\\\\\\\\\\\\\ DECLARATIONS /////////////////////////
+Public CR1000Bat, CR1000Temp, CellModemBat, CR1000SN, CR1000LiBat
+Public strOSVersion As String * 50
+Public strProgName As String * 50
+Public CR1000ProgSignature, CR1000RunSignature
+Public ObtainSystemInfo As Boolean 'Defined Flag
+
+Public strConcertoTime As String
+Public strSoloData As String * 30
+Public strConcertoDataIn As String * 300
+Public strRBRSoloID As String * 300
+Public strConcertoID As String * 300
+Public strConcertoStatus As String * 300
+Public strDOptoID As String * 300
+Public strVaisalaID As String * 300
+Public strLufftID As String * 300
+
+Public RBRSoloIn(2)
+Public RBRTempData(24)
+Public RBRTempProfile(24)
+Public Vaisala(9)
+Public dOpto(3)
+Public Lufft(9)
+
+Public cumP = 0
+Public satVapPress, vapPress As Float
+
+Dim bytesRet, rtnout1, rtnout2, rtnin1, i
+
+'\\\\\\\\\\\\\\\\\\\\\\\\ Declare Constants ////////////////////////
+Const strStationName = "TroutLakeRUSS"
+Const fetch = "fetch"
+Const ready = "Ready: "
+Const comma = ","
+Const status = "status"
+Const CR = CHR(13)
+Const CRLF = CHR(13) & CHR(10)
+
+'\\\\\\\\\\\\\\\\\\\\\\\\ Declare Aliases ////////////////////////
+' alias RBR Solo data
+Alias RBRSoloIn(1) = RBRSoloTime
+Alias RBRSoloIn(2) = RBRSurfTemp
+' alias D'opt0 array
+Alias dOpto(1) = dOptoTemp
+Alias dOpto(2) = dOptoSat
+Alias dOpto(3) = dOptoPPM
+' Alias RDOPro array
+Alias Lufft(1) = airtempLufft     ' C
+Alias Lufft(2) = relHumLufft      ' %
+Alias Lufft(3) = airPressLufft    ' hPa
+Alias Lufft(4) = aveWindSpdLufft  ' m/s
+Alias Lufft(5) = maxWindSpdLufft  ' m/s
+Alias Lufft(6) = windDirLufft     ' degrees
+Alias Lufft(7) = GlobalRadLufft   ' W/m2
+Alias Lufft(8) = dewPointLufft    ' C
+Alias Lufft(9) = windChillLufft   ' C
+' alias Vaisala array
+Alias Vaisala(1) =  windDirVaisala        ' degrees
+Alias Vaisala(2) =  windSpeedMinVaisala   ' m/s
+Alias Vaisala(3) =  aveWindSpdVaisala     ' m/s
+Alias Vaisala(4) =  windSpeedMaxVaisala   ' m/s
+Alias Vaisala(5) =  airtempVaisala        ' C
+Alias Vaisala(6) =  relHumVaisala         ' %
+Alias Vaisala(7) =  airPressVaisala       ' hPa
+Alias Vaisala(8) =  PrecipVaisala         ' mm
+Alias Vaisala(9) =  supplyVoltsVaisala    ' V
+
+'\\\\\\\\\\\\\\\\\\\\\\\\ Define Tables ////////////////////////
+'Define Data Tables.
+DataTable (SensorInfo,1,100) 'Set table size to # of records, or -1 to autoallocate.
+  DataInterval (0,60,Sec,10)
+  Sample (1,strRBRSoloID,String)
+  Sample (1,strConcertoID,String)
+  Sample (1,strConcertoStatus,String)
+  Sample (1,strDOptoID,String)
+  Sample (1,strVaisalaID,String)
+  Sample (1,strLufftID,String)
+EndTable
+
+DataTable (CR1000Status,True,9999 )
+  DataInterval (0,60,Sec,10)
+  Sample (1,CR1000SN,IEEE4)
+  Sample (1,strProgName,String)
+  Sample (1,strOSVersion,String)
+  Sample (1,strStationName,String)
+  Sample (1,CR1000LiBat,FP2)
+  Sample (1,CR1000ProgSignature,IEEE4)
+  Sample (1,CR1000RunSignature,IEEE4)
+EndTable
+
+DataTable (WaterTemps,1,-1)
+  DataInterval (0,60,Sec,10)
+  Sample(1,strConcertoTime,String)
+  Sample(1,RBRSurfTemp,String)
+  Sample(24,RBRTempProfile(),IEEE4)
+EndTable
+
+DataTable (LufftTable,True,1000)
+  Sample (1, Lufft(1), FP2)
+  Sample (1, Lufft(2), FP2)
+  Sample (1, Lufft(3),IEEE4)
+  Sample (1, Lufft(4), FP2)
+  Sample (1, Lufft(5), FP2)
+  Sample (1, Lufft(6), FP2)
+  Sample (1, Lufft(7), FP2)
+  Sample (1, Lufft(8), FP2)
+  Sample (1, Lufft(9), FP2)
+EndTable
+
+DataTable (VaisalaTable,True,1000)
+  Sample (1, Vaisala(1), FP2)
+  Sample (1, Vaisala(2), FP2)
+  Sample (1, Vaisala(3), FP2)
+  Sample (1, Vaisala(4), FP2)
+  Sample (1, Vaisala(5), FP2)
+  Sample (1, Vaisala(6), FP2)
+  Sample (1, Vaisala(7),IEEE4)
+  Sample (1, Vaisala(8), FP2)
+  Sample (1, Vaisala(9), FP2)
+EndTable
+
+DataTable (TroutDataTable,1,-1)
+  DataInterval (0,60,Sec,10)
+  Minimum (1,CR1000Bat,FP2,0,False)
+  Minimum (1,CellModemBat,FP2,0,False)
+  Sample (1,CR1000Temp,FP2)
+  Sample (1,airtempLufft,FP2)
+  Sample (1,airtempVaisala,FP2)
+  Sample (1,relHumLufft,FP2)
+  Sample (1,relHumVaisala,FP2)
+  Sample(1,strConcertoTime,String)
+  Sample(1,RBRSurfTemp,String)
+  Sample(24,RBRTempProfile(),IEEE4)
+  Sample (1, dOptoTemp, FP2)
+  Sample (1, dOptoSat, FP2)
+  Sample (1, dOptoPPM, FP2)
+  Sample (1,maxWindSpdLufft, FP2)
+  Sample (1,aveWindSpdLufft, FP2)
+  Sample (1,aveWindSpdVaisala, FP2)
+  Sample (1,windDirLufft, FP2)
+  Sample (1,windDirVaisala, FP2)
+  Sample (1,airPressLufft,IEEE4)
+  Sample (1,airPressVaisala,IEEE4)
+  Sample (1,GlobalRadLufft, FP2)
+  Sample (1, satVapPress, FP2)
+  Sample (1, vapPress, FP2)
+  Sample (1,PrecipVaisala, FP2)
+EndTable
+
+'\\\\\\\\\\\\\\\\\\\\\\\\ Subroutines ////////////////////////
+Sub InitDataArrays
+  'Keeps old data out of Output Table (writes NAN) if Sensor Read Fails.
+  For i = 1 To 2
+    RBRSoloIn(i) = NAN
+  Next
+  For i = 1 To 24
+    RBRTempData(i) = NAN
+  Next
+  For i = 1 To 3
+    dOpto(i) = NAN
+  Next
+  For i = 1 To 9
+    Lufft(i) = NAN
+  Next
+  For i = 1 To 9
+    Vaisala(i) = NAN
+  Next
+EndSub
+
+Sub InvertTempProfileOrder
+  'RBR Concerto sends T-String data from Bottom to Top.
+  For i = 1 To 24
+    RBRTempProfile(i) = RBRTempData(25 - i)
+  Next
+EndSub
+
+Sub CheckSensorIDs 'Get IDs from Smart Sensors
+  'RBR Solo ID
+  SerialFlush(Com2)
+  SerialOut(Com2,CR,"",0,100)
+  rtnout1 = SerialOut(Com2,CR & CR,ready,1,160)
+  SerialFlush(Com2)
+  rtnout2 = SerialOut(Com2, "id" & CRLF,"",0,400)
+  SerialIn(strRBRSoloID,Com2,0,CRLF,500)
+  'RBR Concerto Info
+  SerialFlush(Com3)
+  SerialOut(Com3,CR,"",0,100)
+  rtnout1 = SerialOut(Com3,CR & CR,ready,1,160)
+  SerialFlush(Com3)
+  rtnout2 = SerialOut(Com3,status & CRLF,"",0,100)
+  SerialIn(strConcertoStatus,Com3,0,CRLF,500)
+  SerialFlush(Com3)
+  rtnout2 = SerialOut(Com3, "id" & CRLF,"",0,100)
+  SerialIn(strConcertoID,Com3,0,CRLF,500)
+  SDI12Recorder (strDOptoID,1,1,"I!",1.0,0)
+  SDI12Recorder (strVaisalaID,1,0,"I!",1.0,0)
+  SDI12Recorder (strLufftID,1,2,"I!",1.0,0)
+
+  CallTable SensorInfo
+EndSub
+
+Sub CheckCR1000Status 'Get CR1000 Status Table Info
+  CR1000SN = Status.SerialNumber
+  strOSVersion = Status.OSVersion
+  strProgName = Status.ProgName
+  CR1000LiBat = Status.LithiumBattery
+  CR1000ProgSignature = Status.ProgSignature
+  CR1000RunSignature = Status.RunSignature
+
+  CallTable CR1000Status
+EndSub
+'EndSubs
+
+'\\\\\\\\\\\\\\\\\\\\\\\\ Main Program ////////////////////////
+BeginProg
+  Scan (60,Sec,0,0)
+    SerialOpen(Com2,9600,0,500,40)
+    SerialOpen(Com3,9600,0,0,1000)
+    InitDataArrays
+
+    Battery (CR1000Bat)
+    PanelTemp (CR1000Temp,250)
+    ' read cel modem battery: Uses VDiv = 11 ( R1 = 100K ohms, R2 = 10K ohms )
+    ' So: Mult = 11/1000 = 0.011 (1/1000 = mV to V)
+    VoltSe (CellModemBat, 1, mV2500, 1, False, 0, 250, 0.011, 0)
+
+    'Read Surface Temp from RBR Solo Streaming
+    SerialFlush(Com2)
+    SerialIn(strSoloData,Com2,500,CRLF,100)
+    SerialIn(strSoloData,Com2,0,CRLF,100)
+    SplitStr(RBRSoloIn(),strSoloData,comma,2,0)
+    RBRSoloTime = RBRSoloIn(1)
+    RBRSurfTemp = RBRSoloIn(2)
+
+    'Fetch Water Temps from Concerto T-String
+    SerialFlush(Com3)
+    rtnout1 = SerialOut(Com3,CR + CR,ready,1,160)
+    SerialFlush(Com3)
+    rtnout2 = SerialOut(Com3,fetch + CRLF,"",0,100)
+    SerialIn(strConcertoDataIn,Com3,0,CRLF,500)
+    strConcertoTime=Left(strConcertoDataIn,23)
+    SplitStr(RBRTempData(),strConcertoDataIn,comma,24,4)
+    InvertTempProfileOrder
+
+    ' Read SDI Sensors
+    SDI12Recorder (Vaisala(), 1, "0", "M!", 1, 0) 'read Vaisala
+    SDI12Recorder (dOpto(), 1, "1", "M!", 1, 0) 'read DO - dOpto
+    SDI12Recorder (Lufft(), 1, "2", "M!", 1, 0) 'read Lufft weather
+
+    'Calculate Weather Variables: saturated vapor pressure(kPa) and vapor pressure(kPa)
+    SatVP (satVapPress,airtempVaisala)
+    VaporPressure (vapPress,airtempVaisala,relHumVaisala)
+    'Using a Cumulative value from Vaisala (in settings)
+    'If Vaisala(6) <> NAN
+    'cumP = cumP + PrecipVaisala
+    'EndIf
+
+'Get Sys Info Twice a day (5:00 and 21:00) - Need Task to Detect Changes
+    If TimeIntoInterval (5,24,Hr) Then ObtainSystemInfo = True
+    If TimeIntoInterval (21,24,Hr) Then ObtainSystemInfo = True
+    If ObtainSystemInfo Then CheckCR1000Status
+    If ObtainSystemInfo Then CheckSensorIDs
+    ObtainSystemInfo = false 'Reset Flag
+
+    '\\\\\\\\\\\\\\\\\\\\\\\\ Main Tables ////////////////////////
+    CallTable TroutDataTable
+    CallTable WaterTemps
+    CallTable LufftTable
+    CallTable VaisalaTable
+  NextScan
+EndProg
+
