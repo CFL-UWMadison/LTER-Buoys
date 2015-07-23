@@ -99,7 +99,7 @@ EndTable
 DataTable (WaterTemps,1,-1)
   DataInterval (0,60,Sec,10)
   Sample(1,strConcertoTime,String)
-  Sample(1,RBRSurfTemp,String)
+  Sample(1,RBRSurfTemp,IEEE4)
   Sample(24,RBRTempProfile(),IEEE4)
 EndTable
 
@@ -137,7 +137,7 @@ DataTable (TroutDataTable,1,-1)
   Sample (1,relHumLufft,FP2)
   Sample (1,relHumVaisala,FP2)
   Sample(1,strConcertoTime,String)
-  Sample(1,RBRSurfTemp,String)
+  Sample(1,RBRSurfTemp,IEEE4)
   Sample(24,RBRTempProfile(),IEEE4)
   Sample (1, dOptoTemp, FP2)
   Sample (1, dOptoSat, FP2)
