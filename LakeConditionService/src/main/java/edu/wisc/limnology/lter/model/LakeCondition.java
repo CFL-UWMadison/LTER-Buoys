@@ -14,6 +14,8 @@ public class LakeCondition {
 	private Double waterTemp;
 	private Double windSpeed;
 	private Integer windDir;
+	private Double secchiEst;
+	private Double phycoMedian;
 	private Date sampleTime;
 
 	SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -76,6 +78,22 @@ public class LakeCondition {
 
 	public void setWindDir(Integer windDir) {
 		this.windDir = windDir;
+	}
+	
+	public Double getSecchiEst() {
+		return secchiEst;
+	}
+
+	public void setSecchiEst(Double secchiEst) {
+		this.secchiEst = secchiEst;
+	}
+
+	public Double getPhycoMedian() {
+		return phycoMedian;
+	}
+
+	public void setPhycoMedian(Double phycoMedian) {
+		this.phycoMedian = phycoMedian;
 	}
 
 	public Date getSampleTime() {

@@ -13,16 +13,16 @@ import edu.wisc.limnology.lter.model.LakeCondition;
 
 public class BuoyConditionDAOTest {
 	
-	BuoyConditionDAO buoyConditionDAO;
+	LakeConditionDAO buoyConditionDAO;
 	
 	@Before
 	public void init(){
-		buoyConditionDAO = new BuoyConditionDAOImpl();
+		buoyConditionDAO = new LakeConditionDAOImpl();
 	}
 	
 	@Test
 	public void getBuoyConditions() {
-		List<LakeCondition> buoyConditions = buoyConditionDAO.getBuoyConditions();
+		List<LakeCondition> buoyConditions = buoyConditionDAO.getLakeConditions();
 		assertNotNull(buoyConditions);
 		assertEquals(3, buoyConditions.size());
 		
@@ -30,7 +30,7 @@ public class BuoyConditionDAOTest {
 		assertEquals("2015-05-21 15:19:15", buoyCondition.getFormatedSampleDate());
 		assertEquals("Trout Lake", buoyCondition.getLakeName());
 		assertEquals("TR",buoyCondition.getLakeId());
-		assertTrue(15.00 == buoyCondition.getAirTemp());
+		assertTrue(15.01 == buoyCondition.getAirTemp());
 		assertTrue(16.10 == buoyCondition.getWaterTemp());
 		assertTrue(5.1 == buoyCondition.getWindSpeed());
 		assertTrue(180 == buoyCondition.getWindDir());
@@ -38,7 +38,7 @@ public class BuoyConditionDAOTest {
 	
 	@Test
 	public void getBuoyCondition() {
-		LakeCondition buoyCondition = buoyConditionDAO.getBuoyCondition("TR");
+		LakeCondition buoyCondition = buoyConditionDAO.getLakeCondition("TR");
 		assertEquals("2015-05-21 15:19:15", buoyCondition.getFormatedSampleDate());
 		assertEquals("Trout Lake", buoyCondition.getLakeName());
 		assertEquals("TR",buoyCondition.getLakeId());

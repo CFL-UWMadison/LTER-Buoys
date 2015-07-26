@@ -14,7 +14,7 @@
 		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
  
 		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
-		<property name="url" value="jdbc:mysql://thalassa.limnology.wisc.edu:3306	/dbmaker" />
+		<property name="url" value="jdbc:mysql://thalassa.limnology.wisc.edu:3306/dbmaker" />
 		<property name="username" value="" />
 		<property name="password" value="" />
 	</bean>
