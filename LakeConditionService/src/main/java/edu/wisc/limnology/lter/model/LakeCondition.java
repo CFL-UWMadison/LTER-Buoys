@@ -3,8 +3,11 @@ package edu.wisc.limnology.lter.model;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+@XmlRootElement
 public class LakeCondition {
 
 	private Date sampleDate;
@@ -48,6 +51,7 @@ public class LakeCondition {
 		this.lakeId = lakeId;
 	}
 
+	@XmlElement(nillable=true)
 	public Double getAirTemp() {
 		return airTemp;
 	}
@@ -56,6 +60,7 @@ public class LakeCondition {
 		this.airTemp = airTemp;
 	}
 
+	@XmlElement(nillable=true)
 	public Double getWaterTemp() {
 		return waterTemp;
 	}
@@ -64,6 +69,7 @@ public class LakeCondition {
 		this.waterTemp = waterTemp;
 	}
 
+	@XmlElement(nillable=true)
 	public Double getWindSpeed() {
 		return windSpeed;
 	}
@@ -72,6 +78,7 @@ public class LakeCondition {
 		this.windSpeed = windSpeed;
 	}
 
+	@XmlElement(nillable=true)
 	public Integer getWindDir() {
 		return windDir;
 	}
@@ -79,6 +86,7 @@ public class LakeCondition {
 	public void setWindDir(Integer windDir) {
 		this.windDir = windDir;
 	}
+	
 	
 	public Double getSecchiEst() {
 		return secchiEst;
@@ -88,6 +96,7 @@ public class LakeCondition {
 		this.secchiEst = secchiEst;
 	}
 
+	
 	public Double getPhycoMedian() {
 		return phycoMedian;
 	}

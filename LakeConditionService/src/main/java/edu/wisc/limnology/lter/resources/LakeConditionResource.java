@@ -9,9 +9,6 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import edu.wisc.limnology.lter.model.LakeCondition;
 import edu.wisc.limnology.lter.services.LakeConditionService;
 

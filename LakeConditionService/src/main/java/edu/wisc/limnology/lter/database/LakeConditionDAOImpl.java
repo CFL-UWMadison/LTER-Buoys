@@ -1,12 +1,10 @@
 package edu.wisc.limnology.lter.database;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import edu.wisc.limnology.lter.model.LakeCondition;
@@ -16,18 +14,7 @@ import edu.wisc.limnology.lter.utils.DbUtil;
 //@Component
 public class LakeConditionDAOImpl implements LakeConditionDAO {
 
-	// private DataSource dataSource;
-
-	// private JdbcTemplate jdbcTemplate;
-
-	// public void setDataSource(DataSource dataSource){
-	// //this.dataSource = dataSource;
-	// this.jdbcTemplate = new JdbcTemplate(dataSource);
-	// }
-
-
-
-	public List<LakeCondition> getLakeConditions() {
+		public List<LakeCondition> getLakeConditions() {
 
 		String sql = "select * from buoy_current_conditions";
 		List<LakeCondition> lakeConditions = new ArrayList<LakeCondition>();
@@ -43,18 +30,19 @@ public class LakeConditionDAOImpl implements LakeConditionDAO {
 			if (rs != null) {
 
 				while (rs.next()) {
-
+					
 					LakeCondition lakeCondition = new LakeCondition();
-					lakeCondition.setSampleDate(rs.getDate("sampledate"));
+					lakeCondition.setSampleDate(DbUtil.toDate(rs.getTimestamp("sampledate")));
 					lakeCondition.setLakeName(rs.getString("lakename"));
 					lakeCondition.setLakeId(rs.getString("lakeid"));
-					//lakeCondition.setAirTemp((rs.getObject("airtemp")) == null?null:rs.getBigDecimal("airtemp").doubleValue());
-					lakeCondition.setAirTemp(rs.getDouble("airtemp"));
-					lakeCondition.setWaterTemp(rs.getDouble("watertemp"));
-					lakeCondition.setWindSpeed(rs.getDouble("windspeed"));
-					lakeCondition.setWindDir(rs.getInt("winddir"));
-					lakeCondition.setSecchiEst(rs.getDouble("secchi_est"));
-					lakeCondition.setPhycoMedian(rs.getDouble("phyco_median"));
+					lakeCondition.setAirTemp(DbUtil.toDouble(rs.getBigDecimal("airtemp")));
+					lakeCondition.setWaterTemp(DbUtil.toDouble(rs.getBigDecimal("watertemp")));
+					lakeCondition.setWindSpeed(DbUtil.toDouble(rs.getBigDecimal("windspeed")));
+					lakeCondition.setWindDir((Integer)rs.getObject("winddir"));
+					if ("ME".equals(DbUtil.trim(rs.getString("lakeid")))){
+					lakeCondition.setSecchiEst(DbUtil.toDouble(rs.getBigDecimal("secchi_est")));
+					lakeCondition.setPhycoMedian(DbUtil.toDouble(rs.getBigDecimal("phyco_median")));
+					}
 					lakeConditions.add(lakeCondition);
 				}
 			}
@@ -92,16 +80,18 @@ public class LakeConditionDAOImpl implements LakeConditionDAO {
 
 			if (rs != null) {
 				while (rs.next()) {
-					lakeCondition.setSampleDate(rs.getDate("sampledate"));
+					lakeCondition.setSampleDate(DbUtil.toDate(rs.getTimestamp("sampledate")));
 					lakeCondition.setLakeName(rs.getString("lakename"));
 					lakeCondition.setLakeId(rs.getString("lakeid"));
-					lakeCondition.setAirTemp(rs.getDouble("airtemp"));
-					//lakeCondition.setAirTemp(rs.getObject("airtemp")==null?null:rs.getBigDecimal("airtemp").doubleValue());
-					lakeCondition.setWaterTemp(rs.getDouble("watertemp"));
-					lakeCondition.setWindSpeed(rs.getDouble("windspeed"));
-					lakeCondition.setWindDir(rs.getInt("winddir"));
-					lakeCondition.setSecchiEst(rs.getDouble("secchi_est"));
-					lakeCondition.setPhycoMedian(rs.getDouble("phyco_median"));
+					lakeCondition.setAirTemp(DbUtil.toDouble(rs.getBigDecimal("airtemp")));
+					lakeCondition.setWaterTemp(DbUtil.toDouble(rs.getBigDecimal("watertemp")));
+					lakeCondition.setWindSpeed(DbUtil.toDouble(rs.getBigDecimal("windspeed")));
+					lakeCondition.setWindDir((Integer)rs.getObject("winddir"));
+					if ("ME".equals(DbUtil.trim(rs.getString("lakeid")))){
+					lakeCondition.setSecchiEst(DbUtil.toDouble(rs.getBigDecimal("secchi_est")));
+					lakeCondition.setPhycoMedian(DbUtil.toDouble(rs.getBigDecimal("phyco_median")));
+					}
+					
 				}
 			}
 		} catch (SQLException e) {
