@@ -12,6 +12,7 @@ import java.util.List;
 import edu.wisc.limnology.lter.model.LakeCondition;
 import edu.wisc.limnology.lter.utils.DbUtil;
 
+
 //@Component
 public class LakeConditionDAOImpl implements LakeConditionDAO {
 
@@ -24,15 +25,17 @@ public class LakeConditionDAOImpl implements LakeConditionDAO {
 	// this.jdbcTemplate = new JdbcTemplate(dataSource);
 	// }
 
-	Connection conn = null;
-	Statement stmt = null;
-	ResultSet rs = null;
+
 
 	public List<LakeCondition> getLakeConditions() {
 
 		String sql = "select * from buoy_current_conditions";
 		List<LakeCondition> lakeConditions = new ArrayList<LakeCondition>();
 
+		Connection conn = null;
+		Statement stmt = null;
+		ResultSet rs = null;
+		
 		try {
 			conn = DbUtil.getConnection();
 			stmt = conn.createStatement();
@@ -45,6 +48,7 @@ public class LakeConditionDAOImpl implements LakeConditionDAO {
 					lakeCondition.setSampleDate(rs.getDate("sampledate"));
 					lakeCondition.setLakeName(rs.getString("lakename"));
 					lakeCondition.setLakeId(rs.getString("lakeid"));
+					//lakeCondition.setAirTemp((rs.getObject("airtemp")) == null?null:rs.getBigDecimal("airtemp").doubleValue());
 					lakeCondition.setAirTemp(rs.getDouble("airtemp"));
 					lakeCondition.setWaterTemp(rs.getDouble("watertemp"));
 					lakeCondition.setWindSpeed(rs.getDouble("windspeed"));
@@ -62,8 +66,8 @@ public class LakeConditionDAOImpl implements LakeConditionDAO {
 					rs.close();
 				if (stmt != null)
 					stmt.close();
-				//if (conn != null)
-					//conn.close();
+				if (conn != null)
+					conn.close();
 			} catch (SQLException e) {
 				System.err.println("ERROR while closing connection.");
 			}
@@ -75,6 +79,11 @@ public class LakeConditionDAOImpl implements LakeConditionDAO {
 		String sql = "select * from buoy_current_conditions where lakeid = '"+lakeId+"' " ;
 		
 		LakeCondition lakeCondition = new LakeCondition();
+
+		Connection conn = null;
+		Statement stmt = null;
+		ResultSet rs = null;
+		
 		try {
 			conn = DbUtil.getConnection();
 			
@@ -87,6 +96,7 @@ public class LakeConditionDAOImpl implements LakeConditionDAO {
 					lakeCondition.setLakeName(rs.getString("lakename"));
 					lakeCondition.setLakeId(rs.getString("lakeid"));
 					lakeCondition.setAirTemp(rs.getDouble("airtemp"));
+					//lakeCondition.setAirTemp(rs.getObject("airtemp")==null?null:rs.getBigDecimal("airtemp").doubleValue());
 					lakeCondition.setWaterTemp(rs.getDouble("watertemp"));
 					lakeCondition.setWindSpeed(rs.getDouble("windspeed"));
 					lakeCondition.setWindDir(rs.getInt("winddir"));
@@ -103,12 +113,13 @@ public class LakeConditionDAOImpl implements LakeConditionDAO {
 					rs.close();
 				if (stmt != null)
 					stmt.close();
-				//if (conn != null)
-					//conn.close();
+				if (conn != null)
+					conn.close();
 			} catch (SQLException e) {
 				System.err.println("ERROR while closing connection.");
 			}
 		}
 		return lakeCondition;
 	}
+	
 }

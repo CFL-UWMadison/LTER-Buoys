@@ -6,13 +6,9 @@ import java.sql.DriverManager;
 import java.util.Properties;
 
 public class DbUtil {
-
-	private static Connection dbConnection = null;
-
 	  public static Connection getConnection() {
-	      if (dbConnection != null) {
-	          return dbConnection;
-	      } else {
+		Connection dbConnection = null;
+	     
 	          try {
 	              InputStream inputStream = DbUtil.class.getClassLoader()
 	                      .getResourceAsStream("db.properties");
@@ -36,4 +32,3 @@ public class DbUtil {
 	          return dbConnection;
 	      }
 	  }
-}
