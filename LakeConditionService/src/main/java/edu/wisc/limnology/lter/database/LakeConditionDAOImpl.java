@@ -10,8 +10,6 @@ import java.util.List;
 import edu.wisc.limnology.lter.model.LakeCondition;
 import edu.wisc.limnology.lter.utils.DbUtil;
 
-
-//@Component
 public class LakeConditionDAOImpl implements LakeConditionDAO {
 
 		public List<LakeCondition> getLakeConditions() {

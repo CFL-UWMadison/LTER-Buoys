@@ -10,19 +10,19 @@
     <li><a href="http://argyron.limnology.wisc.edu:8080/LakeConditionService/webapi/lakeConditions/ME">Mendota Lake</a></li>
     <li><a href="http://argyron.limnology.wisc.edu:8080/LakeConditionService/webapi/lakeConditions/SP">Sparkling Lake</a></li>
  -->
-   <!-- 
+  
     <li><a href="http://thalassa.limnology.wisc.edu:8080/LakeConditionService/webapi/lakeConditions">All Lakes</a></li>
     <li><a href="http://thalassa.limnology.wisc.edu:8080/LakeConditionService/webapi/lakeConditions/TR">Trout Lake</a></li>
     <li><a href="http://thalassa.limnology.wisc.edu:8080/LakeConditionService/webapi/lakeConditions/ME">Mendota Lake</a></li>
     <li><a href="http://thalassa.limnology.wisc.edu:8080/LakeConditionService/webapi/lakeConditions/SP">Sparkling Lake</a></li>
-        --> 
       
-     
+      
+      <!-- 
  	<li><a href="http://localhost:8080/LakeConditionService/webapi/lakeConditions">All Lakes</a></li>
     <li><a href="http://localhost:8080/LakeConditionService/webapi/lakeConditions/TR">Trout Lake</a></li>
     <li><a href="http://localhost:8080/LakeConditionService/webapi/lakeConditions/ME">Mendota Lake</a></li>
     <li><a href="http://localhost:8080/LakeConditionService/webapi/lakeConditions/SP">Sparkling Lake</a></li>
-       
+         --> 
     </ul>
     <p>Visit <a href="http://lter.limnology.wisc.edu">UW Limnology</a>
     for more information on Lake Conditions!</p>
