@@ -1,0 +1,69 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:paddingTop="@dimen/activity_vertical_margin"
+                android:paddingBottom="@dimen/activity_vertical_margin"
+                tools:context=".MainActivity">
+
+    <TextView
+        android:text="@string/hello"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-condensed"
+        android:textColor="@color/blue"
+        android:textSize="30sp"
+        android:gravity="center_horizontal"
+        android:id="@+id/welcome"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="?android:attr/buttonBarButtonStyle"
+        android:textColor="@color/white"
+        android:background="@drawable/edit_text_border"
+        android:ems="15"
+        android:padding="10dp"
+        android:text="Trout Lake"
+        android:id="@+id/TR"
+        android:onClick="onClick"
+        android:layout_below="@+id/welcome"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="54dp"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="?android:attr/buttonBarButtonStyle"
+        android:textColor="@color/white"
+        android:background="@drawable/edit_text_border"
+        android:ems="15"
+        android:padding="10dp"
+        android:text="Sparkling Lake"
+        android:id="@+id/SP"
+        android:onClick="onClick"
+        android:layout_below="@+id/TR"
+        android:layout_marginTop="10dp"
+        android:layout_alignRight="@+id/ME"
+        android:layout_alignEnd="@+id/ME"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="?android:attr/buttonBarButtonStyle"
+        android:textColor="@color/white"
+        android:background="@drawable/edit_text_border"
+        android:ems="15"
+        android:padding="10dp"
+        android:text="Mendota Lake"
+        android:id="@+id/ME"
+        android:onClick="onClick"
+        android:layout_below="@+id/SP"
+        android:layout_marginTop="10dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"/>
+
+</RelativeLayout>
