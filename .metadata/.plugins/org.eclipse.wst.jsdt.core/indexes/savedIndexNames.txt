@@ -1,9 +1,0 @@
-INDEX VERSION 1.3+/Users/paresh/Desktop/Shweta/cfluw/gitrepo/LTER-Buoys/.metadata/.plugins/org.eclipse.wst.jsdt.core/indexes
-485157078.index
-3477082751.index
-2191095897.index
-2191095897.index
-934518090.index
-3861356241.index
-3520708030.index
-1088604361.index

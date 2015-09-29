@@ -1,4 +1,0 @@
-dbDriver=com.mysql.jdbc.Driver
-connectionUrl=jdbc:mysql://thalassa.limnology.wisc.edu:3306/dbmaker
-userName=buoyuser
-password=
