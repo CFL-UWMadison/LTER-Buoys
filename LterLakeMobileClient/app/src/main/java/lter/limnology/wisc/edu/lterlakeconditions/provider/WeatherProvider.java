@@ -64,19 +64,12 @@ public class WeatherProvider extends ContentProvider {
     }
 
     /**
-     * Get a Cursor containing all data for a selected location.  It
-     * joins the Weather Values and Weather Conditions tables.  It
+     * Get a Cursor containing all data for a selected location.    It
      * will have a row for each Weather object corresponding to the
      * location, with the Weather Values columns repeated.
      */
     private Cursor getAllLocationsData(String locationKey) {
-        /**
-         * Constant defining the FROM and WHERE clauses for a
-         * statement working on all the data for a single Weather
-         * Values "object".  This WHERE statement is used to join both
-         * the Weather Values and Weather Conditions tables over a
-         * specific location.
-         */
+
         final String FROM_WHERE_STATEMENT_ALL_LOCATION_DATA =
                 "SELECT * FROM "
                         + WEATHER_VALUES_TABLE_NAME
@@ -98,10 +91,6 @@ public class WeatherProvider extends ContentProvider {
         Log.v(TAG,
                 selectQuery);
 
-        // Query the SQLite database using the all-locations Uri,
-        // which returns a Cursor  the Weather Values and
-        //  for one WeatherData object for the
-        // target location
         return db.rawQuery(selectQuery,
                 new String[] { locationKey });
     }
@@ -213,7 +202,6 @@ public class WeatherProvider extends ContentProvider {
 
         // Check to ensure that the insertion worked.
         if (insertRow > 0) {
-            Log.i(TAG, "Weather provider - Row inserted");
             // Create the result URI.
             Uri newUri = ContentUris.withAppendedId(resultUri,
                     insertRow);

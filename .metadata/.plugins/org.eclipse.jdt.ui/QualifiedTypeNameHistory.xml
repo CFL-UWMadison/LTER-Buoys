@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="edu.wisc.limnology.lter.utils.DbUtil"/>
+<fullyQualifiedTypeName name="edu.wisc.limnology.lter.database.LakeConditionDAO"/>
+<fullyQualifiedTypeName name="edu.wisc.limnology.lter.model.LakeCondition"/>
+<fullyQualifiedTypeName name="java.math.BigDecimal"/>
+<fullyQualifiedTypeName name="java.util.Date"/>
+<fullyQualifiedTypeName name="java.sql.Timestamp"/>
+<fullyQualifiedTypeName name="javax.xml.bind.annotation.XmlRootElement"/>
+<fullyQualifiedTypeName name="javax.xml.bind.annotation.XmlElement"/>
+</qualifiedTypeNameHistroy>

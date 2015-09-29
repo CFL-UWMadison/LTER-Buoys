@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
@@ -22,32 +23,46 @@
             android:padding="10dp">
 
             <TextView
+                android:id="@+id/dateUpdated"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"/>
+
+            <TextView
                 android:id="@+id/lakeName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="25dp"
-                android:fontFamily="sans-serif-condensed"
-                android:paddingTop="5dp"
-                android:singleLine="true"
-                android:textColor="@color/blue"
-                android:textSize="30sp"/>
-
-            <TextView
-                android:id="@+id/day"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-
+                android:layout_marginBottom="10dp"
                 android:fontFamily="sans-serif"
-                android:textColor="@color/black"
-                android:textSize="25sp"/>
+                android:paddingTop="0dp"
+                android:singleLine="true"
+                android:textColor="#fff588"
+                android:textSize="30sp"
+                android:textStyle="bold"/>
 
-            <TextView
-                android:id="@+id/date"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="sans-serif-condensed"
-                android:textColor="@color/grey_700"
-                android:textSize="20sp"/>
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/day"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:fontFamily="sans-serif"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"/>
+
+                <TextView
+                    android:id="@+id/date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"/>
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -62,11 +77,14 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/airDesc"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
+                        android:fontFamily="sans-serif"
+                        android:onClick="onTouch"
                         android:text="Air Temperature:  "
-                        android:textAppearance="?android:textAppearanceLarge"
-                        android:textColor="@color/black"/>
+                        android:textColor="@color/black"
+                        android:textSize="20sp"/>
 
                 </LinearLayout>
 
@@ -81,18 +99,20 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
-                        android:textAppearance="?android:textAppearanceLarge"
+                        android:fontFamily="sans-serif"
                         android:textColor="@color/black"
-                        android:textSize="40sp"/>
+                        android:textSize="25sp"
+                        android:textStyle="bold"/>
 
                     <TextView
                         android:id="@+id/airTempFahrenheit"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
-                        android:textAppearance="?android:textAppearanceLarge"
+                        android:fontFamily="sans-serif"
                         android:textColor="@color/black"
-                        android:textSize="40sp"/>
+                        android:textSize="25sp"
+                        android:textStyle="bold"/>
 
                 </LinearLayout>
             </LinearLayout>
@@ -110,18 +130,22 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/waterDesc"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
+                        android:fontFamily="sans-serif"
+                        android:onClick="onTouch"
                         android:text="Water Temperature:  "
-                        android:textAppearance="?android:textAppearanceLarge"
-                        android:textColor="@color/black"/>
+                        android:textColor="@color/black"
+                        android:textSize="20sp"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
+                        android:fontFamily="sans-serif"
                         android:text="(Surface) "
-                        android:textAppearance="?android:textAppearanceLarge"
-                        android:textColor="@color/black"/>
+                        android:textColor="@color/black"
+                        android:textSize="20sp"/>
 
                 </LinearLayout>
 
@@ -136,39 +160,79 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
-                        android:textAppearance="?android:textAppearanceLarge"
+                        android:fontFamily="sans-serif"
                         android:textColor="@color/black"
-                        android:textSize="40sp"/>
+                        android:textSize="25sp"
+                        android:textStyle="bold"/>
 
                     <TextView
                         android:id="@+id/waterTempFahrenheit"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
-                        android:textAppearance="?android:textAppearanceLarge"
+                        android:fontFamily="sans-serif"
                         android:textColor="@color/black"
-                        android:textSize="40sp"/>
+                        android:textSize="25sp"
+                        android:textStyle="bold"/>
 
                 </LinearLayout>
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/windDirection"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:fontFamily="sans-serif"
-                android:textAppearance="?android:textAppearanceLarge"
-                android:textColor="@color/black"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="16dp"
+                android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/windSpeed"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:fontFamily="sans-serif"
-                android:textAppearance="?android:textAppearanceLarge"
-                android:textColor="@color/black"/>
+                <TextView
+                    android:id="@+id/windDirection"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:fontFamily="sans-serif"
+                    android:onClick="onTouch"
+                    android:text="Wind :  "
+                    android:textColor="@color/black"
+                    android:textSize="20sp"/>
+
+                <TextView
+                    android:id="@+id/windSpeed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:fontFamily="sans-serif"
+                    android:textColor="@color/black"
+                    android:textSize="25sp"
+                    android:textStyle="bold"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="16dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/thermoclineDepth"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:fontFamily="sans-serif"
+                    android:onClick="onTouch"
+                    android:text="Thermocline Depth :  "
+                    android:textColor="@color/black"
+                    android:textSize="20sp"/>
+
+                <TextView
+                    android:id="@+id/thermoclineMeasure"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:fontFamily="sans-serif"
+                    android:textColor="@color/black"
+                    android:textSize="25sp"
+                    android:textStyle="bold"/>
+            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/mendotaData"
@@ -184,19 +248,22 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/secchiDepthEst"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:text="Secchi Depth Estimate :  "
-                        android:textAppearance="?android:textAppearanceLarge"
-                        android:textColor="@color/black"/>
+                        android:fontFamily="sans-serif"
+                        android:onClick="onTouch"
+                        android:text="Secchi Depth Estimate : "
+                        android:textColor="@color/black"
+                        android:textSize="20sp"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:text="(Water Clarity Measure) "
-                        android:textAppearance="?android:textAppearanceLarge"
-                        android:textColor="@color/black"/>
-
+                        android:fontFamily="sans-serif"
+                        android:text="(Water Clarity Measure)"
+                        android:textColor="@color/black"
+                        android:textSize="20sp"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -208,13 +275,16 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
-                        android:textAppearance="?android:textAppearanceLarge"
-                        android:textColor="@color/black"/>
+                        android:fontFamily="sans-serif"
+                        android:textColor="@color/black"
+                        android:textSize="25sp"
+                        android:textStyle="bold"/>
                 </LinearLayout>
             </LinearLayout>
+
         </LinearLayout>
 
-
     </ScrollView>
+
 
 </LinearLayout>

@@ -1,19 +1,14 @@
 package lter.limnology.wisc.edu.lterlakeconditions.Data;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.sql.Date;
-import java.util.List;
+import java.util.Date;
 
 /**
- *"airTemp":0.0,"lakeId":"ME","lakeName":"Lake Mendota","phycoMedian":868.0,"sampleDate":"2015-07-23T00:00:00",
+ * "airTemp":0.0,"lakeId":"ME","lakeName":"Lake Mendota","phycoMedian":868.0,"sampleDate":"2015-07-23T00:00:00",
  * "secchiEst":1.53,"waterTemp":0.0,"windDir":0,"windSpeed":0.0}
  */
 public class WeatherData implements Serializable {
 
-
-
-//    private Date sampleDate;
     private String lakeName;
     private String lakeId;
     private Double airTemp;
@@ -22,9 +17,10 @@ public class WeatherData implements Serializable {
     private Integer windDir;
     private Double secchiEst;
     private Double phycoMedian;
- //   private Date sampleTime;
+    private Double thermoclineDepth;
+    public String sampleDate;
 
-    public WeatherData(Date sampleDate,
+    public WeatherData(String sampleDate,
                        String lakeName,
                        String lakeId,
                        Double airTemp,
@@ -33,8 +29,7 @@ public class WeatherData implements Serializable {
                        Integer windDir,
                        Double secchiEst,
                        Double phycoMedian,
-                       Date sampleTime) {
-//        this.sampleDate = sampleDate;
+                       Double thermoclineDepth) {
         this.lakeName = lakeName;
         this.lakeId = lakeId;
         this.airTemp = airTemp;
@@ -43,16 +38,18 @@ public class WeatherData implements Serializable {
         this.windDir = windDir;
         this.secchiEst = secchiEst;
         this.phycoMedian = phycoMedian;
- //       this.sampleTime = sampleTime;
+        this.thermoclineDepth = thermoclineDepth;
+        this.sampleDate = sampleDate;
+        // this.sampleTime = sampleTime;
     }
 
-//    public Date getSampleDate() {
-//        return sampleDate;
-//    }
-//
-//    public void setSampleDate(Date sampleDate) {
-//        this.sampleDate = sampleDate;
-//    }
+    public String getSampleDate() {
+        return sampleDate;
+    }
+
+    public void setSampleDate(String sampleDate) {
+        this.sampleDate = sampleDate;
+    }
 
     public String getLakeName() {
         return lakeName;
@@ -102,6 +99,14 @@ public class WeatherData implements Serializable {
         this.windDir = windDir;
     }
 
+    public Double getThermoclineDepth() {
+        return thermoclineDepth;
+    }
+
+    public void setThermoclineDepth(Double thermoclineDepth) {
+        this.thermoclineDepth = thermoclineDepth;
+    }
+
     public Double getSecchiEst() {
         return secchiEst;
     }
@@ -118,13 +123,6 @@ public class WeatherData implements Serializable {
         this.phycoMedian = phycoMedian;
     }
 
-//    public Date getSampleTime() {
-//        return sampleTime;
-//    }
-//
-//    public void setSampleTime(Date sampleTime) {
-//        this.sampleTime = sampleTime;
-//    }
 }
 
 

@@ -20,11 +20,7 @@ public class WeatherDatabaseHelper extends SQLiteOpenHelper {
      * Database version number, which is updated with each schema
      * change.
      */
-    private static int DATABASE_VERSION = 1;
-
-    /*
-     * SQL create table statements.
-     */
+    private static int DATABASE_VERSION = 3;
 
     /**
      * SQL statement used to create the Weather Values table.
@@ -39,8 +35,8 @@ public class WeatherDatabaseHelper extends SQLiteOpenHelper {
                     + " TEXT, "
                     + WeatherContract.WeatherValuesEntry.COLUMN_LAKE_NAME
                     + " TEXT, "
-//                     + WeatherContract.WeatherValuesEntry.COLUMN_DATE
-//                    + " REAL, "
+                    + WeatherContract.WeatherValuesEntry.COLUMN_DATE
+                    + " TEXT, "
                     + WeatherContract.WeatherValuesEntry.COLUMN_PHYCO_MEDIAN
                     + " REAL, "
                     + WeatherContract.WeatherValuesEntry.COLUMN_SECCHI_EST
@@ -52,6 +48,8 @@ public class WeatherDatabaseHelper extends SQLiteOpenHelper {
                     + WeatherContract.WeatherValuesEntry.COLUMN_AIR_TEMP
                     + " REAL, "
                     + WeatherContract.WeatherValuesEntry.COLUMN_WIND_SPEED
+                    + " REAL, "
+                    + WeatherContract.WeatherValuesEntry.COLUMN_THERMOCLINE_MEASURE
                     + " REAL, "
                     + WeatherContract.WeatherValuesEntry.COLUMN_EXPIRATION_TIME
                     + " INTEGER)";

@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="http://schemas.android.com/apk/res-auto">
 
-    <string name="app_name">LterLakeConditions</string>
+    <string name="app_name">North Temperate Lakes</string>
     <string name="hello">North Temperate Lakes</string>
     <string name="action_settings">Settings</string>
+    <string name="action_refresh">Refresh</string>
     <string name="title_activity_lake_conditions">LakeConditions</string>
+    <string name="about">North Temperate lakes</string>
     <string name="hello_world">Hello world!</string>
     <string name="content_authority">lter.limnology.wisc.edu</string>
     <string name="format_temperature"><xliff:g id="temp">%1.0f</xliff:g>\u00B0</string>

@@ -53,7 +53,7 @@ public class CacheCleanupReceiver
     @Override
     public void onReceive(Context context,
                           Intent intent) {
-        // Create the TimeoutCache and remove all the expired Weather
+        // Create the TimeoutCache and remove all the expired
         // data from the cache.
         new WeatherTimeoutCache(context).removeExpiredWeatherData();
     }

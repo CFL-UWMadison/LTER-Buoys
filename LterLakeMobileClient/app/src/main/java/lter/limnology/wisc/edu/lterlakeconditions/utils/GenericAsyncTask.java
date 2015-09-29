@@ -3,10 +3,6 @@ package lter.limnology.wisc.edu.lterlakeconditions.utils;
 import android.os.AsyncTask;
 import android.util.Log;
 
-/**
- * Created by Shweta Nagar
- */
-
 public class GenericAsyncTask<Params,
         Progress,
         Result,

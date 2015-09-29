@@ -30,8 +30,8 @@ public class Utils {
     }
 
     public static String formatTemperature(Context context, double temperature,
-                                           boolean isFarhenheit) {
-        if (isFarhenheit)
+                                           boolean isFahrenheit) {
+        if (isFahrenheit)
             temperature = ((temperature / 5) * 9) + 32;
 
         return String.format(context.getString(R.string.format_temperature),

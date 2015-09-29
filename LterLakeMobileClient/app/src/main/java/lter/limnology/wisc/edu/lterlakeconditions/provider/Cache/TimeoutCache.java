@@ -25,7 +25,7 @@ public interface TimeoutCache<K, V> {
      * after which the data will expire
      *
      * @param key
-     * @param value
+     * @param obj
      * @param timeout in seconds
      */
     void put(K key, V obj, int timeout);
@@ -35,7 +35,7 @@ public interface TimeoutCache<K, V> {
      *
      * @param key
      */
-    void remove(K key);
+   void remove(K key);
 
     /**
      * Get the size of the cache.

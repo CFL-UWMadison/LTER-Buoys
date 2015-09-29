@@ -42,12 +42,6 @@ public final class WeatherContract {
     public static final String ACCESS_ALL_DATA_FOR_LOCATION_PATH =
             "access_all_for_location";
 
-    /**
-     * URI used to access all the data for a given location.  This
-     * will access a cursor that concatenates the row of the Weather
-     * Data entry corresponding to the location with all the rows of
-     * its associated Weather Conditions entries.
-     */
     public static final Uri ACCESS_ALL_DATA_FOR_LOCATION_URI =
             BASE_URI.buildUpon().appendPath
                     (ACCESS_ALL_DATA_FOR_LOCATION_PATH).build();
@@ -63,19 +57,9 @@ public final class WeatherContract {
      */
     public static final int WEATHER_VALUES_ITEM = 110;
 
-
-    /**
-     * UriMatcher code for getting an entire "WeatherData" object's
-     * data from the database.  This doesn't correspond to a specific
-     * table; it corresponds to a Weather Values entry and all of its
-     * associated Weather Conditions entries.
-     */
     public static final int ACCESS_ALL_DATA_FOR_LOCATION_ITEM = 300;
 
-    /**
-     * UriMatcher that is used to demultiplex the incoming URIs into
-     * requests.
-     */
+
     public static final UriMatcher sUriMatcher =
             buildUriMatcher();
 
@@ -155,7 +139,8 @@ public final class WeatherContract {
         public static final String COLUMN_SECCHI_EST = "secchiEst";
         public static final String COLUMN_PHYCO_MEDIAN = "phycoMedian";
         public static final String COLUMN_EXPIRATION_TIME = "expiration_time";
-                // public static final String COLUMN_DATE = "sampleDate";
+        public static final String COLUMN_THERMOCLINE_MEASURE = "thermoclineDepth";
+        public static final String COLUMN_DATE = "sampleDate";
 
         /**
          * Return a URI that points to the row containing the given

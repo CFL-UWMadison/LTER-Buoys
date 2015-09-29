@@ -2,11 +2,9 @@ package lter.limnology.wisc.edu.lterlakeconditions.operations;
 
 import android.app.Activity;
 import android.util.Log;
-import android.widget.Toast;
 
 import java.lang.ref.WeakReference;
 
-import lter.limnology.wisc.edu.lterlakeconditions.Data.MendotaData;
 import lter.limnology.wisc.edu.lterlakeconditions.Data.MendotaWebServiceProxy;
 import lter.limnology.wisc.edu.lterlakeconditions.Data.WeatherData;
 import lter.limnology.wisc.edu.lterlakeconditions.Data.WeatherWebServiceProxy;
@@ -33,17 +31,11 @@ public class WeatherOps
      */
     protected WeakReference<MainActivity> mActivity;
 
-//    protected LakeConditions mLakeConditions;
     /**
      * Content Provider-based cache for the WeatherData.
      */
     private WeatherTimeoutCache mCache;
 
-    /**
-     * Retrofit proxy that sends requests to the Weather Service web
-     * service and converts the Json response to an instance of
-     * AcronymData POJO class.
-     */
     private WeatherWebServiceProxy mWeatherWebServiceProxy;
     private MendotaWebServiceProxy mMendotaWebServiceProxy;
 
@@ -54,7 +46,7 @@ public class WeatherOps
     private WeatherData mCurrentWeatherData;
 
     /**
-     * The GenericAsyncTask used to get the current weather from the
+     * The GenericAsyncTask used to get the current lake conditions from the
      * web service.
      */
     private GenericAsyncTask<String, Void, WeatherData, WeatherOps> mAsyncTask;
@@ -80,11 +72,10 @@ public class WeatherOps
                                 boolean firstTimeIn) {
         // Reset the mActivity WeakReference.
         mActivity = new WeakReference<>((MainActivity) activity);
-        //      mLakeConditions = new LakeConditions();
 
         if (firstTimeIn) {
-            // Initialize the WeatherTimeoutCache.  We use the
-            // Application context to avoid dependencies on the
+            // Initialize the WeatherTimeoutCache.
+            // Application context is used to avoid dependencies on the
             // Activity context, which will change if/when a runtime
             // configuration change occurs.
             mCache =
@@ -103,6 +94,7 @@ public class WeatherOps
                             .setEndpoint(MendotaWebServiceProxy.sWeather_Service_URL_Retro)
                             .build()
                             .create(MendotaWebServiceProxy.class);
+
         } else if (mCurrentWeatherData != null) {
             // Populate the display if a WeatherData object is stored
             // in the WeatherOps instance.
@@ -111,8 +103,6 @@ public class WeatherOps
     }
 
     /**
-     * Initiate the synchronous weather lookup when the user presses
-     * the "Get Weather" button.
      *
      * @return false if a call is already in progress, else true.
      */
@@ -139,18 +129,15 @@ public class WeatherOps
     @Override
     public void onPreExecute() {
 
-        Log.i("***********WeatherOps.AsyncTask", "onPreExecute********");
     }
 
     /**
-     * Get the current weather either from the ContentProvider cache
-     * or from the Weather Service web service.
+     * Get the current conditions either from the ContentProvider cache
+     * or from the web service.
      */
     public WeatherData doInBackground(String location) {
-        Log.i("***********WeatherOps.AsyncTask", "doInBackground********");
         try {
-            // First the cache is checked for the location's weather
-            // data.
+            // First the cache is checked for the data.
             WeatherData weatherData =
                     mCache.get(location);
 
@@ -164,19 +151,17 @@ public class WeatherOps
             }
 
             // If the location's data wasn't in the cache or was
-            // stale, use Retrofit to fetch it from the Weather
-            // Service web service.
+            // stale, use Retrofit to fetch it from the web service.
             else {
                 Log.v(TAG,
                         location
                                 + ": not in cache");
 
-                // Get the weather from the Weather Service web
-                // service.
+                // Get the weather from the web service.
 
-                    weatherData =
-                            mWeatherWebServiceProxy.getWeatherData(location);
-                if (location == "ME") {
+                weatherData =
+                        mWeatherWebServiceProxy.getWeatherData(location);
+             /*  if (location == "ME") {
 
                    MendotaData mendotaData = mMendotaWebServiceProxy.getWeatherData();
                     weatherData.setAirTemp(mendotaData.getAirTemp());
@@ -184,7 +169,7 @@ public class WeatherOps
                     weatherData.setWindDir(mendotaData.getWindDirection());
                     weatherData.setWaterTemp(mendotaData.getWaterTemp());
 
-                }
+                }*/
 
                 // Check to make sure the call to the server succeeded
                 // by testing the "name" member to make sure it was
@@ -196,13 +181,10 @@ public class WeatherOps
                 mCache.put(location,
                         weatherData);
 
-                // Return the weather data.
+                // Return the data.
                 return weatherData;
             }
         } catch (Exception e) {
-            Log.v(TAG,
-                    "doInBackground() "
-                            + e);
             return null;
         }
     }
@@ -214,7 +196,6 @@ public class WeatherOps
     @Override
     public void onPostExecute(WeatherData weatherData,
                               String location) {
-        Log.i("***********WeatherOps.AsyncTask", "onPostExecute********");
         // Store the weather data in anticipation of runtime
         // configuration changes.
         if (weatherData != null)

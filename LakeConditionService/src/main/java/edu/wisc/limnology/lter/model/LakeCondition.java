@@ -20,6 +20,8 @@ public class LakeCondition {
 	private Double secchiEst;
 	private Double phycoMedian;
 	private Date sampleTime;
+	private Double thermoclineDepth;
+	private Date secchiEstTimestamp;
 
 	SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	
@@ -97,6 +99,14 @@ public class LakeCondition {
 	}
 
 	
+	public Date getSecchiEstTimestamp() {
+		return secchiEstTimestamp;
+	}
+
+	public void setSecchiEstTimestamp(Date secchiEstTimestamp) {
+		this.secchiEstTimestamp = secchiEstTimestamp;
+	}
+
 	public Double getPhycoMedian() {
 		return phycoMedian;
 	}
@@ -111,6 +121,14 @@ public class LakeCondition {
 
 	public void setSampleTime(Date sampleTime) {
 		this.sampleTime = sampleTime;
+	}
+	@XmlElement(nillable=true)
+	public Double getThermoclineDepth() {
+		return thermoclineDepth;
+	}
+
+	public void setThermoclineDepth(Double thermoclineDepth) {
+		this.thermoclineDepth = thermoclineDepth;
 	}
 
 	@Override

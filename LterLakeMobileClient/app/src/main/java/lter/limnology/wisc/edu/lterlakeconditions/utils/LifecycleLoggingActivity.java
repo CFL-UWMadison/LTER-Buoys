@@ -4,9 +4,6 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 
-/**
- * Created by Shweta Nagar
- */
 public abstract class LifecycleLoggingActivity extends Activity {
     /**
      * Debugging tag used by the Android logger.
@@ -14,10 +11,6 @@ public abstract class LifecycleLoggingActivity extends Activity {
     protected final String TAG = getClass().getSimpleName();
 
     /**
-     * Hook method called when a new instance of Activity is created. One time
-     * initialization code should go here e.g. UI layout, some class scope
-     * variable initialization. if finish() is called from onCreate no other
-     * lifecycle callbacks are called except for onDestroy().
      *
      * @param savedInstanceState
      *            object that contains saved state information.
@@ -57,12 +50,7 @@ public abstract class LifecycleLoggingActivity extends Activity {
     }
 
     /**
-     * Hook method called after onRestoreStateInstance(Bundle) only if there is
-     * a prior saved instance state in Bundle object. onResume() is called
-     * immediately after onStart(). onResume() is called when user resumes
-     * activity from paused state (onPause()) User can begin interacting with
-     * activity. Place to start animations, acquire exclusive resources, such as
-     * the camera.
+     *
      */
     @Override
     protected void onResume() {

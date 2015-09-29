@@ -6,7 +6,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.os.SystemClock;
 import android.util.Log;
-
 import lter.limnology.wisc.edu.lterlakeconditions.Data.WeatherData;
 import lter.limnology.wisc.edu.lterlakeconditions.provider.WeatherContract;
 import lter.limnology.wisc.edu.lterlakeconditions.provider.WeatherContract.WeatherValuesEntry;
@@ -22,11 +21,11 @@ public class WeatherTimeoutCache
     private final static String TAG =
             WeatherTimeoutCache.class.getSimpleName();
 
+    boolean updateCache;
     /**
-     * Default cache timeout in to 30 seconds (in milliseconds).
+     * Default cache timeout in to 15 minutes (in milliseconds).
      */
-    private static final long DEFAULT_TIMEOUT =
-            Long.valueOf(3000000L);
+    private static final long DEFAULT_TIMEOUT = Long.valueOf(900000L);
 
     /**
      * Cache is cleaned up at regular intervals (i.e., twice a day) to
@@ -38,7 +37,7 @@ public class WeatherTimeoutCache
     /**
      * AlarmManager provides access to the system alarm services.
      * Used to schedule Cache cleanup at regular intervals to remove
-     * expired Weather Values.
+     * expired Values.
      */
     private AlarmManager mAlarmManager;
 
@@ -88,11 +87,12 @@ public class WeatherTimeoutCache
     private ContentValues makeWeatherDataContentValues(WeatherData wd,
                                                        long timeout,
                                                        String locationKey) {
+
         ContentValues cvs = new ContentValues();
 
         cvs.put(WeatherContract.WeatherValuesEntry.COLUMN_LAKE_NAME,
                 wd.getLakeName());
-        //       cvs.put(WeatherContract.WeatherValuesEntry.COLUMN_DATE, "Today's date");
+        cvs.put(WeatherContract.WeatherValuesEntry.COLUMN_DATE,wd.getSampleDate());
 
         cvs.put(WeatherContract.WeatherValuesEntry.COLUMN_AIR_TEMP,
                 wd.getAirTemp());
@@ -108,7 +108,8 @@ public class WeatherTimeoutCache
                 wd.getWindSpeed());
         cvs.put(WeatherContract.WeatherValuesEntry.COLUMN_WATER_TEMP,
                 wd.getWaterTemp());
-
+        cvs.put(WeatherContract.WeatherValuesEntry.COLUMN_THERMOCLINE_MEASURE,
+                wd.getThermoclineDepth());
 
         cvs.put(WeatherContract.WeatherValuesEntry.COLUMN_EXPIRATION_TIME,
                 System.currentTimeMillis()
@@ -150,12 +151,26 @@ public class WeatherTimeoutCache
     private void putImpl(String locationKey,
                          WeatherData wd,
                          long timeout) {
-        // Enter the main WeatherData into the WeatherValues table.
-        mContext.getContentResolver().insert
-                (WeatherContract.WeatherValuesEntry.WEATHER_VALUES_CONTENT_URI,
-                        makeWeatherDataContentValues(wd,
-                                timeout,
-                                locationKey));
+        if(get(locationKey)==null) {
+            // Enter the main WeatherData into the WeatherValues table.
+            mContext.getContentResolver().insert
+                    (WeatherContract.WeatherValuesEntry.WEATHER_VALUES_CONTENT_URI,
+                            makeWeatherDataContentValues(wd,
+                                    timeout,
+                                    locationKey));
+        }else{
+            if(updateCache == true) {
+                mContext.getContentResolver().update
+                        (WeatherContract.WeatherValuesEntry.WEATHER_VALUES_CONTENT_URI,
+                                makeWeatherDataContentValues(wd,
+                                        timeout,
+                                        locationKey),
+                                WEATHER_VALUES_LOCATION_KEY_SELECTION,
+                                new String[]{locationKey}
+                        );
+                updateCache = false;
+            }
+        }
     }
 
     /**
@@ -193,24 +208,61 @@ public class WeatherTimeoutCache
                 new Thread(new Runnable() {
                     public void run() {
                         remove(locationKey);
+
                     }
                 }).start();
-
                 return null;
             } else
                 // Convert the contents of the cursor into a
                 // WeatherData object.
-                //return getWeatherDataFromCursor(wdCursor);
-                return null;
+                return getWeatherDataFromCursor(wdCursor);
+
         } else
             // Query was empty or returned null.
             return null;
     }
 
+    private WeatherData getWeatherDataFromCursor(Cursor data) {
+        if (data == null
+                || !data.moveToFirst())
+            return null;
+        else {
+            final String sampleDate =
+                    data.getString(data.getColumnIndex(WeatherValuesEntry.COLUMN_DATE));
+            final String lakeName =
+                    data.getString(data.getColumnIndex(WeatherValuesEntry.COLUMN_LAKE_NAME));
+            final String lakeId =
+                    data.getString(data.getColumnIndex(WeatherValuesEntry.COLUMN_LAKE_ID));
+            final Double airTemp =
+                    data.getDouble(data.getColumnIndex(WeatherValuesEntry.COLUMN_AIR_TEMP));
+            final Double waterTemp =
+                    data.getDouble(data.getColumnIndex(WeatherValuesEntry.COLUMN_WATER_TEMP));
+            final Double windSpeed =
+                    data.getDouble(data.getColumnIndex(WeatherValuesEntry.COLUMN_WIND_SPEED));
+            final Integer windDir =
+                    data.getInt(data.getColumnIndex(WeatherValuesEntry.COLUMN_WIND_DIR));
+            final Double secchiEst =
+                    data.getDouble(data.getColumnIndex(WeatherValuesEntry.COLUMN_SECCHI_EST));
+            final Double phycoMedian =
+                    data.getDouble(data.getColumnIndex(WeatherValuesEntry.COLUMN_PHYCO_MEDIAN));
+            final Double thermoclineDepth =
+                    data.getDouble(data.getColumnIndex(WeatherValuesEntry.COLUMN_THERMOCLINE_MEASURE));
+            return new WeatherData(sampleDate,
+                                   lakeName,
+                                   lakeId,
+                                   airTemp,
+                                   waterTemp,
+                                   windSpeed,
+                                   windDir,
+                                   secchiEst,
+                                   phycoMedian,
+                                   thermoclineDepth);
 
+
+        }
+    }
     /**
-     * Delete the Weather Values and Weather Conditions associated
-     * with a @a locationKey.
+     * Delete the Weather Values
      */
     @Override
     public void remove(String locationKey) {
@@ -264,7 +316,7 @@ public class WeatherTimeoutCache
                                 new String[]{String.valueOf(System.currentTimeMillis())},
                                 null);
         // Use the expired data id's to delete the designated
-        // entries from both tables.
+        // entries from table.
         if (expiredData != null
                 && expiredData.moveToFirst()) {
             do {
@@ -274,6 +326,7 @@ public class WeatherTimeoutCache
                                 (expiredData.getColumnIndex
                                         (WeatherValuesEntry.COLUMN_LAKE_ID));
                 remove(deleteLocation);
+
             } while (expiredData.moveToNext());
         }
     }
