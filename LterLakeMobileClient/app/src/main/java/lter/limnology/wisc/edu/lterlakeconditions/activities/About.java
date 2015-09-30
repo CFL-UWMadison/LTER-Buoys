@@ -8,7 +8,7 @@ import android.widget.Button;
 import lter.limnology.wisc.edu.lterlakeconditions.R;
 
 /**
- * Created by Shweta Nagar on 9/12/15.
+ *
  */
 public class About extends Activity{
 
@@ -16,7 +16,7 @@ public class About extends Activity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.about);
+        setContentView(R.layout.disclaimer);
         mOk = (Button) findViewById(R.id.ok);
         mOk.setOnClickListener(new View.OnClickListener() {
             @Override

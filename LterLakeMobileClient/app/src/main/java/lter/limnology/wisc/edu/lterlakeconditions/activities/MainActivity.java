@@ -59,7 +59,7 @@ public class MainActivity extends GenericActivity<WeatherOps> {
     }
 
     public void getWeather(String lakeId) {
-        // Try to the current lake conditions from either the cache or the
+        //The current lake conditions from either the cache or the
         // LTER web service.
         // http://argyron.limnology.wisc.edu:8080/LakeConditionService/
         // http://thalassa.limnology.wisc.edu:8080/LakeConditionService/

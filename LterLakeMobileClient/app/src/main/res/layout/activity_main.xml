@@ -48,7 +48,7 @@
         android:background="@drawable/edit_text_border"
         android:ems="15"
         android:padding="10dp"
-        android:text="Mendota Lake"
+        android:text="Lake Mendota"
         android:id="@+id/ME"
         android:onClick="onClick"
         android:layout_below="@+id/SP"
