@@ -1,0 +1,584 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="tb_lakeanalyze" class="ptolemy.actor.TypedCompositeActor">
+    <property name="entityId" class="org.kepler.moml.NamedObjId" value="urn:lsid:kepler-project.org/ns/:49463:316:9">
+    </property>
+    <property name="class" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.actor.TypedCompositeActor">
+        <property name="id" class="ptolemy.kernel.util.StringAttribute" value="null">
+        </property>
+    </property>
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
+    </property>
+    <property name="derivedFrom" class="org.kepler.moml.NamedObjIdReferralList" value="urn:lsid:kepler-project.org/ns/:49463:288:416:urn:lsid:kepler-project.org/ns/:49463:311:34:urn:lsid:kepler-project.org/ns/:49463:313:16">
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="localClock" class="ptolemy.actor.LocalClock">
+            <property name="globalTimeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1.0E-10">
+            </property>
+            <property name="clockRate" class="ptolemy.data.expr.Parameter" value="1.0">
+            </property>
+        </property>
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="allowRateChanges" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="constrainBufferSizes" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="period" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+            <property name="constrainBufferSizes" class="ptolemy.data.expr.Parameter" value="constrainBufferSizes">
+            </property>
+        </property>
+<property name="KeplerDocumentation" class="ptolemy.vergil.basic.KeplerDocumentationAttribute">
+<property name="description" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>null</configure></property>
+<property name="author" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>Steve Neuendorffer</configure></property>
+<property name="version" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>null</configure></property>
+<property name="userLevelDocumentation" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>&#10;&lt;p&gt;The SDF Director is often used to oversee fairly simple, sequential workflows in which the director can determine the order of actor invocation from the workflow. Types of workflows that would run well under an SDF Director include processing and reformatting tabular data, converting one data type to another, and reading and plotting a series of data points. A workflow in which an image is read, processed (rotated, scaled, clipped, filtered, etc.), and then displayed, is also an example of a sequential workflow that requires a director simply to ensure that each actor fires in the proper order (i.e., that each actor executes only after it receives its required inputs).&lt;/p&gt;&#10;&#10;&lt;p&gt;The SDF Director is very efficient and will not tax system resources with overhead. However, this efficiency requires that certain conditions be met, namely that the data consumption and production rate of each actor in an SDF workflow be constant and declared. If an actor reads one piece of data and calculates and outputs a single result, it must always read and output a single token of data. This data rate cannot change during workflow execution and, in general, workflows that require dynamic scheduling and/or flow control cannot use this director. Additionally, the SDF Director has no understanding of passing time (at least by default), and actors that depend on a notion of time may not work as expected. For example, a TimedPlotter actor will plot all values at time zero when used in SDF. &lt;/p&gt;&#10;&#10;&lt;p&gt;By default, the SDF Director requires that all actors in its workflow be connected. Otherwise, the director cannot account for concurrency between disconnected workflow parts. Usually, a PN Director should be used for workflows that contain disconnected actors; however, the SDF Director's allowDisconnectedGraphs parameter may also be set to true. The SDF Director will then schedule each disconnected &quot;island&quot; independently. The director cannot infer the sequential relationship between disconnected actors (i.e., nothing forces the director to finish executing all actors on one island before firing actors on another). However, the order of execution within each island should be correct. Usually, disconnected graphs in an SDF model indicate an error.&lt;/p&gt;&#10; &#10;&lt;p&gt;Because SDF Directors schedule actors to fire only after they receive their inputs, workflows that require loops (feeding an actor's output back into its input port for further processing) can cause &quot;deadlock&quot; errors. The deadlock errors occur because the actor depends on its own output value as an initial input. To fix this problem, use a SampleDelay actor to generate and inject an initial input value into the workflow.&lt;/p&gt;&#10;&#10;&lt;p&gt;The SDF Director determines the order in which actors execute and how many times each actor needs to be fired to complete a single iteration of the workflow. This schedule is calculated BEFORE the director begins to iterate the workflow. Because the SDF Director calculates a schedule in advance, it is quite efficient. However, SDF workflows must be static. In other words, the same number of tokens must be consumed/produced at every iteration of the workflow. Workflows that require dynamic control structures, such as a BooleanSwitch actor that sends output on one of two ports depending on the value of a 'control', cannot be used with an SDF Director because the number of tokens on each output can change for each execution.&lt;/p&gt;&#10;&#10;&lt;p&gt;Unless otherwise specified, the SDF Director assumes that each actor consumes and produces exactly one token per channel on each firing. Actors that do not follow the one-token-per-channel firing convention (e.g., Repeat or Ramp) must declare the number of tokens they produce or consume via the appropriate parameters. &lt;/p&gt;&#10;&#10;&lt;p&gt;The number of times a workflow is iterated is controlled by the director's iterations parameter. Since Kepler 2.4, this parameter is set to &quot;AUTO&quot; by default. The director will run the workflow once when it is placed in the top level workflow. When it is placed in a composite actor, the director will keep running the sub-workflow inside of the composite actor until the top level director tells it to stop. In other words, &quot;AUTO&quot; means its value will be &quot;1&quot; when it is placed in the top level workflow, and will be &quot;UNBOUNDED&quot; when it is placed in a composite actor. This default value works for most cases. You can also select &quot;UNBOUNDED&quot; or specify &quot;0&quot; for this parameter, which means the workflow will iterate forever. Concrete numbers can be specified here too for the actual number of times the director should execute the workflow. &lt;/p&gt;&#10;&#10;&lt;p&gt;The amount of data processed by an SDF workflow is a function of both the number of times the workflow iterates and the value of the director's vectorizationFactor parameter. The vectorizationFactor is used to increase the efficiency of a workflow by increasing the number of times actors fire each time the workflow iterates. If the parameter is set to a positive integer (other than 1), the director will fire each actor the specified number of times more than normal. The default is 1, indicating that no vectorization should be performed. Keep in mind that changing the vectorizationFactor parameter changes the meaning of a nested SDF workflow and may cause deadlock in a workflow that uses it. &lt;/p&gt;&#10;&#10;&lt;p&gt;The SDF Director has several advanced parameters that are generally only relevant when an SDF workflow contains composite components. In most cases the period, timeResolution, synchronizeToRealTime, allowRateChanges, timeResolution, and constrainBufferSizes parameters can be left at their default values.&lt;/p&gt;&#10;&#10;&lt;p&gt;For more information about the SDF Director, see the Ptolemy documentation (http://ptolemy.eecs.berkeley.edu/papers/05/ptIIdesign3-domains/ptIIdesign3-domains.pdf).&lt;/p&gt;&#10;&#10;</configure></property>
+<property name="prop:allowDisconnectedGraphs" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>Specify whether to allow disconnected actors in the workflow (by default, all actors are required to be connected). If disconnected actors are permitted, the SDF Director will schedule each disconnected 'island' independently. Nothing &quot;forces&quot; the director to finish executing all actors on one island before firing actors on another. However, the order of execution within each island should be correct. Usually, disconnected graphs in an SDF workflow indicate an error.</configure></property>
+<property name="prop:allowRateChanges" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>Specify whether dynamic rate changes are permitted or not. By default, rate changes are not permitted, and the director will perform a check to disallow such workflows. If the parameter is selected, then workflows that require rate parameters to be modified during execution are valid, and the SDF Director will dynamically compute a new schedule at runtime. This is an advanced parameter that can usually be left at its default value.</configure></property>
+<property name="prop:timeResolution" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>The time precision used by this director. All time values are rounded to the nearest multiple of this number. The value is a double that defaults to &quot;1E-10&quot; (which is 10-10). This is an advanced parameter that can usually be left at its default value.</configure></property>
+<property name="prop:constrainBufferSizes" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>Specify whether buffer sizes are fixed. By default, buffers are fixed, and attempts to write to the buffer that cause the buffer to exceed its scheduled size result in an error. This is an advanced parameter that can usually be left at its default value.</configure></property>
+<property name="prop:iterations" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>Specify the number of times a workflow is iterated. Since Kepler 2.4, this parameter is set to &quot;AUTO&quot; by default. The director will run the workflow once when it is placed in the top level workflow. When it is placed in a composite actor, the director will keep running the sub-workflow inside of the composite actor until the top level director tells it to stop. In other words, &quot;AUTO&quot; means its value will be &quot;1&quot; when it is placed in the top level workflow, and will be &quot;UNBOUNDED&quot; when it is placed in a composite actor. This default value works for most cases. You can also select &quot;UNBOUNDED&quot; or specify &quot;0&quot; for this parameter, which means the workflow will iterate forever. Concrete numbers can be specified here too for the actual number of times the director should execute the workflow. </configure></property>
+<property name="prop:vectorizationFactor" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>The vectorizationFactor is used to increase the efficiency of a workflow by increasing the number of times actors fire each time the workflow iterates. If the parameter is set to a positive integer (other than 1), the director will fire each actor the specified number of times more than normal. The default is 1, indicating that no vectorization should be performed. Keep in mind that changing the vectorizationFactor parameter changes the meaning of a nested SDF workflow and may cause deadlock in a workflow that uses it. </configure></property>
+<property name="prop:synchronizeToRealTime" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>Specify whether the execution should synchronize to real time or not. By default, the director does not synchronize to real time. If synchronize is selected, the director will only process the workflow when elapsed real time matches the product of the period parameter and the iteration count. Note: if the period parameter has a value of 0.0 (the default), then selecting this parameter has no effect. This is an advanced parameter that can usually be left at its default value.</configure></property>
+<property name="prop:period" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>The time period of each iteration. The value is a double that defaults to 0.0, which means that the director does not increment workflow time. If the value greater than 0.0, the actor will increment workflow time each time it fires. This is an advanced parameter that can usually be left at its default value. </configure></property>
+</property>        <property name="entityId" class="org.kepler.moml.NamedObjId" value="urn:lsid:kepler-project.org/ns/:49463:290:3">
+        </property>
+        <property name="class" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.sdf.kernel.SDFDirector">
+            <property name="id" class="ptolemy.kernel.util.StringAttribute" value="urn:lsid:kepler-project.org:directorclass:1:2">
+            </property>
+        </property>
+        <property name="semanticType00" class="org.kepler.sms.SemanticType" value="urn:lsid:localhost:onto:1:1#Director">
+        </property>
+        <property name="semanticType11" class="org.kepler.sms.SemanticType" value="urn:lsid:localhost:onto:2:1#Director">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-115.0, -70.0]">
+        </property>
+        <property name="derivedFrom" class="org.kepler.moml.NamedObjIdReferralList" value="urn:lsid:kepler-project.org:director:1:2">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={124, 79, 1287, 942}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[966, 781]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.6400000000000001">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{642.9531250000001, 440.35937499999994}">
+    </property>
+    <entity name="DataTurbine" class="org.kepler.data.datasource.dataturbine.DataTurbine">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="NONE">
+        </property>
+        <property name="NONE" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="DataTurbine Address" class="ptolemy.actor.parameters.PortParameter" value="144.92.62.186:4444">
+        </property>
+        <property name="specificChannel Name" class="ptolemy.actor.parameters.PortParameter" value="">
+        </property>
+        <property name="Specific Source Name" class="ptolemy.actor.parameters.PortParameter" value="TroutBog">
+        </property>
+        <property name="Sink Mode" class="ptolemy.data.expr.Parameter" value="Request">
+        </property>
+        <property name="Start Time (for Request or Subscribe modes)" class="ptolemy.actor.parameters.PortParameter" value="&quot;2013-05-09 00:00:00&quot;">
+        </property>
+        <property name="Duration (for Request or Subscribe modes)" class="ptolemy.actor.parameters.PortParameter" value="172800">
+        </property>
+        <property name="Reference (for Request or Subscribe modes)" class="ptolemy.data.expr.Parameter" value="absolute">
+        </property>
+        <property name="Block Timeout (ms) (for Fetch)" class="ptolemy.data.expr.Parameter" value="15000">
+        </property>
+        <property name="Output Data Type" class="ptolemy.data.expr.Parameter" value="Record of 4 arrays">
+        </property>
+        <property name="Pad data gaps with nils" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+<property name="KeplerDocumentation" class="ptolemy.vergil.basic.KeplerDocumentationAttribute">
+<property name="description" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>null</configure></property>
+<property name="author" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>Derik Barseghian</configure></property>
+<property name="version" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>null</configure></property>
+<property name="userLevelDocumentation" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>&#10;The DataTurbine actor retrieves and outputs data from&#10;				an RBNB DataTurbine server. &#10; Sink mode Request has been tested&#10;				beneath SDF,&#10; modes Monitor and Subscribe briefly in PN.&#10;			</configure></property>
+<property name="prop:Start Time (for Request or Subscribe modes)" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>Start time for Request or Subscribe modes. seconds or Date: yyyy-MM-dd HH:mm:ss&#10;			</configure></property>
+<property name="prop:Pad data gaps with nils" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>Will attempt to identify and pad gappy data with pairs of&#10;				timestamps and nils Need at least 2 samples to be able to pad.&#10;			</configure></property>
+<property name="prop:Reference (for Request or Subscribe modes)" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>For&#10;				Subscribe mode: Any of &quot;newest&quot;, &quot;oldest&quot;,&#10;				&quot;absolute&quot;, &quot;next&quot;, or &quot;previous&quot;.&#10;				&lt;br&gt;&lt;/br&gt;&#10;				For Request mode:&#10;				&lt;ul&gt;&#10;					&lt;li&gt;&quot;absolute&quot; -- The start parameter is absolute time&#10;						from midnight, Jan 1st, 1970 UTC.&lt;/li&gt;&#10;					&lt;li&gt;&quot;newest&quot; -- The start parameter is measured from the&#10;						most recent data available in the server at the time this request&#10;						is received. Note that for this case, the start parameter actually&#10;						represents the end of the duration, and positive times proceed&#10;						toward oldest data.&lt;/li&gt;&#10;					&lt;li&gt;&quot;oldest&quot; -- As &quot;newest&quot;, but relative to&#10;						the oldest data.&lt;/li&gt;&#10;					&lt;li&gt;&quot;aligned&quot; -- As &quot;newest&quot;, but rather than&#10;						per channel, this is relative to the newest for all of the&#10;						channels.&lt;/li&gt;&#10;					&lt;li&gt;&quot;after&quot; -- A combination between &quot;absolute&quot;&#10;						and &quot;newest&quot;, this flag causes the server to return the&#10;						newest data available after the specified start time. Unlike&#10;						&quot;newest&quot;, you do not have to request the data to find&#10;						out that you already have it. Unlike &quot;absolute&quot;, a gap&#10;						may be inserted in the data to provide you with the freshest data.&#10;					&lt;/li&gt;&#10;					&lt;li&gt;&quot;modified&quot; -- Similar to &quot;after&quot;, but&#10;						attempts to return a duration's worth of data in a contiguous&#10;						block. If the data is not available after the start time, it will&#10;						be taken from before the start time.&lt;/li&gt;&#10;					&lt;li&gt;&quot;next&quot; - gets the data that immediately follows the&#10;						time range specified. This will skip over gaps.&lt;/li&gt;&#10;					&lt;li&gt;&quot;previous&quot; - get the data that immediately preceeds&#10;						the time range specified. This will skip over gaps.&lt;/li&gt;&#10;				&lt;/ul&gt;&#10;			</configure></property>
+<property name="prop:Duration (s) (for Request or Subscribe modes)" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>The duration of the request. Unit is seconds.</configure></property>
+<property name="prop:Output Data Type" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>Format of output datapoint and timestamp pairs: Record of&#10;				2 Arrays, or an Array of X Records.</configure></property>
+<property name="prop:Sink Mode" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>&#10;				Sink mode.&#10;				&lt;br&gt;&lt;/br&gt;&#10;				&lt;ul&gt;&#10;					&lt;li&gt;&quot;Request&quot;: Initiates a request for a specific time slice of&#10;						data.&lt;/li&gt;&#10;					&lt;li&gt;&quot;Subscribe&quot;: Starts a continuous feed of data on the specified&#10;						channels to this sink, for retrieval. Each block retrieved will be&#10;						duration time units in length.&lt;/li&gt;&#10;					&lt;li&gt;&quot;Monitor&quot;: Similar to Subscribe, but allows for continuous&#10;						frames of data without gaps.&lt;/li&gt;&#10;				&lt;/ul&gt;&#10;			</configure></property>
+<property name="prop:DataTurbine Address" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>The URL to the DataTurbine Server</configure></property>
+<property name="prop:specificChannel Name" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>The name of the channel to output through the&#10;				specifiedChannel output port</configure></property>
+<property name="prop:Block Timeout (ms) (for Fetch)" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>The amount of time (ms) to wait for data to become&#10;				available. Use 0 for no delay or any negative number for an infinite&#10;				delay.</configure></property>
+</property>        <property name="entityId" class="org.kepler.moml.NamedObjId" value="urn:lsid:kepler-project.org/ns/:49463:289:34">
+        </property>
+        <property name="class" class="ptolemy.kernel.util.StringAttribute" value="org.kepler.data.datasource.dataturbine.DataTurbine">
+            <property name="id" class="ptolemy.kernel.util.StringAttribute" value="urn:lsid:kepler-project.org:class:550:10">
+            </property>
+        </property>
+        <property name="semanticType00" class="org.kepler.sms.SemanticType" value="urn:lsid:localhost:onto:2:1#RemoteInputActor">
+        </property>
+        <property name="semanticType11" class="org.kepler.sms.SemanticType" value="urn:lsid:localhost:onto:2:1#RemoteInput">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 240.0]">
+        </property>
+        <property name="derivedFrom" class="org.kepler.moml.NamedObjIdReferralList" value="urn:lsid:kepler-project.org:actor:550:10">
+        </property>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="TroutBog/RDOProDO" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="TroutBog/RDOProDO_6m" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="TroutBog/RDOProPP" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="TroutBog/RDOProPP_6m" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="TroutBog/RDOProSat" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="TroutBog/RDOProSat_6m" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="TroutBog/RDOProTemp" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="TroutBog/RDOProTemp_6m" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="TroutBog/RECORD" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="TroutBog/TpLn00" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="TroutBog/TpLn05" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="TroutBog/TpLn10" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="TroutBog/TpLn15" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="TroutBog/TpLn20" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="TroutBog/TpLn25" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="TroutBog/TpLn30" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="TroutBog/TpLn40" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="TroutBog/TpLn50" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="TroutBog/TpLn70" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="TroutBog/airTemp" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="TroutBog/dOptoPPM" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="TroutBog/dOptoSat" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="TroutBog/dOptoTemp" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="TroutBog/dataloggerBat" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="TroutBog/radioBat" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="TroutBog/relHum" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="TroutBog/windDir" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="TroutBog/windSpeed" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="Iterate Over Array" class="ptolemy.actor.lib.hoc.IterateOverArray">
+        <property name="entityId" class="org.kepler.moml.NamedObjId" value="urn:lsid:kepler-project.org/ns/:49463:294:134">
+        </property>
+        <property name="class" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.actor.lib.hoc.IterateOverArray">
+            <property name="id" class="ptolemy.kernel.util.StringAttribute" value="urn:lsid:kepler-project.org:class:539:1">
+            </property>
+        </property>
+        <property name="semanticType00" class="org.kepler.sms.SemanticType" value="urn:lsid:localhost:onto:2:1#DataArrayOperation">
+        </property>
+        <property name="semanticType11" class="org.kepler.sms.SemanticType" value="urn:lsid:localhost:onto:2:1#WorkflowControl">
+        </property>
+<property name="KeplerDocumentation" class="ptolemy.vergil.basic.KeplerDocumentationAttribute">
+<property name="description" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>null</configure></property>
+<property name="author" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>Edward A. Lee, Steve Neuendorffer</configure></property>
+<property name="version" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>null</configure></property>
+<property name="userLevelDocumentation" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>&#10;This actor iterates the contained actor or model over input arrays.&#10; To use it, either drop an actor on it and provide arrays to the inputs,&#10; or use a default configuration where the actor is effectively a&#10; composite actor. In the latter case,&#10; you can simply look inside and&#10; populate that actor with a submodel that will be applied to the&#10; array elements.  The submodel is required to have a director.&#10; An SDF director will&#10; often be sufficient for operations taken on array elements,&#10; but other directors can be used as well.&#10; Note that this inside director should not impose a limit&#10; on the number of iterations of the inside model. If it does,&#10; then that limit will be respected, which may result in a failure&#10; to iterate over all the input data.&#10; &lt;p&gt;&#10; Each input port expects an array. When this actor fires,&#10; an array is read on each input port that has one, and its&#10; contents are provided sequentially to the contained actor or model.&#10; This actor then iterates the contained actor or model until either&#10; there are no more input data for the actor or the prefire()&#10; method of the actor or model&#10; returns false. If postfire() of the actor returns false,&#10; then postfire() of this actor will return false, requesting&#10; a halt to execution of the model.  The outputs from the&#10; contained actor are collected into arrays that are&#10; produced on the outputs of this actor.&#10; &lt;p&gt;&#10; A special variable named &quot;iterationCount&quot; can be used in&#10; any expression setting the value of a parameter of this actor&#10; or its contents. This variable has an integer value that&#10; starts at 1 during the first iteration of the contained&#10; actor(s) and is incremented by 1 on each firing. If the&#10; inside actors consume one token on each firing, then&#10; its final value will be the size of the input array(s).&#10; &lt;p&gt;&#10; This actor is properly viewed as a &quot;higher-order component&quot; in&#10; that its contained actor is a parameter that specifies how to&#10; operate on input arrays.  It is inspired by the higher-order&#10; functions of functional languages, but unlike those, the&#10; contained actor need not be functional. That is, it can have&#10; state.&#10; &lt;p&gt;&#10; Note that you cannot place class definitions inside this&#10; actor. There should be no need to because class instances&#10; inside it can be instances of classes defined outside of it.&#10; &lt;p&gt;&#10; This actor (and many of the other higher-order components)&#10; has its intellectual roots in the higher-order functions&#10; of functional languages, which have been in use since&#10; the 1970s. Similar actors were implemented in Ptolemy&#10; Classic, and are described in Lee &amp; Parks, &quot;Dataflow&#10; Process Networks,&quot; &lt;i&gt;Proceedings of the IEEE&lt;/i&gt;, 1995.&#10; Those were inspired by [2].&#10; Alternative approaches are found dataflow visual programming&#10; since the beginning (Sutherland in the 1960s, Prograph and&#10; Labview in the 1980s), and in time-based visual languages&#10; (Simulink in the 1990s).&#10; &lt;p&gt;&#10; There are a number of known bugs or limitations in this&#10; implementation:&#10; &lt;ul&gt;&#10; &lt;li&gt;&#10; FIXME: When you drop in an actor, and then another actor,&#10; and then select &quot;undo,&quot; the second actor is deleted without&#10; the first one being re-created. Thus, undo is only a partial&#10; undo.  The fix to this is extremely complicated. Probably the&#10; only viable mechanism is to use UndoStackAttribute.getUndoInfo()&#10; to get the undo stack and then to manipulate the contents&#10; of that stack directly.&#10; &lt;li&gt;&#10; FIXME: There should be an option to reset between&#10; firings of the inside actor.&#10; &lt;li&gt; FIXME: If you drop a new actor onto an&#10; IterateOverArray in a subclass, it will replace the&#10; version inherited from the prototype. This is not right,&#10; since it violates the derivation invariant. Any attempt&#10; to modify the contained object in the prototype will trigger&#10; an exception.  There are two possible fixes. One is to&#10; relax the derivation invariant and allow derived objects&#10; to not perfectly mirror the hierarchy of the prototype.&#10; Another is for this class to somehow refuse to accept&#10; the new object in a subclass. But it is not obvious how&#10; to do this.&#10; &lt;li&gt;&#10; FIXME: If an instance of IterateOverArray in a derived class has&#10; overridden values of parameters, those are lost if contained&#10; entity of the instance in the base class is replaced and&#10; then an undo is requested.&#10; &lt;/ul&gt;&#10; &lt;p&gt;&lt;b&gt;References&lt;/b&gt;&#10; &lt;p&gt;&lt;ol&gt;&#10; &lt;li&gt; E. A. Lee and T. M. Parks, &quot;Dataflow Process Networks,&quot;&#10; Proceedings of the IEEE, 83(5): 773-801, May, 1995.&#10; &lt;li&gt; H. J. Reekie,&#10;&lt;a href=&quot;http://ptolemy.eecs.berkeley.edu/~johnr/papers/thesis.html#in_browser&quot;&gt;Realtime Signal Processing: Dataflow, Visual,&#10; and Functional Programming&lt;/a&gt;,&quot; Ph.D. Thesis,&#10; University of Technology, Sydney, Sydney, Australia, 1995.&#10; &lt;/ol&gt;</configure></property>
+</property>        <property name="_location" class="ptolemy.kernel.util.Location" value="{1105.0, 75.0}">
+        </property>
+        <property name="derivedFrom" class="org.kepler.moml.NamedObjIdReferralList" value="urn:lsid:kepler-project.org:actor:539:1">
+        </property>
+        <port name="output" class="ptolemy.actor.lib.hoc.IterateOverArray$IteratePort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
+            </property>
+        </port>
+        <port name="input" class="ptolemy.actor.lib.hoc.IterateOverArray$IteratePort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
+            </property>
+        </port>
+        <entity name="CompositeActor" class="ptolemy.actor.TypedCompositeActor">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{274.0, 229.265625}">
+            </property>
+            <property name="derivedFrom" class="org.kepler.moml.NamedObjIdReferralList">
+            </property>
+            <property name="entityId" class="org.kepler.moml.NamedObjId" value="urn:lsid:kepler-project.org/ns/:49463:293:74">
+            </property>
+            <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+                <property name="localClock" class="ptolemy.actor.LocalClock">
+                    <property name="globalTimeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1.0E-10">
+                    </property>
+                    <property name="clockRate" class="ptolemy.data.expr.Parameter" value="1.0">
+                    </property>
+                </property>
+                <property name="iterations" class="ptolemy.data.expr.Parameter" value="AUTO">
+                </property>
+                <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+                <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="allowRateChanges" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="constrainBufferSizes" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="period" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+                    <property name="constrainBufferSizes" class="ptolemy.data.expr.Parameter" value="constrainBufferSizes">
+                    </property>
+                </property>
+<property name="KeplerDocumentation" class="ptolemy.vergil.basic.KeplerDocumentationAttribute">
+<property name="description" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>null</configure></property>
+<property name="author" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>Steve Neuendorffer</configure></property>
+<property name="version" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>null</configure></property>
+<property name="userLevelDocumentation" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>&#10;&lt;p&gt;The SDF Director is often used to oversee fairly simple, sequential workflows in which the director can determine the order of actor invocation from the workflow. Types of workflows that would run well under an SDF Director include processing and reformatting tabular data, converting one data type to another, and reading and plotting a series of data points. A workflow in which an image is read, processed (rotated, scaled, clipped, filtered, etc.), and then displayed, is also an example of a sequential workflow that requires a director simply to ensure that each actor fires in the proper order (i.e., that each actor executes only after it receives its required inputs).&lt;/p&gt;&#10;&#10;&lt;p&gt;The SDF Director is very efficient and will not tax system resources with overhead. However, this efficiency requires that certain conditions be met, namely that the data consumption and production rate of each actor in an SDF workflow be constant and declared. If an actor reads one piece of data and calculates and outputs a single result, it must always read and output a single token of data. This data rate cannot change during workflow execution and, in general, workflows that require dynamic scheduling and/or flow control cannot use this director. Additionally, the SDF Director has no understanding of passing time (at least by default), and actors that depend on a notion of time may not work as expected. For example, a TimedPlotter actor will plot all values at time zero when used in SDF. &lt;/p&gt;&#10;&#10;&lt;p&gt;By default, the SDF Director requires that all actors in its workflow be connected. Otherwise, the director cannot account for concurrency between disconnected workflow parts. Usually, a PN Director should be used for workflows that contain disconnected actors; however, the SDF Director's allowDisconnectedGraphs parameter may also be set to true. The SDF Director will then schedule each disconnected &quot;island&quot; independently. The director cannot infer the sequential relationship between disconnected actors (i.e., nothing forces the director to finish executing all actors on one island before firing actors on another). However, the order of execution within each island should be correct. Usually, disconnected graphs in an SDF model indicate an error.&lt;/p&gt;&#10; &#10;&lt;p&gt;Because SDF Directors schedule actors to fire only after they receive their inputs, workflows that require loops (feeding an actor's output back into its input port for further processing) can cause &quot;deadlock&quot; errors. The deadlock errors occur because the actor depends on its own output value as an initial input. To fix this problem, use a SampleDelay actor to generate and inject an initial input value into the workflow.&lt;/p&gt;&#10;&#10;&lt;p&gt;The SDF Director determines the order in which actors execute and how many times each actor needs to be fired to complete a single iteration of the workflow. This schedule is calculated BEFORE the director begins to iterate the workflow. Because the SDF Director calculates a schedule in advance, it is quite efficient. However, SDF workflows must be static. In other words, the same number of tokens must be consumed/produced at every iteration of the workflow. Workflows that require dynamic control structures, such as a BooleanSwitch actor that sends output on one of two ports depending on the value of a 'control', cannot be used with an SDF Director because the number of tokens on each output can change for each execution.&lt;/p&gt;&#10;&#10;&lt;p&gt;Unless otherwise specified, the SDF Director assumes that each actor consumes and produces exactly one token per channel on each firing. Actors that do not follow the one-token-per-channel firing convention (e.g., Repeat or Ramp) must declare the number of tokens they produce or consume via the appropriate parameters. &lt;/p&gt;&#10;&#10;&lt;p&gt;The number of times a workflow is iterated is controlled by the director's iterations parameter. Since Kepler 2.4, this parameter is set to &quot;AUTO&quot; by default. The director will run the workflow once when it is placed in the top level workflow. When it is placed in a composite actor, the director will keep running the sub-workflow inside of the composite actor until the top level director tells it to stop. In other words, &quot;AUTO&quot; means its value will be &quot;1&quot; when it is placed in the top level workflow, and will be &quot;UNBOUNDED&quot; when it is placed in a composite actor. This default value works for most cases. You can also select &quot;UNBOUNDED&quot; or specify &quot;0&quot; for this parameter, which means the workflow will iterate forever. Concrete numbers can be specified here too for the actual number of times the director should execute the workflow. &lt;/p&gt;&#10;&#10;&lt;p&gt;The amount of data processed by an SDF workflow is a function of both the number of times the workflow iterates and the value of the director's vectorizationFactor parameter. The vectorizationFactor is used to increase the efficiency of a workflow by increasing the number of times actors fire each time the workflow iterates. If the parameter is set to a positive integer (other than 1), the director will fire each actor the specified number of times more than normal. The default is 1, indicating that no vectorization should be performed. Keep in mind that changing the vectorizationFactor parameter changes the meaning of a nested SDF workflow and may cause deadlock in a workflow that uses it. &lt;/p&gt;&#10;&#10;&lt;p&gt;The SDF Director has several advanced parameters that are generally only relevant when an SDF workflow contains composite components. In most cases the period, timeResolution, synchronizeToRealTime, allowRateChanges, timeResolution, and constrainBufferSizes parameters can be left at their default values.&lt;/p&gt;&#10;&#10;&lt;p&gt;For more information about the SDF Director, see the Ptolemy documentation (http://ptolemy.eecs.berkeley.edu/papers/05/ptIIdesign3-domains/ptIIdesign3-domains.pdf).&lt;/p&gt;&#10;&#10;</configure></property>
+<property name="prop:allowDisconnectedGraphs" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>Specify whether to allow disconnected actors in the workflow (by default, all actors are required to be connected). If disconnected actors are permitted, the SDF Director will schedule each disconnected 'island' independently. Nothing &quot;forces&quot; the director to finish executing all actors on one island before firing actors on another. However, the order of execution within each island should be correct. Usually, disconnected graphs in an SDF workflow indicate an error.</configure></property>
+<property name="prop:allowRateChanges" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>Specify whether dynamic rate changes are permitted or not. By default, rate changes are not permitted, and the director will perform a check to disallow such workflows. If the parameter is selected, then workflows that require rate parameters to be modified during execution are valid, and the SDF Director will dynamically compute a new schedule at runtime. This is an advanced parameter that can usually be left at its default value.</configure></property>
+<property name="prop:timeResolution" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>The time precision used by this director. All time values are rounded to the nearest multiple of this number. The value is a double that defaults to &quot;1E-10&quot; (which is 10-10). This is an advanced parameter that can usually be left at its default value.</configure></property>
+<property name="prop:constrainBufferSizes" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>Specify whether buffer sizes are fixed. By default, buffers are fixed, and attempts to write to the buffer that cause the buffer to exceed its scheduled size result in an error. This is an advanced parameter that can usually be left at its default value.</configure></property>
+<property name="prop:iterations" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>Specify the number of times a workflow is iterated. Since Kepler 2.4, this parameter is set to &quot;AUTO&quot; by default. The director will run the workflow once when it is placed in the top level workflow. When it is placed in a composite actor, the director will keep running the sub-workflow inside of the composite actor until the top level director tells it to stop. In other words, &quot;AUTO&quot; means its value will be &quot;1&quot; when it is placed in the top level workflow, and will be &quot;UNBOUNDED&quot; when it is placed in a composite actor. This default value works for most cases. You can also select &quot;UNBOUNDED&quot; or specify &quot;0&quot; for this parameter, which means the workflow will iterate forever. Concrete numbers can be specified here too for the actual number of times the director should execute the workflow. </configure></property>
+<property name="prop:vectorizationFactor" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>The vectorizationFactor is used to increase the efficiency of a workflow by increasing the number of times actors fire each time the workflow iterates. If the parameter is set to a positive integer (other than 1), the director will fire each actor the specified number of times more than normal. The default is 1, indicating that no vectorization should be performed. Keep in mind that changing the vectorizationFactor parameter changes the meaning of a nested SDF workflow and may cause deadlock in a workflow that uses it. </configure></property>
+<property name="prop:synchronizeToRealTime" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>Specify whether the execution should synchronize to real time or not. By default, the director does not synchronize to real time. If synchronize is selected, the director will only process the workflow when elapsed real time matches the product of the period parameter and the iteration count. Note: if the period parameter has a value of 0.0 (the default), then selecting this parameter has no effect. This is an advanced parameter that can usually be left at its default value.</configure></property>
+<property name="prop:period" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>The time period of each iteration. The value is a double that defaults to 0.0, which means that the director does not increment workflow time. If the value greater than 0.0, the actor will increment workflow time each time it fires. This is an advanced parameter that can usually be left at its default value. </configure></property>
+</property>                <property name="entityId" class="org.kepler.moml.NamedObjId" value="urn:lsid:kepler-project.org/ns/:49463:295:2">
+                </property>
+                <property name="class" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.sdf.kernel.SDFDirector">
+                    <property name="id" class="ptolemy.kernel.util.StringAttribute" value="urn:lsid:kepler-project.org:directorclass:1:2">
+                    </property>
+                </property>
+                <property name="semanticType00" class="org.kepler.sms.SemanticType" value="urn:lsid:localhost:onto:1:1#Director">
+                </property>
+                <property name="semanticType11" class="org.kepler.sms.SemanticType" value="urn:lsid:localhost:onto:2:1#Director">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{-330, 300}">
+                </property>
+                <property name="derivedFrom" class="org.kepler.moml.NamedObjIdReferralList" value="urn:lsid:kepler-project.org:director:1:2">
+                </property>
+            </property>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{580.0, 200.0}">
+                </property>
+            </port>
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 300.0]">
+                </property>
+            </port>
+            <entity name="RExpression" class="org.ecoinformatics.seek.R.RExpression">
+                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="install.packages(&quot;C:\\Users\\csebranek\\Desktop\\Kepler Project\\rLakeAnalyzer_1.3.zip&quot;,repos=NULL,type=&quot;source&quot;)&#10;&#10;library(rLakeAnalyzer)&#10;&#10;df &lt;- read.table(odm_mappings_in, sep=&quot;,&quot;, header=TRUE, row.names=1,nrows=-1, fill=TRUE)&#10;odm_mappings &lt;- df&#10;&#10;&#10;channel &lt;- input[[1]]&#10;dataValues &lt;- input[[2]]&#10;source &lt;- input[[3]]&#10;timestamps &lt;- input[[4]]&#10;&#10;odm_row_num = which(paste(source,channel,sep=&quot;&quot;)== row.names(odm_mappings))&#10;&#10;my.lt =as.POSIXct(as.POSIXlt(timestamps, origin=&quot;1970-01-01&quot;))&#10;date_local = substr(my.lt,1,20)&#10;&#10;cat(timestamps[1])&#10;cat(my.lt)&#10;cat(date_local)&#10;&#10;dates &lt;- data.frame(dateTime=date_local)&#10;&#10;offset_val = abs(odm_mappings[odm_row_num,4])&#10;&#10;first_read=0&#10;#if file does not exist, write dates.&#10;if (!file.exists('C:\\Users\\csebranek\\Desktop\\Kepler Project\\test.wtr')){&#10;write.table(dates, file='C:\\Users\\csebranek\\Desktop\\Kepler Project\\test.wtr', row.names=FALSE,quote=FALSE)&#10;first_read=1&#10;}&#10;&#10;zip &lt;- paste('wtr_',as.character(offset_val), sep ='')&#10;ll &lt;- sapply(zip, function(x)&#10;{&#10;  data.frame ()&#10;})&#10;runningWindow &lt;- rep(0,length(dataValues))&#10;for (i in 1:length(dataValues)){&#10;&#10;runningWindow[i] = (format((dataValues[i]), nsmall = 3))&#10;&#10;#dataValues[i] = sprintf(&quot;%05f&quot;,as.numeric(dataValues[i]))&#10;#cat(runningWindow[i])&#10;}&#10;&#10;&#10;&#10;ll[[paste('wtr_',as.character(offset_val),sep=&quot;&quot;)]]=(runningWindow)&#10;&#10;if (first_read==1){&#10;oldData &lt;- read.table('C:\\Users\\csebranek\\Desktop\\Kepler Project\\test.wtr',header=TRUE,sep=&quot;\t&quot;)&#10;}else{&#10;oldData &lt;- read.table('C:\\Users\\csebranek\\Desktop\\Kepler Project\\test.wtr',header=TRUE,sep=&quot;\t&quot;)&#10;#cat(length(oldData))&#10;#cat(oldData)&#10;&#10;if (length(oldData[1,]) &gt;= 2){&#10;for (i in 2:length(oldData)){&#10;&#10;    oldData[,i]=(format((oldData[,i]), nsmall = 3))&#10;&#10;}&#10;}&#10;}&#10;&#10;&#10;write.table(cbind(oldData,ll[1]), file='C:\\Users\\csebranek\\Desktop\\Kepler Project\\test.wtr',quote=FALSE,row.names=FALSE,sep=&quot;\t&quot;)&#10;&#10;">
+                    <display name="R function or script"/>
+                    <property name="R Expression" class="ptolemy.actor.gui.style.TextStyle">
+                        <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+                        </property>
+                        <property name="width" class="ptolemy.data.expr.Parameter" value="30">
+                        </property>
+                    </property>
+                </property>
+                <property name="_editorFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                    </property>
+                    <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="80">
+                    </property>
+                    <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
+                    </property>
+                </property>
+                <property name="Rcwd" class="ptolemy.data.expr.StringParameter" value="C:\Users\csebranek\Desktop\Kepler Project">
+                    <display name="R working directory"/>
+                </property>
+                <property name="save_nosave" class="ptolemy.data.expr.StringParameter" value="--no-save">
+                    <display name="Save or not"/>
+                </property>
+                <property name="graphicsFormat" class="ptolemy.data.expr.StringParameter" value="png">
+                    <display name="Graphics Format"/>
+                </property>
+                <property name="graphicsOutput" class="ptolemy.data.expr.Parameter" value="true">
+                    <display name="Graphics Output"/>
+                </property>
+                <property name="displayGraphicsOutput" class="ptolemy.data.expr.Parameter" value="false">
+                    <display name="Automatically display graphics"/>
+                </property>
+                <property name="numXPixels" class="ptolemy.data.expr.StringParameter" value="480">
+                    <display name="Number of X pixels in image"/>
+                </property>
+                <property name="numYPixels" class="ptolemy.data.expr.StringParameter" value="480">
+                    <display name="Number of Y pixels in image"/>
+                </property>
+<property name="KeplerDocumentation" class="ptolemy.vergil.basic.KeplerDocumentationAttribute">
+<property name="description" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>null</configure></property>
+<property name="author" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>Dan Higgins</configure></property>
+<property name="version" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>null</configure></property>
+<property name="userLevelDocumentation" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>&lt;p&gt;The RExpression actor runs an R script or function. Input and output port are created by the user and correspond to R variables used in the specified R script. The actor outputs the result of the evaluated script.&lt;/p&gt;&#10;&#10;&lt;p&gt;The R application must be installed on the local system to use this actor. R is a language and environment for statistical computing and graphics. For more information about R, see http://www.r-project.org/.&lt;/p&gt;&#10;&#10;&lt;p&gt;Kepler contains a number of preconfigured R-actors: Barplot, Boxplot, Scatterplot, Summary, RandomNormal, RandomUniform, Correlation, LinearModel, Regression, RMean, RMedian, RQuantile, and  SummaryStatistics.&lt;/p&gt;</configure></property>
+<property name="port:graphicsFileName" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>An output port that broadcasts the file name of the generated graph of the results.</configure></property>
+<property name="port:output" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>An output port that broadcasts a copy of the text output that R generates. As the actor communicates with R to run the R function or script, the output port sends back the response (i.e., the values and statistical outputs).</configure></property>
+<property name="prop:Rcwd" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>The 'R' working directory (the home directory by default). </configure></property>
+<property name="prop:displayGraphicsOutput" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>Select to display the plot once the actor has generated it.</configure></property>
+<property name="prop:graphicsFormat" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>The graphics output format. Certain formats may require libraries be installed on your system.</configure></property>
+<property name="prop:numXPixels" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>The width of the output graphic in pixels.</configure></property>
+<property name="prop:numYPixels" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>The height of the output graphic in pixels.</configure></property>
+<property name="prop:expression" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>The expression that is evaluated to produce the output.</configure></property>
+<property name="prop:graphicsOutput" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>Specify whether or not to create a graphics output port. By default, the actor will create a graphics output port.</configure></property>
+<property name="prop:save_nosave" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>Specify whether or not to save the R workspace when R is closed; set to '--save' to retrieve the workspace later in a workflow in another R-actor.</configure></property>
+</property>                <property name="entityId" class="org.kepler.moml.NamedObjId" value="urn:lsid:kepler-project.org/ns/:49463:291:94">
+                </property>
+                <property name="class" class="ptolemy.kernel.util.StringAttribute" value="org.ecoinformatics.seek.R.RExpression">
+                    <property name="id" class="ptolemy.kernel.util.StringAttribute" value="urn:lsid:kepler-project.org:class:1126:1">
+                    </property>
+                </property>
+                <property name="semanticType00" class="org.kepler.sms.SemanticType" value="urn:lsid:localhost:onto:1:1#MathOperationActor">
+                </property>
+                <property name="semanticType11" class="org.kepler.sms.SemanticType" value="urn:lsid:localhost:onto:2:1#GeneralPurpose">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{440.0, 315.0}">
+                </property>
+                <property name="derivedFrom" class="org.kepler.moml.NamedObjIdReferralList" value="urn:lsid:kepler-project.org:actor:360:2">
+                </property>
+                <port name="input" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="odm_mappings_in" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+            </entity>
+            <entity name="Expression" class="ptolemy.actor.lib.Expression">
+                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="&quot;C:\\Users\\csebranek\\Desktop\\Kepler Project\\odm_channel_mappings_for_R_wTemps_newMethodID_CLSonde_Sites.csv&quot;">
+                    <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                </property>
+<property name="KeplerDocumentation" class="ptolemy.vergil.basic.KeplerDocumentationAttribute">
+<property name="description" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>null</configure></property>
+<property name="author" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>Xiaojun Liu, Edward A. Lee, Steve Neuendorffer</configure></property>
+<property name="version" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>null</configure></property>
+<property name="userLevelDocumentation" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>&lt;p&gt;The Expression actor evaluates a specified expression (e.g., an addition or multiplication operation), which may reference the values of user-specified input ports, the current time, or the actor's iteration count. The actor outputs the value of the evaluated expression. &lt;/p&gt;&#10;&#10;&lt;p&gt;Expressions are specified in the Ptolemy expression language via the expression parameter. For more information about the expression language, see http://ptolemy.eecs.berkeley.edu/papers/05/ptIIdesign1-intro/ptIIdesign1-intro.pdf. &lt;/p&gt;&#10;&#10;&lt;p&gt;By default, the expression parameter is empty, and attempting to execute the actor without first specifying an expression generates an error. Expressions can refer to the values of inputs by the port name; to the current time by the identifier &quot;time&quot;; and to the current iteration count by the identifier &quot;iteration.&quot; &lt;/p&gt;&#10;&#10;&lt;p&gt;Input ports are created by the user and correspond to variables used in the specified expression. Currently, the Expression actor does not support input multiports. The actor requires all of its inputs to be present. If inputs are not all present, then the actor will generate an error. &lt;/p&gt;&#10;&#10;&lt;p&gt;Note: the Expression actor can be used instead of many of the arithmetic actors, such as AddSubtract, MultiplyDivide, and TrigFunction. However, those actors will be usually be more efficient, and sometimes more convenient to use.&lt;/p&gt;</configure></property>
+<property name="port:output" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>An output port that broadcasts the value of the evaluated expression. The actor automatically determines the type based on the type of the input.</configure></property>
+<property name="prop:expression" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>An expression to evaluate. Expressions are specified in the Ptolemy expression language. For more information about the expression language, see http://ptolemy.eecs.berkeley.edu/papers/05/ptIIdesign1-intro/ptIIdesign1-intro.pdf. By default, the parameter is empty, and attempting to execute the actor without first specifying an expression generates an error. Expressions can refer to the values of inputs by the port name; to the current time by the identifier &quot;time&quot;; and to the current iteration count by the identifier &quot;iteration.&quot;</configure></property>
+</property>                <property name="entityId" class="org.kepler.moml.NamedObjId" value="urn:lsid:kepler-project.org/ns/:49463:292:6">
+                </property>
+                <property name="class" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.actor.lib.Expression">
+                    <property name="id" class="ptolemy.kernel.util.StringAttribute" value="urn:lsid:kepler-project.org:class:950:1">
+                    </property>
+                </property>
+                <property name="semanticType00" class="org.kepler.sms.SemanticType" value="urn:lsid:localhost:onto:1:1#MathOperationActor">
+                </property>
+                <property name="semanticType11" class="org.kepler.sms.SemanticType" value="urn:lsid:localhost:onto:2:1#GeneralPurpose">
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                    </property>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-290.0, 495.0]">
+                </property>
+                <property name="derivedFrom" class="org.kepler.moml.NamedObjIdReferralList" value="urn:lsid:kepler-project.org:actor:75:1">
+                </property>
+            </entity>
+            <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <link port="output" relation="relation3"/>
+            <link port="input" relation="relation"/>
+            <link port="RExpression.output" relation="relation3"/>
+            <link port="RExpression.input" relation="relation"/>
+            <link port="RExpression.odm_mappings_in" relation="relation2"/>
+            <link port="Expression.output" relation="relation2"/>
+        </entity>
+    </entity>
+    <entity name="Concatenate Arrays" class="util.ConcatenateArrays">
+<property name="KeplerDocumentation" class="ptolemy.vergil.basic.KeplerDocumentationAttribute">
+<property name="description" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>null</configure></property>
+<property name="author" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>Dan Higgins</configure></property>
+<property name="version" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>1.0 Sept 21, 2007</configure></property>
+<property name="userLevelDocumentation" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>&#10;&lt;p&gt;The concatenateArrays actor reads individual arrays via its input port and outputs an array consisting of a concatenation of those arrays.&lt;/p&gt;&#10;&#10;&lt;p&gt;The actor accepts input elements of arrays of ints, doubles, strings, etc..  Each time the actor fires, it reads one token from each channel of the input port, concatenates the contents of these arrays, and outputs a resulting array.&lt;/p&gt;&#10;</configure></property>
+<property name="port:output" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>An output port that broadcasts a concatenation of the input arrays.</configure></property>
+<property name="port:input" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>A multiport that accepts arrays</configure></property>
+</property>        <property name="entityId" class="org.kepler.moml.NamedObjId" value="urn:lsid:kepler-project.org:actor:527:1">
+        </property>
+        <property name="class" class="ptolemy.kernel.util.StringAttribute" value="util.ConcatenateArrays">
+            <property name="id" class="ptolemy.kernel.util.StringAttribute" value="urn:lsid:kepler-project.org:class:527:1">
+            </property>
+        </property>
+        <property name="semanticType00" class="org.kepler.sms.SemanticType" value="urn:lsid:localhost:onto:1:1#ArrayActor">
+        </property>
+        <property name="semanticType11" class="org.kepler.sms.SemanticType" value="urn:lsid:localhost:onto:2:1#DataArrayOperation">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[690.0, 165.0]">
+        </property>
+    </entity>
+    <entity name="RExpression" class="org.ecoinformatics.seek.R.RExpression">
+        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="install.packages(&quot;C:\\Users\\csebranek\\Desktop\\Kepler Project\\rLakeAnalyzer_1.3.zip&quot;,repos=NULL,type=&quot;source&quot;)&#10;&#10;library(rLakeAnalyzer)&#10;&#10;setwd('C:\\Users\\csebranek\\Desktop\\Kepler Project\\')&#10;&#10;oldData&lt;-read.table('C:\\Users\\csebranek\\Desktop\\Kepler Project\\test.wtr',header=TRUE,sep=&quot;\t&quot;)&#10;&#10;tst = replace(oldData[,2:length(oldData)],oldData[,2:length(oldData)]==-99999,NaN)&#10;datetime=oldData[,1]&#10;tbl = cbind(datetime,tst)&#10;&#10;for (i in 2:length(tbl)){&#10;&#10;    tbl[,i]=(format((tbl[,i]), nsmall = 3))&#10;&#10;}&#10;&#10;write.table(tbl, file='C:\\Users\\csebranek\\Desktop\\Kepler Project\\test_out2.wtr',quote=FALSE,row.names=FALSE,sep=&quot;\t&quot;)&#10;&#10;wtr.path = ('C:\\Users\\csebranek\\Desktop\\Kepler Project\\test_out2.wtr')&#10;png(filename='myplot.png')&#10;tb.wtr = load.ts(wtr.path)&#10;wtr.heat.map(tb.wtr)&#10;dev.off()&#10;&#10;&#10;">
+            <display name="R function or script"/>
+            <property name="R Expression" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="30">
+                </property>
+            </property>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+            </property>
+            <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="80">
+            </property>
+            <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="Rcwd" class="ptolemy.data.expr.StringParameter" value="C:\Users\csebranek\.kepler\cache-2.4\modules\r">
+            <display name="R working directory"/>
+        </property>
+        <property name="save_nosave" class="ptolemy.data.expr.StringParameter" value="--no-save">
+            <display name="Save or not"/>
+        </property>
+        <property name="graphicsFormat" class="ptolemy.data.expr.StringParameter" value="png">
+            <display name="Graphics Format"/>
+        </property>
+        <property name="graphicsOutput" class="ptolemy.data.expr.Parameter" value="true">
+            <display name="Graphics Output"/>
+        </property>
+        <property name="displayGraphicsOutput" class="ptolemy.data.expr.Parameter" value="false">
+            <display name="Automatically display graphics"/>
+        </property>
+        <property name="numXPixels" class="ptolemy.data.expr.StringParameter" value="480">
+            <display name="Number of X pixels in image"/>
+        </property>
+        <property name="numYPixels" class="ptolemy.data.expr.StringParameter" value="480">
+            <display name="Number of Y pixels in image"/>
+        </property>
+<property name="KeplerDocumentation" class="ptolemy.vergil.basic.KeplerDocumentationAttribute">
+<property name="description" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>null</configure></property>
+<property name="author" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>Dan Higgins</configure></property>
+<property name="version" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>null</configure></property>
+<property name="userLevelDocumentation" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>&lt;p&gt;The RExpression actor runs an R script or function. Input and output port are created by the user and correspond to R variables used in the specified R script. The actor outputs the result of the evaluated script.&lt;/p&gt;&#10;&#10;&lt;p&gt;The R application must be installed on the local system to use this actor. R is a language and environment for statistical computing and graphics. For more information about R, see http://www.r-project.org/.&lt;/p&gt;&#10;&#10;&lt;p&gt;Kepler contains a number of preconfigured R-actors: Barplot, Boxplot, Scatterplot, Summary, RandomNormal, RandomUniform, Correlation, LinearModel, Regression, RMean, RMedian, RQuantile, and  SummaryStatistics.&lt;/p&gt;</configure></property>
+<property name="port:output" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>An output port that broadcasts a copy of the text output that R generates. As the actor communicates with R to run the R function or script, the output port sends back the response (i.e., the values and statistical outputs).</configure></property>
+<property name="port:graphicsFileName" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>An output port that broadcasts the file name of the generated graph of the results.</configure></property>
+<property name="prop:Rcwd" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>The 'R' working directory (the home directory by default). </configure></property>
+<property name="prop:displayGraphicsOutput" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>Select to display the plot once the actor has generated it.</configure></property>
+<property name="prop:graphicsFormat" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>The graphics output format. Certain formats may require libraries be installed on your system.</configure></property>
+<property name="prop:numXPixels" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>The width of the output graphic in pixels.</configure></property>
+<property name="prop:numYPixels" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>The height of the output graphic in pixels.</configure></property>
+<property name="prop:expression" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>The expression that is evaluated to produce the output.</configure></property>
+<property name="prop:save_nosave" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>Specify whether or not to save the R workspace when R is closed; set to '--save' to retrieve the workspace later in a workflow in another R-actor.</configure></property>
+<property name="prop:graphicsOutput" class="ptolemy.kernel.util.ConfigurableAttribute"><configure>Specify whether or not to create a graphics output port. By default, the actor will create a graphics output port.</configure></property>
+</property>        <property name="entityId" class="org.kepler.moml.NamedObjId" value="urn:lsid:kepler-project.org/ns/:49463:310:18">
+        </property>
+        <property name="class" class="ptolemy.kernel.util.StringAttribute" value="org.ecoinformatics.seek.R.RExpression">
+            <property name="id" class="ptolemy.kernel.util.StringAttribute" value="urn:lsid:kepler-project.org:class:1126:1">
+            </property>
+        </property>
+        <property name="semanticType00" class="org.kepler.sms.SemanticType" value="urn:lsid:localhost:onto:1:1#MathOperationActor">
+        </property>
+        <property name="semanticType11" class="org.kepler.sms.SemanticType" value="urn:lsid:localhost:onto:2:1#GeneralPurpose">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1065.0, 470.0]">
+        </property>
+        <property name="derivedFrom" class="org.kepler.moml.NamedObjIdReferralList" value="urn:lsid:kepler-project.org:actor:360:2">
+        </property>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="DataTurbine.TroutBog/TpLn00" relation="relation"/>
+    <link port="DataTurbine.TroutBog/TpLn05" relation="relation3"/>
+    <link port="DataTurbine.TroutBog/TpLn10" relation="relation4"/>
+    <link port="DataTurbine.TroutBog/TpLn15" relation="relation5"/>
+    <link port="DataTurbine.TroutBog/TpLn20" relation="relation6"/>
+    <link port="DataTurbine.TroutBog/TpLn25" relation="relation7"/>
+    <link port="DataTurbine.TroutBog/TpLn30" relation="relation8"/>
+    <link port="DataTurbine.TroutBog/TpLn40" relation="relation9"/>
+    <link port="DataTurbine.TroutBog/TpLn50" relation="relation10"/>
+    <link port="DataTurbine.TroutBog/TpLn70" relation="relation11"/>
+    <link port="Iterate Over Array.output" relation="relation12"/>
+    <link port="Iterate Over Array.input" relation="relation2"/>
+    <link port="Concatenate Arrays.input" relation="relation"/>
+    <link port="Concatenate Arrays.input" relation="relation3"/>
+    <link port="Concatenate Arrays.input" relation="relation4"/>
+    <link port="Concatenate Arrays.input" relation="relation5"/>
+    <link port="Concatenate Arrays.input" relation="relation6"/>
+    <link port="Concatenate Arrays.input" relation="relation7"/>
+    <link port="Concatenate Arrays.input" relation="relation8"/>
+    <link port="Concatenate Arrays.input" relation="relation9"/>
+    <link port="Concatenate Arrays.input" relation="relation10"/>
+    <link port="Concatenate Arrays.input" relation="relation11"/>
+    <link port="Concatenate Arrays.output" relation="relation2"/>
+    <link port="RExpression.trigger" relation="relation12"/>
+</entity>
