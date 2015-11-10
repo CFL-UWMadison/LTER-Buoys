@@ -1,0 +1,5 @@
+name = 2D Lake Temperature Plot
+description = Display of 2D Lake Temperatures
+core = 7.x
+package = NTL ModDev
+scripts[] = d3.js
