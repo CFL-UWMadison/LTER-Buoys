@@ -1,0 +1,620 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		95FED3051C485215008DE29D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 95FED3041C485215008DE29D /* main.m */; };
+		95FED3081C485215008DE29D /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 95FED3071C485215008DE29D /* AppDelegate.m */; };
+		95FED3161C485215008DE29D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 95FED3151C485215008DE29D /* Assets.xcassets */; };
+		95FED3191C485215008DE29D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 95FED3171C485215008DE29D /* LaunchScreen.storyboard */; };
+		95FED3241C485216008DE29D /* NTLRealTimeConditioniOSTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 95FED3231C485216008DE29D /* NTLRealTimeConditioniOSTests.m */; };
+		95FED32F1C485216008DE29D /* NTLRealTimeConditioniOSUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 95FED32E1C485216008DE29D /* NTLRealTimeConditioniOSUITests.m */; };
+		95FED3541C485429008DE29D /* DisclaimerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 95FED34B1C485429008DE29D /* DisclaimerViewController.m */; };
+		95FED3551C485429008DE29D /* DisclaimerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 95FED34C1C485429008DE29D /* DisclaimerViewController.xib */; };
+		95FED3561C485429008DE29D /* JJWeatherViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 95FED34E1C485429008DE29D /* JJWeatherViewController.m */; };
+		95FED3571C485429008DE29D /* JJWeatherViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 95FED34F1C485429008DE29D /* JJWeatherViewController.xib */; };
+		95FED3581C485429008DE29D /* ModelController.m in Sources */ = {isa = PBXBuildFile; fileRef = 95FED3511C485429008DE29D /* ModelController.m */; };
+		95FED3591C485429008DE29D /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 95FED3531C485429008DE29D /* RootViewController.m */; };
+		95FED3611C485435008DE29D /* AppfeatureImage.png in Resources */ = {isa = PBXBuildFile; fileRef = 95FED35A1C485435008DE29D /* AppfeatureImage.png */; };
+		95FED3621C485435008DE29D /* icon.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 95FED35B1C485435008DE29D /* icon.jpg */; };
+		95FED3631C485435008DE29D /* ntl.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 95FED35C1C485435008DE29D /* ntl.jpg */; };
+		95FED3641C485435008DE29D /* questionmMark.png in Resources */ = {isa = PBXBuildFile; fileRef = 95FED35D1C485435008DE29D /* questionmMark.png */; };
+		95FED3651C485435008DE29D /* refresh.png in Resources */ = {isa = PBXBuildFile; fileRef = 95FED35E1C485435008DE29D /* refresh.png */; };
+		95FED3661C485435008DE29D /* settingButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 95FED35F1C485435008DE29D /* settingButton.png */; };
+		95FED3671C485435008DE29D /* UW Madison.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 95FED3601C485435008DE29D /* UW Madison.jpg */; };
+		95FED36F1C485442008DE29D /* JJImageTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 95FED3681C485442008DE29D /* JJImageTransformer.m */; };
+		95FED3701C485442008DE29D /* Weather.m in Sources */ = {isa = PBXBuildFile; fileRef = 95FED36A1C485442008DE29D /* Weather.m */; };
+		95FED3711C485442008DE29D /* Weather+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 95FED36C1C485442008DE29D /* Weather+CoreDataProperties.m */; };
+		95FED3721C485442008DE29D /* WeatherInfoDB.m in Sources */ = {isa = PBXBuildFile; fileRef = 95FED36E1C485442008DE29D /* WeatherInfoDB.m */; };
+		95FED3751C485542008DE29D /* Weather.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 95FED3731C485542008DE29D /* Weather.xcdatamodeld */; };
+		95FED37E1C485743008DE29D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 95FED37C1C485743008DE29D /* Main.storyboard */; };
+		95FED3801C485855008DE29D /* LaunchScreenXib.xib in Resources */ = {isa = PBXBuildFile; fileRef = 95FED37F1C485855008DE29D /* LaunchScreenXib.xib */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		95FED3201C485216008DE29D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 95FED2F81C485215008DE29D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 95FED2FF1C485215008DE29D;
+			remoteInfo = NTLRealTimeConditioniOS;
+		};
+		95FED32B1C485216008DE29D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 95FED2F81C485215008DE29D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 95FED2FF1C485215008DE29D;
+			remoteInfo = NTLRealTimeConditioniOS;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		95FED3001C485215008DE29D /* NTLRealTimeConditioniOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NTLRealTimeConditioniOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		95FED3041C485215008DE29D /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		95FED3061C485215008DE29D /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		95FED3071C485215008DE29D /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		95FED3151C485215008DE29D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		95FED3181C485215008DE29D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		95FED31A1C485216008DE29D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		95FED31F1C485216008DE29D /* NTLRealTimeConditioniOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NTLRealTimeConditioniOSTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		95FED3231C485216008DE29D /* NTLRealTimeConditioniOSTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NTLRealTimeConditioniOSTests.m; sourceTree = "<group>"; };
+		95FED3251C485216008DE29D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		95FED32A1C485216008DE29D /* NTLRealTimeConditioniOSUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NTLRealTimeConditioniOSUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		95FED32E1C485216008DE29D /* NTLRealTimeConditioniOSUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NTLRealTimeConditioniOSUITests.m; sourceTree = "<group>"; };
+		95FED3301C485216008DE29D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		95FED34A1C485429008DE29D /* DisclaimerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DisclaimerViewController.h; path = NTLRealTimeConditioniOS/Controller/DisclaimerViewController.h; sourceTree = "<group>"; };
+		95FED34B1C485429008DE29D /* DisclaimerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DisclaimerViewController.m; path = NTLRealTimeConditioniOS/Controller/DisclaimerViewController.m; sourceTree = "<group>"; };
+		95FED34C1C485429008DE29D /* DisclaimerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = DisclaimerViewController.xib; path = NTLRealTimeConditioniOS/Controller/DisclaimerViewController.xib; sourceTree = "<group>"; };
+		95FED34D1C485429008DE29D /* JJWeatherViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JJWeatherViewController.h; path = NTLRealTimeConditioniOS/Controller/JJWeatherViewController.h; sourceTree = "<group>"; };
+		95FED34E1C485429008DE29D /* JJWeatherViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JJWeatherViewController.m; path = NTLRealTimeConditioniOS/Controller/JJWeatherViewController.m; sourceTree = "<group>"; };
+		95FED34F1C485429008DE29D /* JJWeatherViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = JJWeatherViewController.xib; path = NTLRealTimeConditioniOS/Controller/JJWeatherViewController.xib; sourceTree = "<group>"; };
+		95FED3501C485429008DE29D /* ModelController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ModelController.h; path = NTLRealTimeConditioniOS/Controller/ModelController.h; sourceTree = "<group>"; };
+		95FED3511C485429008DE29D /* ModelController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ModelController.m; path = NTLRealTimeConditioniOS/Controller/ModelController.m; sourceTree = "<group>"; };
+		95FED3521C485429008DE29D /* RootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RootViewController.h; path = NTLRealTimeConditioniOS/Controller/RootViewController.h; sourceTree = "<group>"; };
+		95FED3531C485429008DE29D /* RootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RootViewController.m; path = NTLRealTimeConditioniOS/Controller/RootViewController.m; sourceTree = "<group>"; };
+		95FED35A1C485435008DE29D /* AppfeatureImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = AppfeatureImage.png; path = "NTLRealTimeConditioniOS/Icon and Image/AppfeatureImage.png"; sourceTree = "<group>"; };
+		95FED35B1C485435008DE29D /* icon.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = icon.jpg; path = "NTLRealTimeConditioniOS/Icon and Image/icon.jpg"; sourceTree = "<group>"; };
+		95FED35C1C485435008DE29D /* ntl.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = ntl.jpg; path = "NTLRealTimeConditioniOS/Icon and Image/ntl.jpg"; sourceTree = "<group>"; };
+		95FED35D1C485435008DE29D /* questionmMark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = questionmMark.png; path = "NTLRealTimeConditioniOS/Icon and Image/questionmMark.png"; sourceTree = "<group>"; };
+		95FED35E1C485435008DE29D /* refresh.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = refresh.png; path = "NTLRealTimeConditioniOS/Icon and Image/refresh.png"; sourceTree = "<group>"; };
+		95FED35F1C485435008DE29D /* settingButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = settingButton.png; path = "NTLRealTimeConditioniOS/Icon and Image/settingButton.png"; sourceTree = "<group>"; };
+		95FED3601C485435008DE29D /* UW Madison.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "UW Madison.jpg"; path = "NTLRealTimeConditioniOS/Icon and Image/UW Madison.jpg"; sourceTree = "<group>"; };
+		95FED3681C485442008DE29D /* JJImageTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JJImageTransformer.m; path = "NTLRealTimeConditioniOS/Weather Modal/JJImageTransformer.m"; sourceTree = "<group>"; };
+		95FED3691C485442008DE29D /* Weather.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Weather.h; path = "NTLRealTimeConditioniOS/Weather Modal/Weather.h"; sourceTree = "<group>"; };
+		95FED36A1C485442008DE29D /* Weather.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Weather.m; path = "NTLRealTimeConditioniOS/Weather Modal/Weather.m"; sourceTree = "<group>"; };
+		95FED36B1C485442008DE29D /* Weather+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "Weather+CoreDataProperties.h"; path = "NTLRealTimeConditioniOS/Weather Modal/Weather+CoreDataProperties.h"; sourceTree = "<group>"; };
+		95FED36C1C485442008DE29D /* Weather+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "Weather+CoreDataProperties.m"; path = "NTLRealTimeConditioniOS/Weather Modal/Weather+CoreDataProperties.m"; sourceTree = "<group>"; };
+		95FED36D1C485442008DE29D /* WeatherInfoDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WeatherInfoDB.h; path = "NTLRealTimeConditioniOS/Weather Modal/WeatherInfoDB.h"; sourceTree = "<group>"; };
+		95FED36E1C485442008DE29D /* WeatherInfoDB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WeatherInfoDB.m; path = "NTLRealTimeConditioniOS/Weather Modal/WeatherInfoDB.m"; sourceTree = "<group>"; };
+		95FED3741C485542008DE29D /* Weather.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Weather.xcdatamodel; sourceTree = "<group>"; };
+		95FED37D1C485743008DE29D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = NTLRealTimeConditioniOS/Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		95FED37F1C485855008DE29D /* LaunchScreenXib.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = LaunchScreenXib.xib; path = NTLRealTimeConditioniOS/LaunchScreenXib.xib; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		95FED2FD1C485215008DE29D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		95FED31C1C485216008DE29D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		95FED3271C485216008DE29D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		95FED2F71C485215008DE29D = {
+			isa = PBXGroup;
+			children = (
+				95FED37F1C485855008DE29D /* LaunchScreenXib.xib */,
+				95FED37C1C485743008DE29D /* Main.storyboard */,
+				95FED3681C485442008DE29D /* JJImageTransformer.m */,
+				95FED3691C485442008DE29D /* Weather.h */,
+				95FED36A1C485442008DE29D /* Weather.m */,
+				95FED36B1C485442008DE29D /* Weather+CoreDataProperties.h */,
+				95FED36C1C485442008DE29D /* Weather+CoreDataProperties.m */,
+				95FED36D1C485442008DE29D /* WeatherInfoDB.h */,
+				95FED36E1C485442008DE29D /* WeatherInfoDB.m */,
+				95FED3731C485542008DE29D /* Weather.xcdatamodeld */,
+				95FED35A1C485435008DE29D /* AppfeatureImage.png */,
+				95FED35B1C485435008DE29D /* icon.jpg */,
+				95FED35C1C485435008DE29D /* ntl.jpg */,
+				95FED35D1C485435008DE29D /* questionmMark.png */,
+				95FED35E1C485435008DE29D /* refresh.png */,
+				95FED35F1C485435008DE29D /* settingButton.png */,
+				95FED3601C485435008DE29D /* UW Madison.jpg */,
+				95FED34A1C485429008DE29D /* DisclaimerViewController.h */,
+				95FED34B1C485429008DE29D /* DisclaimerViewController.m */,
+				95FED34C1C485429008DE29D /* DisclaimerViewController.xib */,
+				95FED34D1C485429008DE29D /* JJWeatherViewController.h */,
+				95FED34E1C485429008DE29D /* JJWeatherViewController.m */,
+				95FED34F1C485429008DE29D /* JJWeatherViewController.xib */,
+				95FED3501C485429008DE29D /* ModelController.h */,
+				95FED3511C485429008DE29D /* ModelController.m */,
+				95FED3521C485429008DE29D /* RootViewController.h */,
+				95FED3531C485429008DE29D /* RootViewController.m */,
+				95FED3021C485215008DE29D /* NTLRealTimeConditioniOS */,
+				95FED3221C485216008DE29D /* NTLRealTimeConditioniOSTests */,
+				95FED32D1C485216008DE29D /* NTLRealTimeConditioniOSUITests */,
+				95FED3011C485215008DE29D /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		95FED3011C485215008DE29D /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				95FED3001C485215008DE29D /* NTLRealTimeConditioniOS.app */,
+				95FED31F1C485216008DE29D /* NTLRealTimeConditioniOSTests.xctest */,
+				95FED32A1C485216008DE29D /* NTLRealTimeConditioniOSUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		95FED3021C485215008DE29D /* NTLRealTimeConditioniOS */ = {
+			isa = PBXGroup;
+			children = (
+				95FED3061C485215008DE29D /* AppDelegate.h */,
+				95FED3071C485215008DE29D /* AppDelegate.m */,
+				95FED3151C485215008DE29D /* Assets.xcassets */,
+				95FED3171C485215008DE29D /* LaunchScreen.storyboard */,
+				95FED31A1C485216008DE29D /* Info.plist */,
+				95FED3031C485215008DE29D /* Supporting Files */,
+			);
+			path = NTLRealTimeConditioniOS;
+			sourceTree = "<group>";
+		};
+		95FED3031C485215008DE29D /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				95FED3041C485215008DE29D /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		95FED3221C485216008DE29D /* NTLRealTimeConditioniOSTests */ = {
+			isa = PBXGroup;
+			children = (
+				95FED3231C485216008DE29D /* NTLRealTimeConditioniOSTests.m */,
+				95FED3251C485216008DE29D /* Info.plist */,
+			);
+			path = NTLRealTimeConditioniOSTests;
+			sourceTree = "<group>";
+		};
+		95FED32D1C485216008DE29D /* NTLRealTimeConditioniOSUITests */ = {
+			isa = PBXGroup;
+			children = (
+				95FED32E1C485216008DE29D /* NTLRealTimeConditioniOSUITests.m */,
+				95FED3301C485216008DE29D /* Info.plist */,
+			);
+			path = NTLRealTimeConditioniOSUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		95FED2FF1C485215008DE29D /* NTLRealTimeConditioniOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 95FED3331C485216008DE29D /* Build configuration list for PBXNativeTarget "NTLRealTimeConditioniOS" */;
+			buildPhases = (
+				95FED2FC1C485215008DE29D /* Sources */,
+				95FED2FD1C485215008DE29D /* Frameworks */,
+				95FED2FE1C485215008DE29D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = NTLRealTimeConditioniOS;
+			productName = NTLRealTimeConditioniOS;
+			productReference = 95FED3001C485215008DE29D /* NTLRealTimeConditioniOS.app */;
+			productType = "com.apple.product-type.application";
+		};
+		95FED31E1C485216008DE29D /* NTLRealTimeConditioniOSTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 95FED3361C485216008DE29D /* Build configuration list for PBXNativeTarget "NTLRealTimeConditioniOSTests" */;
+			buildPhases = (
+				95FED31B1C485216008DE29D /* Sources */,
+				95FED31C1C485216008DE29D /* Frameworks */,
+				95FED31D1C485216008DE29D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				95FED3211C485216008DE29D /* PBXTargetDependency */,
+			);
+			name = NTLRealTimeConditioniOSTests;
+			productName = NTLRealTimeConditioniOSTests;
+			productReference = 95FED31F1C485216008DE29D /* NTLRealTimeConditioniOSTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		95FED3291C485216008DE29D /* NTLRealTimeConditioniOSUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 95FED3391C485216008DE29D /* Build configuration list for PBXNativeTarget "NTLRealTimeConditioniOSUITests" */;
+			buildPhases = (
+				95FED3261C485216008DE29D /* Sources */,
+				95FED3271C485216008DE29D /* Frameworks */,
+				95FED3281C485216008DE29D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				95FED32C1C485216008DE29D /* PBXTargetDependency */,
+			);
+			name = NTLRealTimeConditioniOSUITests;
+			productName = NTLRealTimeConditioniOSUITests;
+			productReference = 95FED32A1C485216008DE29D /* NTLRealTimeConditioniOSUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		95FED2F81C485215008DE29D /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0710;
+				ORGANIZATIONNAME = Junjie;
+				TargetAttributes = {
+					95FED2FF1C485215008DE29D = {
+						CreatedOnToolsVersion = 7.1.1;
+					};
+					95FED31E1C485216008DE29D = {
+						CreatedOnToolsVersion = 7.1.1;
+						TestTargetID = 95FED2FF1C485215008DE29D;
+					};
+					95FED3291C485216008DE29D = {
+						CreatedOnToolsVersion = 7.1.1;
+						TestTargetID = 95FED2FF1C485215008DE29D;
+					};
+				};
+			};
+			buildConfigurationList = 95FED2FB1C485215008DE29D /* Build configuration list for PBXProject "NTLRealTimeConditioniOS" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 95FED2F71C485215008DE29D;
+			productRefGroup = 95FED3011C485215008DE29D /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				95FED2FF1C485215008DE29D /* NTLRealTimeConditioniOS */,
+				95FED31E1C485216008DE29D /* NTLRealTimeConditioniOSTests */,
+				95FED3291C485216008DE29D /* NTLRealTimeConditioniOSUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		95FED2FE1C485215008DE29D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				95FED3191C485215008DE29D /* LaunchScreen.storyboard in Resources */,
+				95FED3621C485435008DE29D /* icon.jpg in Resources */,
+				95FED3551C485429008DE29D /* DisclaimerViewController.xib in Resources */,
+				95FED37E1C485743008DE29D /* Main.storyboard in Resources */,
+				95FED3571C485429008DE29D /* JJWeatherViewController.xib in Resources */,
+				95FED3671C485435008DE29D /* UW Madison.jpg in Resources */,
+				95FED3631C485435008DE29D /* ntl.jpg in Resources */,
+				95FED3801C485855008DE29D /* LaunchScreenXib.xib in Resources */,
+				95FED3661C485435008DE29D /* settingButton.png in Resources */,
+				95FED3161C485215008DE29D /* Assets.xcassets in Resources */,
+				95FED3641C485435008DE29D /* questionmMark.png in Resources */,
+				95FED3611C485435008DE29D /* AppfeatureImage.png in Resources */,
+				95FED3651C485435008DE29D /* refresh.png in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		95FED31D1C485216008DE29D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		95FED3281C485216008DE29D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		95FED2FC1C485215008DE29D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				95FED3581C485429008DE29D /* ModelController.m in Sources */,
+				95FED3711C485442008DE29D /* Weather+CoreDataProperties.m in Sources */,
+				95FED3081C485215008DE29D /* AppDelegate.m in Sources */,
+				95FED3561C485429008DE29D /* JJWeatherViewController.m in Sources */,
+				95FED3701C485442008DE29D /* Weather.m in Sources */,
+				95FED3721C485442008DE29D /* WeatherInfoDB.m in Sources */,
+				95FED3591C485429008DE29D /* RootViewController.m in Sources */,
+				95FED3541C485429008DE29D /* DisclaimerViewController.m in Sources */,
+				95FED3751C485542008DE29D /* Weather.xcdatamodeld in Sources */,
+				95FED36F1C485442008DE29D /* JJImageTransformer.m in Sources */,
+				95FED3051C485215008DE29D /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		95FED31B1C485216008DE29D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				95FED3241C485216008DE29D /* NTLRealTimeConditioniOSTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		95FED3261C485216008DE29D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				95FED32F1C485216008DE29D /* NTLRealTimeConditioniOSUITests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		95FED3211C485216008DE29D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 95FED2FF1C485215008DE29D /* NTLRealTimeConditioniOS */;
+			targetProxy = 95FED3201C485216008DE29D /* PBXContainerItemProxy */;
+		};
+		95FED32C1C485216008DE29D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 95FED2FF1C485215008DE29D /* NTLRealTimeConditioniOS */;
+			targetProxy = 95FED32B1C485216008DE29D /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		95FED3171C485215008DE29D /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				95FED3181C485215008DE29D /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		95FED37C1C485743008DE29D /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				95FED37D1C485743008DE29D /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		95FED3311C485216008DE29D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		95FED3321C485216008DE29D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		95FED3341C485216008DE29D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = NTLRealTimeConditioniOS/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = LTER.NTLRealTimeConditioniOS;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		95FED3351C485216008DE29D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = NTLRealTimeConditioniOS/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = LTER.NTLRealTimeConditioniOS;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		95FED3371C485216008DE29D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = NTLRealTimeConditioniOSTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = LTER.NTLRealTimeConditioniOSTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/NTLRealTimeConditioniOS.app/NTLRealTimeConditioniOS";
+			};
+			name = Debug;
+		};
+		95FED3381C485216008DE29D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = NTLRealTimeConditioniOSTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = LTER.NTLRealTimeConditioniOSTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/NTLRealTimeConditioniOS.app/NTLRealTimeConditioniOS";
+			};
+			name = Release;
+		};
+		95FED33A1C485216008DE29D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = NTLRealTimeConditioniOSUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = LTER.NTLRealTimeConditioniOSUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = NTLRealTimeConditioniOS;
+				USES_XCTRUNNER = YES;
+			};
+			name = Debug;
+		};
+		95FED33B1C485216008DE29D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = NTLRealTimeConditioniOSUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = LTER.NTLRealTimeConditioniOSUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = NTLRealTimeConditioniOS;
+				USES_XCTRUNNER = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		95FED2FB1C485215008DE29D /* Build configuration list for PBXProject "NTLRealTimeConditioniOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				95FED3311C485216008DE29D /* Debug */,
+				95FED3321C485216008DE29D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		95FED3331C485216008DE29D /* Build configuration list for PBXNativeTarget "NTLRealTimeConditioniOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				95FED3341C485216008DE29D /* Debug */,
+				95FED3351C485216008DE29D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		95FED3361C485216008DE29D /* Build configuration list for PBXNativeTarget "NTLRealTimeConditioniOSTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				95FED3371C485216008DE29D /* Debug */,
+				95FED3381C485216008DE29D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		95FED3391C485216008DE29D /* Build configuration list for PBXNativeTarget "NTLRealTimeConditioniOSUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				95FED33A1C485216008DE29D /* Debug */,
+				95FED33B1C485216008DE29D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		95FED3731C485542008DE29D /* Weather.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				95FED3741C485542008DE29D /* Weather.xcdatamodel */,
+			);
+			currentVersion = 95FED3741C485542008DE29D /* Weather.xcdatamodel */;
+			name = Weather.xcdatamodeld;
+			path = NTLRealTimeConditioniOS/Weather.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
+	};
+	rootObject = 95FED2F81C485215008DE29D /* Project object */;
+}
