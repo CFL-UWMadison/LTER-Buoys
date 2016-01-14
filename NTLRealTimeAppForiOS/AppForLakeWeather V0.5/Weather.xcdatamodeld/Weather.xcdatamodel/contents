@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="9057" systemVersion="15B42" minimumToolsVersion="Xcode 7.0">
+    <entity name="Weather" representedClassName="Weather" syncable="YES">
+        <attribute name="airTempC" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="airTempF" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="favourite" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="iD" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="lakeName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="phychoMedian" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="sampleDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="secchiEst" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="sEDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="thermocline" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="waterTempC" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="waterTempF" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="windDir" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="windDirImage" optional="YES" attributeType="Transformable" valueTransformerName="JJImageTransformer" syncable="YES"/>
+        <attribute name="windSpeed" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="Weather" positionX="-63" positionY="-18" width="128" height="270"/>
+    </elements>
+</model>
