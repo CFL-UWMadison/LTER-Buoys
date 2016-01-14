@@ -32,6 +32,7 @@
 		95FED3721C485442008DE29D /* WeatherInfoDB.m in Sources */ = {isa = PBXBuildFile; fileRef = 95FED36E1C485442008DE29D /* WeatherInfoDB.m */; };
 		95FED3751C485542008DE29D /* Weather.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 95FED3731C485542008DE29D /* Weather.xcdatamodeld */; };
 		95FED37E1C485743008DE29D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 95FED37C1C485743008DE29D /* Main.storyboard */; };
+		95FED3801C485855008DE29D /* LaunchScreenXib.xib in Resources */ = {isa = PBXBuildFile; fileRef = 95FED37F1C485855008DE29D /* LaunchScreenXib.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -91,6 +92,7 @@
 		95FED36E1C485442008DE29D /* WeatherInfoDB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WeatherInfoDB.m; path = "NTLRealTimeConditioniOS/Weather Modal/WeatherInfoDB.m"; sourceTree = "<group>"; };
 		95FED3741C485542008DE29D /* Weather.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Weather.xcdatamodel; sourceTree = "<group>"; };
 		95FED37D1C485743008DE29D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = NTLRealTimeConditioniOS/Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		95FED37F1C485855008DE29D /* LaunchScreenXib.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = LaunchScreenXib.xib; path = NTLRealTimeConditioniOS/LaunchScreenXib.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -121,6 +123,7 @@
 		95FED2F71C485215008DE29D = {
 			isa = PBXGroup;
 			children = (
+				95FED37F1C485855008DE29D /* LaunchScreenXib.xib */,
 				95FED37C1C485743008DE29D /* Main.storyboard */,
 				95FED3681C485442008DE29D /* JJImageTransformer.m */,
 				95FED3691C485442008DE29D /* Weather.h */,
@@ -313,6 +316,7 @@
 				95FED3571C485429008DE29D /* JJWeatherViewController.xib in Resources */,
 				95FED3671C485435008DE29D /* UW Madison.jpg in Resources */,
 				95FED3631C485435008DE29D /* ntl.jpg in Resources */,
+				95FED3801C485855008DE29D /* LaunchScreenXib.xib in Resources */,
 				95FED3661C485435008DE29D /* settingButton.png in Resources */,
 				95FED3161C485215008DE29D /* Assets.xcassets in Resources */,
 				95FED3641C485435008DE29D /* questionmMark.png in Resources */,
