@@ -1,37 +1,46 @@
 //
 //  RootViewController.m
-//  NTLRealTimeConditioniOS
+//  app for limnology Version 0
 //
-//  Created by Junjie on 16/1/14.
-//  Copyright © 2016年 Junjie. All rights reserved.
+//  Created by Junjie on 15/12/8.
+//  Copyright © 2015年 Junjie. All rights reserved.
 //
 
 #import "RootViewController.h"
 #import "ModelController.h"
-#import "DataViewController.h"
+#import "JJWeatherViewController.h"
+#import "Weather.h"
+#import "WeatherInfoDB.h"
 
 @interface RootViewController ()
 
 @property (readonly, strong, nonatomic) ModelController *modelController;
+@property (nonatomic) UIAlertController* ac;
+
 @end
 
 @implementation RootViewController
 
 @synthesize modelController = _modelController;
 
+
 - (void)viewDidLoad {
     [super viewDidLoad];
+    NSLog(@"Root View has been loaded");
     // Do any additional setup after loading the view, typically from a nib.
     // Configure the page view controller and add it as a child view controller.
-    self.pageViewController = [[UIPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStylePageCurl navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:nil];
+    self.pageViewController = [[UIPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:nil];
     self.pageViewController.delegate = self;
-
-    DataViewController *startingViewController = [self.modelController viewControllerAtIndex:0 storyboard:self.storyboard];
+    
+    [[WeatherInfoDB sharedDB] loadWeathers];
+    [[WeatherInfoDB sharedDB] favouriteToTheFirst];
+    JJWeatherViewController *startingViewController = [self.modelController viewControllerAtIndex:0 storyboard:self.storyboard];
     NSArray *viewControllers = @[startingViewController];
     [self.pageViewController setViewControllers:viewControllers direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
 
     self.pageViewController.dataSource = self.modelController;
-
+    
+    //[startingViewController checkOutdatedData:startingViewController.lake.sampleDate];
     [self addChildViewController:self.pageViewController];
     [self.view addSubview:self.pageViewController.view];
 
@@ -43,7 +52,7 @@
     self.pageViewController.view.frame = pageViewRect;
 
     [self.pageViewController didMoveToParentViewController:self];
-
+    
     // Add the page view controller's gesture recognizers to the book view controller's view so that the gestures are started more easily.
     self.view.gestureRecognizers = self.pageViewController.gestureRecognizers;
 }
@@ -62,6 +71,24 @@
     return _modelController;
 }
 
+-(void)displayFavouriteAsFirstPage{
+    if([[WeatherInfoDB sharedDB] noFavourite]){
+        return;
+    } else{
+        [[WeatherInfoDB sharedDB] favouriteToTheFirst];
+        NSArray* array = [[ WeatherInfoDB sharedDB] allLakes];
+        for (int i =0; i<array.count; i++) {
+            Weather* weather = [array objectAtIndex:i];
+            NSLog(@"%d, %@",i,weather.lakeName);
+        }
+    
+        JJWeatherViewController *favouriteVC = [self.modelController viewControllerAtIndex:0
+                                                                            storyboard:self.storyboard];
+        NSArray* vControllers = @[favouriteVC];
+        [self.pageViewController setViewControllers:vControllers direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
+    }
+}
+
 #pragma mark - UIPageViewController delegate methods
 
 - (UIPageViewControllerSpineLocation)pageViewController:(UIPageViewController *)pageViewController spineLocationForInterfaceOrientation:(UIInterfaceOrientation)orientation {
@@ -77,7 +104,7 @@
     }
 
     // In landscape orientation: Set set the spine location to "mid" and the page view controller's view controllers array to contain two view controllers. If the current page is even, set it to contain the current and next view controllers; if it is odd, set the array to contain the previous and current view controllers.
-    DataViewController *currentViewController = self.pageViewController.viewControllers[0];
+    JJWeatherViewController *currentViewController = self.pageViewController.viewControllers[0];
     NSArray *viewControllers = nil;
 
     NSUInteger indexOfCurrentViewController = [self.modelController indexOfViewController:currentViewController];

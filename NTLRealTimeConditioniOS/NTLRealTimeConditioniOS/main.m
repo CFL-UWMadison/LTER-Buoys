@@ -1,9 +1,9 @@
 //
 //  main.m
-//  NTLRealTimeConditioniOS
+//  app for limnology Version 0
 //
-//  Created by Junjie on 16/1/14.
-//  Copyright © 2016年 Junjie. All rights reserved.
+//  Created by Junjie on 15/12/8.
+//  Copyright © 2015年 Junjie. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>

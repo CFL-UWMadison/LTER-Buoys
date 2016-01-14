@@ -9,14 +9,29 @@
 /* Begin PBXBuildFile section */
 		95FED3051C485215008DE29D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 95FED3041C485215008DE29D /* main.m */; };
 		95FED3081C485215008DE29D /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 95FED3071C485215008DE29D /* AppDelegate.m */; };
-		95FED30B1C485215008DE29D /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 95FED30A1C485215008DE29D /* RootViewController.m */; };
-		95FED30E1C485215008DE29D /* DataViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 95FED30D1C485215008DE29D /* DataViewController.m */; };
-		95FED3111C485215008DE29D /* ModelController.m in Sources */ = {isa = PBXBuildFile; fileRef = 95FED3101C485215008DE29D /* ModelController.m */; };
-		95FED3141C485215008DE29D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 95FED3121C485215008DE29D /* Main.storyboard */; };
 		95FED3161C485215008DE29D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 95FED3151C485215008DE29D /* Assets.xcassets */; };
 		95FED3191C485215008DE29D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 95FED3171C485215008DE29D /* LaunchScreen.storyboard */; };
 		95FED3241C485216008DE29D /* NTLRealTimeConditioniOSTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 95FED3231C485216008DE29D /* NTLRealTimeConditioniOSTests.m */; };
 		95FED32F1C485216008DE29D /* NTLRealTimeConditioniOSUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 95FED32E1C485216008DE29D /* NTLRealTimeConditioniOSUITests.m */; };
+		95FED3541C485429008DE29D /* DisclaimerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 95FED34B1C485429008DE29D /* DisclaimerViewController.m */; };
+		95FED3551C485429008DE29D /* DisclaimerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 95FED34C1C485429008DE29D /* DisclaimerViewController.xib */; };
+		95FED3561C485429008DE29D /* JJWeatherViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 95FED34E1C485429008DE29D /* JJWeatherViewController.m */; };
+		95FED3571C485429008DE29D /* JJWeatherViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 95FED34F1C485429008DE29D /* JJWeatherViewController.xib */; };
+		95FED3581C485429008DE29D /* ModelController.m in Sources */ = {isa = PBXBuildFile; fileRef = 95FED3511C485429008DE29D /* ModelController.m */; };
+		95FED3591C485429008DE29D /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 95FED3531C485429008DE29D /* RootViewController.m */; };
+		95FED3611C485435008DE29D /* AppfeatureImage.png in Resources */ = {isa = PBXBuildFile; fileRef = 95FED35A1C485435008DE29D /* AppfeatureImage.png */; };
+		95FED3621C485435008DE29D /* icon.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 95FED35B1C485435008DE29D /* icon.jpg */; };
+		95FED3631C485435008DE29D /* ntl.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 95FED35C1C485435008DE29D /* ntl.jpg */; };
+		95FED3641C485435008DE29D /* questionmMark.png in Resources */ = {isa = PBXBuildFile; fileRef = 95FED35D1C485435008DE29D /* questionmMark.png */; };
+		95FED3651C485435008DE29D /* refresh.png in Resources */ = {isa = PBXBuildFile; fileRef = 95FED35E1C485435008DE29D /* refresh.png */; };
+		95FED3661C485435008DE29D /* settingButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 95FED35F1C485435008DE29D /* settingButton.png */; };
+		95FED3671C485435008DE29D /* UW Madison.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 95FED3601C485435008DE29D /* UW Madison.jpg */; };
+		95FED36F1C485442008DE29D /* JJImageTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 95FED3681C485442008DE29D /* JJImageTransformer.m */; };
+		95FED3701C485442008DE29D /* Weather.m in Sources */ = {isa = PBXBuildFile; fileRef = 95FED36A1C485442008DE29D /* Weather.m */; };
+		95FED3711C485442008DE29D /* Weather+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 95FED36C1C485442008DE29D /* Weather+CoreDataProperties.m */; };
+		95FED3721C485442008DE29D /* WeatherInfoDB.m in Sources */ = {isa = PBXBuildFile; fileRef = 95FED36E1C485442008DE29D /* WeatherInfoDB.m */; };
+		95FED3751C485542008DE29D /* Weather.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 95FED3731C485542008DE29D /* Weather.xcdatamodeld */; };
+		95FED37E1C485743008DE29D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 95FED37C1C485743008DE29D /* Main.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -41,13 +56,6 @@
 		95FED3041C485215008DE29D /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		95FED3061C485215008DE29D /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		95FED3071C485215008DE29D /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		95FED3091C485215008DE29D /* RootViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RootViewController.h; sourceTree = "<group>"; };
-		95FED30A1C485215008DE29D /* RootViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RootViewController.m; sourceTree = "<group>"; };
-		95FED30C1C485215008DE29D /* DataViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DataViewController.h; sourceTree = "<group>"; };
-		95FED30D1C485215008DE29D /* DataViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DataViewController.m; sourceTree = "<group>"; };
-		95FED30F1C485215008DE29D /* ModelController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ModelController.h; sourceTree = "<group>"; };
-		95FED3101C485215008DE29D /* ModelController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ModelController.m; sourceTree = "<group>"; };
-		95FED3131C485215008DE29D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		95FED3151C485215008DE29D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		95FED3181C485215008DE29D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		95FED31A1C485216008DE29D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -57,6 +65,32 @@
 		95FED32A1C485216008DE29D /* NTLRealTimeConditioniOSUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NTLRealTimeConditioniOSUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		95FED32E1C485216008DE29D /* NTLRealTimeConditioniOSUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NTLRealTimeConditioniOSUITests.m; sourceTree = "<group>"; };
 		95FED3301C485216008DE29D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		95FED34A1C485429008DE29D /* DisclaimerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DisclaimerViewController.h; path = NTLRealTimeConditioniOS/Controller/DisclaimerViewController.h; sourceTree = "<group>"; };
+		95FED34B1C485429008DE29D /* DisclaimerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DisclaimerViewController.m; path = NTLRealTimeConditioniOS/Controller/DisclaimerViewController.m; sourceTree = "<group>"; };
+		95FED34C1C485429008DE29D /* DisclaimerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = DisclaimerViewController.xib; path = NTLRealTimeConditioniOS/Controller/DisclaimerViewController.xib; sourceTree = "<group>"; };
+		95FED34D1C485429008DE29D /* JJWeatherViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JJWeatherViewController.h; path = NTLRealTimeConditioniOS/Controller/JJWeatherViewController.h; sourceTree = "<group>"; };
+		95FED34E1C485429008DE29D /* JJWeatherViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JJWeatherViewController.m; path = NTLRealTimeConditioniOS/Controller/JJWeatherViewController.m; sourceTree = "<group>"; };
+		95FED34F1C485429008DE29D /* JJWeatherViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = JJWeatherViewController.xib; path = NTLRealTimeConditioniOS/Controller/JJWeatherViewController.xib; sourceTree = "<group>"; };
+		95FED3501C485429008DE29D /* ModelController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ModelController.h; path = NTLRealTimeConditioniOS/Controller/ModelController.h; sourceTree = "<group>"; };
+		95FED3511C485429008DE29D /* ModelController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ModelController.m; path = NTLRealTimeConditioniOS/Controller/ModelController.m; sourceTree = "<group>"; };
+		95FED3521C485429008DE29D /* RootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RootViewController.h; path = NTLRealTimeConditioniOS/Controller/RootViewController.h; sourceTree = "<group>"; };
+		95FED3531C485429008DE29D /* RootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RootViewController.m; path = NTLRealTimeConditioniOS/Controller/RootViewController.m; sourceTree = "<group>"; };
+		95FED35A1C485435008DE29D /* AppfeatureImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = AppfeatureImage.png; path = "NTLRealTimeConditioniOS/Icon and Image/AppfeatureImage.png"; sourceTree = "<group>"; };
+		95FED35B1C485435008DE29D /* icon.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = icon.jpg; path = "NTLRealTimeConditioniOS/Icon and Image/icon.jpg"; sourceTree = "<group>"; };
+		95FED35C1C485435008DE29D /* ntl.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = ntl.jpg; path = "NTLRealTimeConditioniOS/Icon and Image/ntl.jpg"; sourceTree = "<group>"; };
+		95FED35D1C485435008DE29D /* questionmMark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = questionmMark.png; path = "NTLRealTimeConditioniOS/Icon and Image/questionmMark.png"; sourceTree = "<group>"; };
+		95FED35E1C485435008DE29D /* refresh.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = refresh.png; path = "NTLRealTimeConditioniOS/Icon and Image/refresh.png"; sourceTree = "<group>"; };
+		95FED35F1C485435008DE29D /* settingButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = settingButton.png; path = "NTLRealTimeConditioniOS/Icon and Image/settingButton.png"; sourceTree = "<group>"; };
+		95FED3601C485435008DE29D /* UW Madison.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "UW Madison.jpg"; path = "NTLRealTimeConditioniOS/Icon and Image/UW Madison.jpg"; sourceTree = "<group>"; };
+		95FED3681C485442008DE29D /* JJImageTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JJImageTransformer.m; path = "NTLRealTimeConditioniOS/Weather Modal/JJImageTransformer.m"; sourceTree = "<group>"; };
+		95FED3691C485442008DE29D /* Weather.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Weather.h; path = "NTLRealTimeConditioniOS/Weather Modal/Weather.h"; sourceTree = "<group>"; };
+		95FED36A1C485442008DE29D /* Weather.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Weather.m; path = "NTLRealTimeConditioniOS/Weather Modal/Weather.m"; sourceTree = "<group>"; };
+		95FED36B1C485442008DE29D /* Weather+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "Weather+CoreDataProperties.h"; path = "NTLRealTimeConditioniOS/Weather Modal/Weather+CoreDataProperties.h"; sourceTree = "<group>"; };
+		95FED36C1C485442008DE29D /* Weather+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "Weather+CoreDataProperties.m"; path = "NTLRealTimeConditioniOS/Weather Modal/Weather+CoreDataProperties.m"; sourceTree = "<group>"; };
+		95FED36D1C485442008DE29D /* WeatherInfoDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WeatherInfoDB.h; path = "NTLRealTimeConditioniOS/Weather Modal/WeatherInfoDB.h"; sourceTree = "<group>"; };
+		95FED36E1C485442008DE29D /* WeatherInfoDB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WeatherInfoDB.m; path = "NTLRealTimeConditioniOS/Weather Modal/WeatherInfoDB.m"; sourceTree = "<group>"; };
+		95FED3741C485542008DE29D /* Weather.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Weather.xcdatamodel; sourceTree = "<group>"; };
+		95FED37D1C485743008DE29D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = NTLRealTimeConditioniOS/Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,6 +121,32 @@
 		95FED2F71C485215008DE29D = {
 			isa = PBXGroup;
 			children = (
+				95FED37C1C485743008DE29D /* Main.storyboard */,
+				95FED3681C485442008DE29D /* JJImageTransformer.m */,
+				95FED3691C485442008DE29D /* Weather.h */,
+				95FED36A1C485442008DE29D /* Weather.m */,
+				95FED36B1C485442008DE29D /* Weather+CoreDataProperties.h */,
+				95FED36C1C485442008DE29D /* Weather+CoreDataProperties.m */,
+				95FED36D1C485442008DE29D /* WeatherInfoDB.h */,
+				95FED36E1C485442008DE29D /* WeatherInfoDB.m */,
+				95FED3731C485542008DE29D /* Weather.xcdatamodeld */,
+				95FED35A1C485435008DE29D /* AppfeatureImage.png */,
+				95FED35B1C485435008DE29D /* icon.jpg */,
+				95FED35C1C485435008DE29D /* ntl.jpg */,
+				95FED35D1C485435008DE29D /* questionmMark.png */,
+				95FED35E1C485435008DE29D /* refresh.png */,
+				95FED35F1C485435008DE29D /* settingButton.png */,
+				95FED3601C485435008DE29D /* UW Madison.jpg */,
+				95FED34A1C485429008DE29D /* DisclaimerViewController.h */,
+				95FED34B1C485429008DE29D /* DisclaimerViewController.m */,
+				95FED34C1C485429008DE29D /* DisclaimerViewController.xib */,
+				95FED34D1C485429008DE29D /* JJWeatherViewController.h */,
+				95FED34E1C485429008DE29D /* JJWeatherViewController.m */,
+				95FED34F1C485429008DE29D /* JJWeatherViewController.xib */,
+				95FED3501C485429008DE29D /* ModelController.h */,
+				95FED3511C485429008DE29D /* ModelController.m */,
+				95FED3521C485429008DE29D /* RootViewController.h */,
+				95FED3531C485429008DE29D /* RootViewController.m */,
 				95FED3021C485215008DE29D /* NTLRealTimeConditioniOS */,
 				95FED3221C485216008DE29D /* NTLRealTimeConditioniOSTests */,
 				95FED32D1C485216008DE29D /* NTLRealTimeConditioniOSUITests */,
@@ -109,13 +169,6 @@
 			children = (
 				95FED3061C485215008DE29D /* AppDelegate.h */,
 				95FED3071C485215008DE29D /* AppDelegate.m */,
-				95FED3091C485215008DE29D /* RootViewController.h */,
-				95FED30A1C485215008DE29D /* RootViewController.m */,
-				95FED30C1C485215008DE29D /* DataViewController.h */,
-				95FED30D1C485215008DE29D /* DataViewController.m */,
-				95FED30F1C485215008DE29D /* ModelController.h */,
-				95FED3101C485215008DE29D /* ModelController.m */,
-				95FED3121C485215008DE29D /* Main.storyboard */,
 				95FED3151C485215008DE29D /* Assets.xcassets */,
 				95FED3171C485215008DE29D /* LaunchScreen.storyboard */,
 				95FED31A1C485216008DE29D /* Info.plist */,
@@ -254,8 +307,17 @@
 			buildActionMask = 2147483647;
 			files = (
 				95FED3191C485215008DE29D /* LaunchScreen.storyboard in Resources */,
+				95FED3621C485435008DE29D /* icon.jpg in Resources */,
+				95FED3551C485429008DE29D /* DisclaimerViewController.xib in Resources */,
+				95FED37E1C485743008DE29D /* Main.storyboard in Resources */,
+				95FED3571C485429008DE29D /* JJWeatherViewController.xib in Resources */,
+				95FED3671C485435008DE29D /* UW Madison.jpg in Resources */,
+				95FED3631C485435008DE29D /* ntl.jpg in Resources */,
+				95FED3661C485435008DE29D /* settingButton.png in Resources */,
 				95FED3161C485215008DE29D /* Assets.xcassets in Resources */,
-				95FED3141C485215008DE29D /* Main.storyboard in Resources */,
+				95FED3641C485435008DE29D /* questionmMark.png in Resources */,
+				95FED3611C485435008DE29D /* AppfeatureImage.png in Resources */,
+				95FED3651C485435008DE29D /* refresh.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -280,11 +342,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				95FED30E1C485215008DE29D /* DataViewController.m in Sources */,
+				95FED3581C485429008DE29D /* ModelController.m in Sources */,
+				95FED3711C485442008DE29D /* Weather+CoreDataProperties.m in Sources */,
 				95FED3081C485215008DE29D /* AppDelegate.m in Sources */,
-				95FED3111C485215008DE29D /* ModelController.m in Sources */,
+				95FED3561C485429008DE29D /* JJWeatherViewController.m in Sources */,
+				95FED3701C485442008DE29D /* Weather.m in Sources */,
+				95FED3721C485442008DE29D /* WeatherInfoDB.m in Sources */,
+				95FED3591C485429008DE29D /* RootViewController.m in Sources */,
+				95FED3541C485429008DE29D /* DisclaimerViewController.m in Sources */,
+				95FED3751C485542008DE29D /* Weather.xcdatamodeld in Sources */,
+				95FED36F1C485442008DE29D /* JJImageTransformer.m in Sources */,
 				95FED3051C485215008DE29D /* main.m in Sources */,
-				95FED30B1C485215008DE29D /* RootViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -320,20 +388,20 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		95FED3121C485215008DE29D /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				95FED3131C485215008DE29D /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		95FED3171C485215008DE29D /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
 				95FED3181C485215008DE29D /* Base */,
 			);
 			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		95FED37C1C485743008DE29D /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				95FED37D1C485743008DE29D /* Base */,
+			);
+			name = Main.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -508,6 +576,7 @@
 				95FED3351C485216008DE29D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		95FED3361C485216008DE29D /* Build configuration list for PBXNativeTarget "NTLRealTimeConditioniOSTests" */ = {
 			isa = XCConfigurationList;
@@ -516,6 +585,7 @@
 				95FED3381C485216008DE29D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		95FED3391C485216008DE29D /* Build configuration list for PBXNativeTarget "NTLRealTimeConditioniOSUITests" */ = {
 			isa = XCConfigurationList;
@@ -524,8 +594,23 @@
 				95FED33B1C485216008DE29D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		95FED3731C485542008DE29D /* Weather.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				95FED3741C485542008DE29D /* Weather.xcdatamodel */,
+			);
+			currentVersion = 95FED3741C485542008DE29D /* Weather.xcdatamodel */;
+			name = Weather.xcdatamodeld;
+			path = NTLRealTimeConditioniOS/Weather.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 95FED2F81C485215008DE29D /* Project object */;
 }
