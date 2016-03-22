@@ -1,0 +1,31 @@
+.cc_label {
+  font-size: 12px;
+}
+.cc_text {
+  font-size: 15px;
+  font-style: normal;
+}
+.photo_icon {
+  display: block;
+/*  margin: auto;*/
+  margin-top: 15%;
+  height: 60%;
+  width: 60%;
+}
+.lakecc_header {
+  color: black;
+  margin: 0em;
+}
+#lakecc {
+  border: 1px solid white;
+  width: 960px;
+}
+.lakecc_class {
+  display: inline-block;
+  vertical-align: top;
+  text-align: center;
+  border: 1px solid gray;  
+  width: 150px;
+  height: 100px;
+  margin: 1em;
+}

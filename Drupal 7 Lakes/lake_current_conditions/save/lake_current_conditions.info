@@ -1,0 +1,6 @@
+name = Lake Current Conditions
+description = Display buoy current conditions on lakeinfo pages. 
+core = 7.x
+package = NTL ModDev
+dependencies[] = block
+scripts[] = d3.js

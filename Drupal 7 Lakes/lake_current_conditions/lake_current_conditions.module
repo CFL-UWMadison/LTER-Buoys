@@ -1,0 +1,169 @@
+
+<?php
+/*
+ *  Extract parameters from the URL;
+*/
+if (arg(1) == 'sparkling-lake') {
+   $GLOBALS['lakeid'] = 'SP';
+} else {
+   $GLOBALS['lakeid'] = 'TR';
+}
+
+/*
+ *  Implements hook_block_info();
+*/
+function lake_current_conditions_block_info() {
+  //$blocks = array();
+  $blocks['lakeCC'] = array(
+    'info' => t('Current Conditions'),
+    'status' => TRUE,
+    'region' => 'sidebar_first',
+  );
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view
+ */
+function lake_current_conditions_block_view() {
+
+  //$block['subject'] = t('Current Conditions');
+  $block['content'] = lake_current_conditions_content();
+  return $block;
+}
+
+function lake_current_conditions_content() {
+
+  $lakeid = $GLOBALS['lakeid']; 
+  $content = array();
+
+  //Main DIV
+  $content['container_current'] = array(
+    '#type' => 'container',
+    '#attributes' => array(
+       'id' => array('lakecc'),
+     ),
+  );
+  //Title
+  $content['container_current']['title'] = array(
+    '#type' => 'markup',
+    '#markup' => '<h5>Current Conditions:</h5>'
+  );
+  $content['container_current']['css_content'] = array(
+    '#type' => 'markup',
+    '#attached' => array(
+      'css' => array(
+        drupal_get_path('module','lake_current_conditions').'/lake_current_conditions.css',
+      ),
+    ),  
+  );
+
+/****************************************************************
+              CURRENT CONDITIONS SUB-CONTAINERS
+****************************************************************/
+
+ //Subcontainer for watertemp
+  $content['container_current']['current_watertemp'] = array(
+    '#type' => 'container',
+    '#attributes' => array(
+       'id' => array('lake_cc_wtemp'),
+       'class' => array('lakecc_class'),
+     ),
+  );
+ //Subcontainer for tempmap
+  $content['container_current']['current_tempmap'] = array(
+    '#type' => 'container',
+    '#attributes' => array(
+       'id' => array('lake_cc_tmap'),
+       'class' => array('lakecc_class'),
+     ),
+  );
+ //Subcontainer for airtemp
+  $content['container_current']['current_airtemp'] = array(
+    '#type' => 'container',
+    '#attributes' => array(
+       'id' => array('lake_cc_air'),
+       'class' => array('lakecc_class'),
+     ),
+  );
+ //Subcontainer for winds
+  $content['container_current']['current_winds'] = array(
+    '#type' => 'container',
+    '#attributes' => array(
+       'id' => array('lake_cc_winds'),
+       'class' => array('lakecc_class'),
+     ),
+  );
+ //Subcontainer for clarity
+  $content['container_current']['current_clarity'] = array(
+    '#type' => 'container',
+    '#attributes' => array(
+       'id' => array('lake_cc_clarity'),
+       'class' => array('lakecc_class'),
+     ),
+  );
+/****************************************************************
+              CURRENT CONDITIONS CONTENT
+****************************************************************/
+  $content['container_current']['current_watertemp']['text'] = array(
+    '#type' => 'markup',
+    '#markup' => t('<h6 class="cc_text">Water Temp</h6>'),
+  );
+/*
+//Tempmap Version 1
+  $text = t('Water Temperature Map');
+  $path = 'https://lter6.limnology.wisc.edu/lakeTempMap/'.$lakeid;
+  $content['container_current']['current_watertemp']['link'] = array(
+    '#type' => 'markup',
+    '#markup' => l($text,$path),
+  );
+*/
+/*
+//Tempmap Version 2
+  $content['container_current']['current_tempmap']['link'] = array(
+    '#type' => 'link',
+    '#title' => t('<h6 class="cc_text">Temp Depth Map</h6>'),
+    '#href' => 'https://lter6.limnology.wisc.edu/lakeTempMap/'.$lakeid,
+    '#options' => array(
+       'attributes' => array(),
+       'html' => TRUE,
+    ),
+  );
+*/  
+//Tempmap Version 3
+  $tempmap_photo = array(
+   'path' => drupal_get_path('module','lake_current_conditions').'/images/tempmapIcon.jpg',
+   'alt' => t('Temp Map'),
+   'attributes' => array('class' => 'lake_photo_icon'),
+  );
+  $content['container_current']['current_tempmap']['link'] = array(
+    '#type' => 'link',
+    '#title' => theme('image',$tempmap_photo),
+    '#href' => 'https://lter6.limnology.wisc.edu/lakeTempMap/'.$lakeid,
+    '#options' => array(
+       'attributes' => array(),
+       'html' => TRUE,
+    ),
+  );
+  $content['container_current']['current_tempmap']['label'] = array(
+   '#type' => 'markup',
+   '#markup' => t('<p class="cc_label">Lake Heat Map</p>'),
+  );   
+  
+  $content['container_current']['current_airtemp']['text'] = array(
+    '#type' => 'markup',
+    '#markup' => t('<h6 class="cc_text">Air Temp</h6>'),
+  );
+  $content['container_current']['current_winds']['text'] = array(
+    '#type' => 'markup',
+    '#markup' => t('<h6 class="cc_text">Winds</h6>'),
+  );
+  $content['container_current']['current_clarity']['text'] = array(
+    '#type' => 'markup',
+    '#markup' => t('<h6 class="cc_text">Water Clarity</h6>'),
+  );
+
+  return $content;
+  
+}
+
