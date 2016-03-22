@@ -1,0 +1,336 @@
+<?php
+/*
+ *  Implements hook_menu();
+*/
+
+function d3_lake_bio_menu() {
+  $items = array();
+
+  //"lake-bio" will be the URL
+  $items['lake-bio/%/%'] = array(
+    'title' => '',
+    'page callback' => 'd3_lake_bio_basic', //php function name
+    'page arguments' => array(1,2), //lakeid, biology being displayed (e.g. "/TR/phyto")
+    'access arguments' => array('access content'),
+  );
+  return $items;
+}
+function d3_lake_bio_basic($lakeid,$variable) {
+
+  //Get data from the database
+  d3_lake_bio_get_data($lakeid, $variable);
+  //Get a plain language string for title
+  $plain_title = d3_lake_bio_get_plain_title($lakeid, $variable);
+
+  $content = array();
+
+  $content['plot_title'] = array(
+    '#type' => 'markup',
+    '#markup' => $plain_title,
+    '#prefix' => '<h4 style="margin-left:50px;">',
+    '#suffix' => '</h4>',
+  );
+  //Create the main page container
+  $content['main_container'] = array(
+    '#type' => 'container',
+    '#attributes' => array(
+       'id' => array('mainDiv'),
+     ),
+  );
+  //Link to CSS file
+  $content['main_container']['css_content'] = array(
+    '#type' => 'markup',
+    '#attached' => array(
+      'css' => array(
+        drupal_get_path('module','d3_lake_bio').'/d3_lake_bio.css',
+      ),
+    ),  
+  );
+  //Create a plot container
+  $content['main_container']['plot_container'] = array(
+    '#type' => 'container',
+    '#attributes' => array(
+       'id' => array('plotDiv'),
+     ),
+  );  
+  //Create a table container
+  $content['main_container']['table_container'] = array(
+    '#type' => 'container',
+    '#attributes' => array(
+       'id' => array('tableDiv'),
+     ),
+  );
+/*
+  //Add a table container title
+  $content['main_container']['table_container']['title'] = array(
+    '#type' => 'markup',
+    '#markup' => '<h5 class="lake_bio_header">Historical Species List</h5>',   
+  );
+*/
+   
+  //Add JS
+  $content['main_container']['plot_container']['js_content'] = array(
+    '#type' => 'markup',
+    '#attached' => array(
+      'js' => array(
+        drupal_get_path('module','d3_lake_bio').'/lake_bio_plot.js',
+        array(
+ 	      'type' => 'setting', 
+	      'data' => array(
+			 'plot_title' => $GLOBALS['plot_title'],
+             'plot_units' => $GLOBALS['plot_units'],		 
+ 	         'Dates' => $GLOBALS['Dates'],
+ 	         'Richness' => $GLOBALS['Richness'],
+	 	 'Common' => $GLOBALS['Common'],
+ 	         'Species' => $GLOBALS['Species'],
+           ),
+         ),
+       ),
+     ),
+  );
+  
+  //Add a table of known species. 
+  $Species = $GLOBALS['Species'];
+  $Common = $GLOBALS['Common'];
+  $numspecies = sizeof($Species);
+  $Splinks = d3_lake_bio_eol_links($Species,$Common);
+  $rows = array();
+  //For fish and macrophytes, include two columns: common and scientific names
+  if ($variable == 'fish' || $variable == 'macro') {
+    $header = array(t('Common Name'), t('Scientific Name'));
+	 for ($r=0; $r<$numspecies; $r++) {
+        $rows[$r][0] = $Common[$r];
+        $rows[$r][1] = $Splinks[$r];
+     }  
+  } else {  //for phyto and zoop, include only scientfic name
+    $header = array(t('Scientific Name'));
+	 for ($r=0; $r<$numspecies; $r++) {
+        $rows[$r][0] = $Splinks[$r]; 
+     }		
+  }  
+  $content['main_container']['table_container']['table'] = array(
+    '#theme' => 'table',
+    '#header' => $header,
+    '#rows' => $rows,
+    '#attributes' => array('id' => array('speciesTable')),
+    '#empty' =>t('No known species'),
+  );
+  
+  return $content;
+}
+//Get the data from the database: sampledates and values
+function d3_lake_bio_get_data($lakeid, $variable) { 
+
+//First get species richness by year
+    $sqlstatement = d3_lake_bio_get_richness_query($lakeid, $variable);	
+	db_set_active('dbmaker');
+	$result = db_query($sqlstatement);
+	db_set_active('default');
+	//Initialize arrays
+	$idx=0;
+	$Dates = array();
+	$Richness = array();
+	foreach ($result as $row) {  
+	  $Dates[$idx] = $row->year4;
+	  $Richness[$idx++] = $row->spcount;
+	}
+	$GLOBALS['Dates'] = $Dates;
+	$GLOBALS['Richness'] = $Richness;
+	
+//Get historical species list	
+    $sqlstatement = d3_lake_bio_get_species_query($lakeid, $variable);	
+	db_set_active('dbmaker');
+	$result = db_query($sqlstatement);
+	db_set_active('default');
+	$idx=0;
+	$Common = array();
+	$Species = array();
+	foreach ($result as $row) {  
+	  $Common[$idx] = $row->common;
+	  $Species[$idx++] = $row->species;
+	}
+	$GLOBALS['Common'] = $Common;
+	$GLOBALS['Species'] = $Species;
+}
+
+//Get the database query depending on the metric being plotted. The queries differ significantly between bio type and location
+function d3_lake_bio_get_richness_query($lakeid, $variable) {
+
+	//Defaults
+	$lakestr = "'".$lakeid."'";
+	switch ($variable) {
+	   case 'fish':
+		  $var_fieldname = 'richness';
+		  $sqlstatement = "(SELECT year4, richness as spcount FROM `fish_richness` WHERE richness IS NOT NULL AND lakeid=$lakestr)";		   
+	   break;
+	   case 'macro':
+          if ($lakeid=='ME' || $lakeid=='MO' || $lakeid=='WI' || $lakeid=='FI') {
+             $sqlstatement = "( SELECT DISTINCT macrophyte_rating_madison.year4, COUNT(DISTINCT macrophyte_rating_madison.spname) as spcount
+				FROM `macrophyte_rating_madison`
+				WHERE macrophyte_rating_madison.lakeid = $lakestr
+				GROUP BY macrophyte_rating_madison.year4 
+				ORDER BY macrophyte_rating_madison.year4 ASC)";		  
+		  } else {
+		     $sqlstatement = "( SELECT DISTINCT macrophyte_tr_quad_sp.year4, COUNT(DISTINCT macrophyte_tr_quad_sp.species_name) as spcount
+				FROM `macrophyte_tr_quad_sp`
+				GROUP BY macrophyte_tr_quad_sp.year4 
+				ORDER BY macrophyte_tr_quad_sp.year4 ASC)";
+		  }
+	   break;
+	   case 'phyto':
+          if ($lakeid=='ME' || $lakeid=='MO' || $lakeid=='WI' || $lakeid=='FI') {
+             $sqlstatement = "(SELECT DISTINCT phytoplankton_madison_v2.year4, COUNT(DISTINCT phytoplankton_madison_v2.taxa_name) as spcount
+				FROM `phytoplankton_madison_v2`
+				WHERE phytoplankton_madison_v2.lakeid = $lakestr
+				GROUP BY phytoplankton_madison_v2.year4 
+				ORDER BY phytoplankton_madison_v2.year4 ASC )";
+		  } else {
+             $sqlstatement = "(SELECT DISTINCT phytoplankton_nl.year4, COUNT(DISTINCT phytoplankton_nl.taxa_name) as spcount
+				FROM `phytoplankton_nl`
+				WHERE phytoplankton_nl.lakeid = $lakestr
+				GROUP BY phytoplankton_nl.year4 
+				ORDER BY phytoplankton_nl.year4 ASC )";	      
+		  }	   
+	   break;
+	   case 'zoop':
+          if ($lakeid=='ME' || $lakeid=='MO' || $lakeid=='WI' || $lakeid=='FI') {
+			  $sqlstatement = "(SELECT DISTINCT zoop_allsl_summary_snap.year4, COUNT(DISTINCT zoop_allsl_summary_snap.species_code) as spcount
+				FROM `zoop_allsl_summary_snap`
+				WHERE zoop_allsl_summary_snap.lakeid = $lakestr
+				GROUP BY zoop_allsl_summary_snap.year4 
+				ORDER BY zoop_allsl_summary_snap.year4 ASC )";            		  
+		  } else {
+		     $sqlstatement = "( SELECT DISTINCT zoop_allnl_summary_snap.year4, COUNT(DISTINCT zoop_allnl_summary_snap.species_code) as spcount
+				FROM `zoop_allnl_summary_snap`
+				WHERE zoop_allnl_summary_snap.lakeid = $lakestr
+				GROUP BY zoop_allnl_summary_snap.year4 
+				ORDER BY zoop_allnl_summary_snap.year4 ASC )";
+		  }	   
+	   break;
+   }//switch $variable
+   return $sqlstatement;
+}
+function d3_lake_bio_get_species_query($lakeid, $variable) {
+
+	$lakestr = "'".$lakeid."'";
+	switch ($variable) {
+	   case 'fish':
+		$sqlstatement = "(SELECT fish_abundance.spname, meta_taxon_cov.common_name as common, meta_taxon_cov.species as species 
+			FROM `fish_abundance` INNER JOIN `meta_taxon_cov` ON fish_abundance.spname = meta_taxon_cov.ntl_taxon_code
+			GROUP BY fish_abundance.lakeid, fish_abundance.spname, meta_taxon_cov.common_name, meta_taxon_cov.species
+			HAVING (fish_abundance.lakeid = $lakestr AND meta_taxon_cov.common_name IS NOT Null)
+			ORDER BY meta_taxon_cov.common_name)";	   
+	   break;
+	   case 'macro':
+		  if ($lakeid=='ME' || $lakeid=='MO' || $lakeid=='WI' || $lakeid=='FI') {
+			$sqlstatement = "(SELECT DISTINCT macrophyte_rating_madison.spname as spname, meta_taxon_cov.common_name as common, meta_taxon_cov.species as species
+				FROM `macrophyte_rating_madison`
+				LEFT JOIN `meta_taxon_cov` ON macrophyte_rating_madison.spname = meta_taxon_cov.ntl_taxon_code
+				WHERE (macrophyte_rating_madison.lakeid=$lakestr AND meta_taxon_cov.common_name IS NOT NULL) 
+				ORDER BY meta_taxon_cov.common_name )";		  
+		  } else {  //Trout Lake only for macrophytes
+			$sqlstatement = "(SELECT DISTINCT macrophyte_tr_quad_sp.species_name as spname, meta_taxon_cov.species AS species, meta_taxon_cov.common_name AS common
+				FROM `macrophyte_tr_quad_sp`
+				INNER JOIN `meta_taxon_cov` ON macrophyte_tr_quad_sp.species_name = meta_taxon_cov.ntl_taxon_code
+				WHERE (macrophyte_tr_quad_sp.lakeid=$lakestr AND meta_taxon_cov.common_name IS NOT NULL)
+				ORDER BY meta_taxon_cov.common_name )";		  
+		  }				   
+	   break;
+	   case 'phyto':
+		  if ($lakeid=='ME' || $lakeid=='MO' || $lakeid=='WI' || $lakeid=='FI') {
+			$sqlstatement = "(SELECT DISTINCT meta_taxon_cov.common_name as common, meta_taxon_cov.species as species
+				FROM `phytoplankton_madison_v2`
+				INNER JOIN `meta_taxon_cov` ON phytoplankton_madison_v2.taxa_id = meta_taxon_cov.ntl_taxon_code
+				WHERE (phytoplankton_madison_v2.lakeid = $lakestr AND meta_taxon_cov.species IS NOT NULL) 
+				ORDER BY meta_taxon_cov.species)";
+		  
+		  } else {  //Northern lakes
+			$sqlstatement = "(SELECT DISTINCT meta_taxon_cov.common_name as common, meta_taxon_cov.species as species
+				FROM `meta_taxon_cov`
+				INNER JOIN `phytoplankton_nl` ON phytoplankton_nl.taxa_id = meta_taxon_cov.ntl_taxon_code
+				WHERE phytoplankton_nl.lakeid = $lakestr AND meta_taxon_cov.species IS NOT NULL
+				ORDER BY meta_taxon_cov.species)";		  
+		  }		   	   
+	   break;
+	   case 'zoop':
+		  if ($lakeid=='ME' || $lakeid=='MO' || $lakeid=='WI' || $lakeid=='FI') {
+			$sqlstatement = "(SELECT DISTINCT meta_taxon_cov.common_name as common, meta_taxon_cov.species as species
+				FROM `zoop_allsl_summary_snap`
+				INNER JOIN `meta_taxon_cov` ON zoop_allsl_summary_snap.species_code = meta_taxon_cov.ntl_taxon_code
+				WHERE zoop_allsl_summary_snap.lakeid = $lakestr AND meta_taxon_cov.species IS NOT NULL
+				ORDER BY meta_taxon_cov.species ASC)";
+		  } else {  //Northern lakes
+			$sqlstatement = "(SELECT DISTINCT meta_taxon_cov.common_name as common, meta_taxon_cov.species as species
+				FROM `zoop_allnl_summary_snap`
+				INNER JOIN `meta_taxon_cov` ON zoop_allnl_summary_snap.species_code = meta_taxon_cov.ntl_taxon_code
+				WHERE zoop_allnl_summary_snap.lakeid = $lakestr AND meta_taxon_cov.species IS NOT NULL
+				ORDER BY meta_taxon_cov.species ASC)";		  
+		  }		   	   
+	   break;  		   
+    }//switch $variable
+   return $sqlstatement;
+}
+
+function d3_lake_bio_get_plain_title($lakeid, $variable) {
+
+  $lakename = d3_lake_bio_get_lakename($lakeid);
+  switch ($variable) {
+	  case 'fish':
+		$result_type = "Species Richness by Year";
+		$plot_units = "number of species";
+      break;			
+	  case 'macro':
+		$result_type = "Species Richness by Year";
+		$plot_units = "number of species";
+      break;
+	  case 'phyto':
+		$result_type = "Species Richness by Year";
+		$plot_units = "number of species";
+      break;
+	  case 'zoop':
+		$result_type = "Species Richness by Year";
+		$plot_units = "number of species";
+      break;	  
+  }
+  //The units get sent to the js file, so set as a global variable.
+  $GLOBALS['plot_units'] = $plot_units;
+  $plot_title = $lakename.": ".$result_type;
+  $GLOBALS['plot_title'] = $plot_title;
+  return $plot_title;
+}
+//Get the plain language lake name from lakeid
+function d3_lake_bio_get_lakename($lakeid) {
+
+  //Get a lake name
+  if ($lakeid == 'TR') $lakename = 'Trout Lake';
+  if ($lakeid == 'SP') $lakename = 'Sparkling Lake';
+  if ($lakeid == 'CR') $lakename = 'Crystal Lake';
+  if ($lakeid == 'AL') $lakename = 'Allequash Lake';
+  if ($lakeid == 'BM') $lakename = 'Big Muskellunge';
+  if ($lakeid == 'CB') $lakename = 'Crystal Bog';
+  if ($lakeid == 'TB') $lakename = 'Trout Bog';
+  if ($lakeid == 'ME') $lakename = 'Lake Mendota';
+  if ($lakeid == 'MO') $lakename = 'Lake Monona';
+  if ($lakeid == 'WI') $lakename = 'Lake Wingra';
+  if ($lakeid == 'FI') $lakename = 'Fish Lake';
+  return $lakename;
+}
+//Return the EOL.org links based on species name
+function d3_lake_bio_eol_links($Species, $Common) {
+
+  $Splinks = array();  //This is array of species links, which will be put in the "Common Name" column of the table
+  $numspecies = sizeof($Species);
+  //Input two strings sciname (genus,species)
+  for ($r=0; $r<$numspecies; $r++) {
+     $sciname = $Species[$r];       //get the scientific name
+     $genus = strtok($sciname," ");  //extract the first part (genus)
+     $species = strtok(" ");         //extract the second part (species)
+     $hybrid_parts = strtok(" ");    //extract the next part (exists if its a hybrid)
+     if ( ($hybrid_parts == FALSE)&&($species==TRUE) ) {
+         $Splinks[$r] = "<a href=http://eol.org/search?q=". $genus ."+". $species .">". $Species[$r] . "</a>";
+     } else {   //it's a hybrid -- don't show a link
+         $Splinks[$r] = $Species[$r];
+     }
+  } //for  
+  return $Splinks;
+}

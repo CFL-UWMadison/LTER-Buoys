@@ -88,7 +88,10 @@ var map_yaxis = d3.scale.linear()
     .range([0,avg_cell_height*(numdepths)]);
 
 //Map temperatures to color; assuming temps range from 0-27C
-var Colormap = d3.scale.linear().domain([-1,0,5,10,15,20,25,27]).range(["white","violet","blue","green","yellow","orange","red","firebrick"]).clamp([1]);
+//var Colormap = d3.scale.linear().domain([-1,0,5,10,15,20,25,27]).range(["white","violet","blue","green","yellow","orange","red","firebrick"]).clamp([1]);
+var Colormap = d3.scale.linear().domain([-1,1,4,7.5,10,13,17,18,20,22,24,27]).range(["white","#8A2BE2","#2020FF","#00D0D0","#32CD32","#ADFF2F","yellow","gold","orange","#FF4500","red","firebrick"]).clamp([1]);
+//var Colormap = d3.scale.linear().domain([-1,1,2,4,7.5,10,13,17,18,20,22,24,27]).range(["white","#9400D3","#8A2BE2","#2020FF","#00C0C0","#32CD32","#ADFF2F","yellow","gold","orange","#FF4500","red","firebrick"]).clamp([1]);
+//var Colormap = d3.scale.linear().domain([-1,1,2,4,6,8,10,13,17,18,20,22,24,27]).range(["white","violet","#7B68EE","blue","#00BFFF","#00FF7F","#32CD32","#ADFF2F","yellow","gold","orange","#FF4500","red","firebrick"]).clamp([1]);
 
 //Define the total drawing canvas
 var tempmapSVG = d3.select("#mapDiv")

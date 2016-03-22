@@ -1,32 +1,29 @@
 (function ($) {
-  Drupal.behaviors.onedplot = {
+  Drupal.behaviors.lakebio = {
     attach: function (context, settings) {
 
 //Variables brought over from .module
-var numsamps = Drupal.settings.numsamps;
+var plot_title = Drupal.settings.plot_title;
+var plot_units = Drupal.settings.plot_units;
 var Dates = Drupal.settings.Dates;
-var datetype = Drupal.settings.datetype;
-var Values = Drupal.settings.Values;
-var units = Drupal.settings.units;
+var Richness = Drupal.settings.Richness;
+var Common = Drupal.settings.Common;
+var Species = Drupal.settings.Species;
 
-//Set up margin and plot limits - can adjust plot dimensions here
-var margin = {top: 20, right: 20, bottom: 30, left: 50},
-    width = 960 - margin.left - margin.right,
-    height = 500 - margin.top - margin.bottom;
+// PLOT HALF
+//Set up margin and plot limits
+var margin = {top: 20, right: 20, bottom: 20, left: 50},
+    width = 480 - margin.left - margin.right,
+    height = 300 - margin.top - margin.bottom;
 
 var data = [];
-for (var i=0; i<numsamps; i++) {
+for (var i=0; i<Dates.length; i++) {
   data.push({
-     value: Values[i],
+     value: Richness[i],
      date: Dates[i],
     });
 }
-//Massage Data
-if (datetype == 'Ymd') {
-	var parseDate = d3.time.format("%Y-%m-%d").parse;
-} else if (datetype == 'Y') {
-	var parseDate = d3.time.format("%Y").parse;
-}
+var parseDate = d3.time.format("%Y").parse;
 data.forEach(function(d) {
     d.date = parseDate(d.date);
     d.value = Number(d.value);
@@ -72,7 +69,7 @@ var yAxis = d3.svg.axis()
       .attr("y", 6)
       .attr("dy", ".71em")
       .style("text-anchor", "end")
-      .text(units);
+      .text(plot_units);
 
   plotSVG.append("path")
       .datum(data)

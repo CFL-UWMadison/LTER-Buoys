@@ -1,0 +1,6 @@
+name = Lake Biology Display (D3)
+description = 1D plot and table display using D3
+core = 7.x
+package = NTL ModDev
+scripts[] = d3.js
+

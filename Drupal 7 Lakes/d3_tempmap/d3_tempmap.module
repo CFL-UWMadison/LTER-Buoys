@@ -94,6 +94,7 @@ else if ($lakeid == 'TR') {
 $sql_getdays = "(SELECT min(daynum) as minday, max(daynum) as maxday FROM `".$table_name."` where year4 = 2015)";
 db_set_active('dbmaker');
 $result = db_query($sql_getdays);
+db_set_active('default');
 
 foreach ($result as $row) {  
   $php_min_day = $row->minday;
@@ -111,7 +112,10 @@ for ($col=0; $col<$php_numdays; $col++) {
      $curday = $php_min_day + $col;
 
      $sqlstatement = "(SELECT sampledate, depth, wtemp FROM `".$table_name."` where year4=2015 and daynum=" .$curday .")";
-     $result = db_query($sqlstatement); 
+     db_set_active('dbmaker');
+     $result = db_query($sqlstatement);
+     db_set_active('default');
+ 
 	 foreach ($result as $row) { 
         $php_dates[$col] = $row->sampledate;	 		
 		$depth = $row->depth;
@@ -124,7 +128,6 @@ for ($col=0; $col<$php_numdays; $col++) {
 		}//for $i			
 	}//foreach	 
 }//for $col
-db_set_active('default');
 
 $GLOBALS['numdays'] = $php_numdays; 
 $GLOBALS['numdepths'] = $php_num_depths;

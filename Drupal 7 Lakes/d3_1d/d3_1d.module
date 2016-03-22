@@ -76,18 +76,16 @@ function get_data1d($lakeid, $variable) {
     $sqlstatement = get_sql_query($lakeid, $variable);
 	db_set_active('dbmaker');
 	$result = db_query($sqlstatement);
+	db_set_active('default');
 
 	//Initialize arrays
 	$idx = 0;
 	$Dates = array();
 	$Values = array();
-
 	foreach ($result as $row) {  
 	  $Dates[$idx] = $row->sampledate;
 	  $Values[$idx++] = $row->$variable;
 	}
-	db_set_active('default');
-
 	$GLOBALS['numsamps'] = $idx;
 	$GLOBALS['Dates'] = $Dates;
 	$GLOBALS['Values'] = $Values;
@@ -98,25 +96,45 @@ function get_sql_query($lakeid, $variable) {
 
 	//$lakeid = 'ME';        //test cases
 	//$variable = 'totnuf';
+	//Defaults
 	$lakestr = "'".$lakeid."'";
-
+	$flag = 'flag'.$variable;
+	$datetype = 'Ymd';  //%Y-%m-%d
+	
 	switch ($variable) {
 	   case 'totnuf':
 	   case 'totpuf':
 	   case 'chlor':
 	   case 'doc':
 		$table_name = 'chemphys'; 
-		$flag = 'flag'.$variable;
-		$datetype = 'Ymd';  //%Y-%m-%d
 	    $sqlstatement = "(SELECT sampledate , $variable FROM `".$table_name."` WHERE depth=0 AND $variable IS NOT NULL AND $flag IS NULL AND lakeid=$lakestr)";
-	   break;
-	   
+	   break;	   
 	   case 'ice_duration':
 	    $lakename = get_lakename($lakeid);
 		$lakestr = "'".$lakename."'";
+		$table_name = 'icedata';
 		$datetype = 'Y';
-        $sqlstatement = "(SELECT start_year as sampledate, $variable FROM `icedata` WHERE lakename=$lakestr AND $variable > -1 ORDER BY sampledate ASC)"; 		 
+        $sqlstatement = "(SELECT start_year as sampledate, $variable FROM `".$table_name."` WHERE lakename=$lakestr AND $variable > -1 ORDER BY sampledate ASC)"; 		 
        break;
+	   case 'lake_level':
+        $table_name = 'sample';
+		$var_fieldname = 'llevel_elevation';
+	    $sqlstatement = "(SELECT sampledate , $var_fieldname as $variable FROM `".$table_name."` WHERE $var_fieldname IS NOT NULL AND lakeid=$lakestr)";
+	   break;
+	   case 'secchi':
+        $table_name = 'sample';
+		$var_fieldname = 'secnview';
+	    $sqlstatement = "(SELECT sampledate , $var_fieldname as $variable FROM `".$table_name."` WHERE $var_fieldname IS NOT NULL AND lakeid=$lakestr)";	     
+	   break;
+	   //Get Fish
+	   case 'fish':
+	     $table_name = 'fish_richness';
+		 $var_fieldname = 'richness';
+		 $datetype = 'Y';
+        $sqlstatement = "(SELECT year4 as sampledate, $var_fieldname as $variable FROM `".$table_name."` WHERE $var_fieldname IS NOT NULL AND lakeid=$lakestr)"; 		 
+		 
+	   break;
+	  
 	}
 
    $GLOBALS['datetype'] = $datetype;
@@ -148,6 +166,18 @@ function get_plain_title($lakeid, $variable) {
 	  case 'ice_duration':
 		$data_type = "Duration of Ice Cover";
 		$units = "days";	  
+	  break;
+	  case 'lake_level':
+		$data_type = "Lake Level Elevation";
+		$units = "meters above sea level";	  
+	  break;
+	  case 'secchi':
+		$data_type = "Secchi Depth";
+		$units = "meters";	  
+	  break;
+	  case 'fish':
+	    $data_type = "Species Richness";
+		$units = "number of species";
 	  break;
   }
   //The units get sent to the js file, so set as a global variable.
