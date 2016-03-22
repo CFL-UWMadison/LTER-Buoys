@@ -1,0 +1,61 @@
+.lt_label {
+  font-size: 14px;
+}
+.lt_text {
+  font-size: 15px;
+  font-style: normal;
+}
+.lake_photo_icon {
+  display: block;
+/*  margin: auto;*/
+  margin-left: 20%;
+  margin-top: 15%;
+  height: 60%;
+  width: 60%;
+}
+.lakelt_header {
+  color: gray;
+  margin: 1em;
+  font-size: 13px;
+  text-decoration: underline;
+}
+#lakelt_chem {
+  border: 1px solid white;
+  width: 960px;
+}
+.lakelt_chem_sub {
+  display: inline-block;
+  vertical-align: top; 
+  text-align: center;
+  border: 1px solid white;  
+  width: 150px;
+  height: 100px;
+  margin: .75em;
+}
+#lakelt_bio {
+  border: 1px solid white;
+  width: 960px;
+}
+.lakelt_bio_sub {
+  display: inline-block;
+  vertical-align: top;
+  text-align: center;
+  border: 1px solid white;  
+  width: 150px;
+  height: 100px;
+  margin: .75em;
+}
+#lakelt_phys {
+  border: 1px solid white;
+  width: 960px;
+}
+.lakelt_phys_sub{
+
+  display: inline-block;
+  vertical-align: top;
+  text-align: center;
+  border: 1px solid white;  
+  width: 150px;
+  height: 100px;
+  margin: .75em;
+}

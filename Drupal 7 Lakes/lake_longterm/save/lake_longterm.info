@@ -1,0 +1,6 @@
+name = Lake Long Term Data
+description = Display lake long-term data on lakeinfo pages. 
+core = 7.x
+package = NTL ModDev
+dependencies[] = block
+scripts[] = d3.js
