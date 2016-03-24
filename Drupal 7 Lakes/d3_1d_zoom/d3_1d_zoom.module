@@ -22,15 +22,15 @@ function d3_1d_zoom($lakeid,$variable) {
   get_data1dzoom($lakeid, $variable);
   //Get a plain language string for title
   $plain_title = get_plain_title_zoom($lakeid, $variable);
-  $plain_title = $plain_title."&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(drag to zoom)";
+  $plain_title = $plain_title;
 
   $content = array();
 
   $content['plot_title'] = array(
     '#type' => 'markup',
     '#markup' => $plain_title,
-    '#prefix' => '<h4 style="margin-left:50px;">',
-    '#suffix' => '</h4>',
+    '#prefix' => '<h1 style="margin-left:50px;">',
+    '#suffix' => '</h1>',
   );
 
   //Use a container
@@ -60,9 +60,10 @@ function d3_1d_zoom($lakeid,$variable) {
 	      'data' => array(
  	         'numsamps' => $GLOBALS['numsamps'], 
  	         'Dates' => $GLOBALS['Dates'],
-             'datetype' => $GLOBALS['datetype'],			 
+           'datetype' => $GLOBALS['datetype'],			 
  	         'Values' => $GLOBALS['Values'],
-             'units' => $GLOBALS['units'],
+           'units' => $GLOBALS['units'],
+           'dataset' => $GLOBALS['dataset'],
            ),
          ),
        ),
@@ -101,6 +102,7 @@ function get_sql_query_zoom($lakeid, $variable) {
 	$lakestr = "'".$lakeid."'";
 	$flag = 'flag'.$variable;
 	$datetype = 'Ymd';  //%Y-%m-%d
+	$dataset = "55093";
 	
 	switch ($variable) {
 	   case 'totnuf':
@@ -112,33 +114,36 @@ function get_sql_query_zoom($lakeid, $variable) {
 	   break;	   
 	   case 'ice_duration':
 	    $lakename = get_lakename_zoom($lakeid);
-		$lakestr = "'".$lakename."'";
-		$table_name = 'icedata';
-		$datetype = 'Y';
-        $sqlstatement = "(SELECT start_year as sampledate, $variable FROM `".$table_name."` WHERE lakename=$lakestr AND $variable > -1 ORDER BY sampledate ASC)"; 		 
+	    $lakestr = "'".$lakename."'";
+	    $table_name = 'icedata';
+	    $datetype = 'Y';
+      $sqlstatement = "(SELECT start_year as sampledate, $variable FROM `".$table_name."` WHERE lakename=$lakestr AND $variable > -1 ORDER BY sampledate ASC)"; 		 
        break;
 	   case 'lake_level':
-        $table_name = 'sample';
-		$var_fieldname = 'llevel_elevation';
-	    $sqlstatement = "(SELECT sampledate , $var_fieldname as $variable FROM `".$table_name."` WHERE $var_fieldname IS NOT NULL AND lakeid=$lakestr)";
+	   	 $dataset = "55099";
+	   	 $table_name = 'sample';
+	   	 $var_fieldname = 'llevel_elevation';
+	   	 $sqlstatement = "(SELECT sampledate , $var_fieldname as $variable FROM `".$table_name."` WHERE $var_fieldname IS NOT NULL AND lakeid=$lakestr)";
 	   break;
 	   case 'secchi':
-        $table_name = 'sample';
-		$var_fieldname = 'secnview';
-	    $sqlstatement = "(SELECT sampledate , $var_fieldname as $variable FROM `".$table_name."` WHERE $var_fieldname IS NOT NULL AND lakeid=$lakestr)";	     
+	   	 $dataset = "55095";
+	   	 $table_name = 'sample';
+	   	 $var_fieldname = 'secnview';
+	   	 $sqlstatement = "(SELECT sampledate , $var_fieldname as $variable FROM `".$table_name."` WHERE $var_fieldname IS NOT NULL AND lakeid=$lakestr)";	     
 	   break;
 	   //Get Fish
 	   case 'fish':
-	     $table_name = 'fish_richness';
-		 $var_fieldname = 'richness';
-		 $datetype = 'Y';
-        $sqlstatement = "(SELECT year4 as sampledate, $var_fieldname as $variable FROM `".$table_name."` WHERE $var_fieldname IS NOT NULL AND lakeid=$lakestr)"; 		 
+	   	 $table_name = 'fish_richness';
+	   	 $var_fieldname = 'richness';
+	   	 $datetype = 'Y';
+       $sqlstatement = "(SELECT year4 as sampledate, $var_fieldname as $variable FROM `".$table_name."` WHERE $var_fieldname IS NOT NULL AND lakeid=$lakestr)"; 		 
 		 
 	   break;
 	  
 	}
 
    $GLOBALS['datetype'] = $datetype;
+   $GLOBALS['dataset'] = $dataset;
    return $sqlstatement;
 
 }
@@ -149,36 +154,36 @@ function get_plain_title_zoom($lakeid, $variable) {
   
   switch ($variable) {
 	  case 'totnuf':
-		$data_type = "Surface Concentration of Total N, Unfiltered";
-		$units = "micrograms per liter";
-      break;			
+	  	$data_type = "Surface Concentration of Total N, Unfiltered";
+	  	$units = "micrograms per liter";
+    break;			
 	  case 'totpuf':
-		$data_type = "Surface Concentration of Total P, Unfiltered";
-		$units = "micrograms per liter";
+	  	$data_type = "Surface Concentration of Total P, Unfiltered";
+	  	$units = "micrograms per liter";
 	  break;
 	  case 'doc':
-		$data_type = "Surface Concentration of Dissolved Organic Carbon";
-		$units = "milligrams per liter";
+	  	$data_type = "Surface Concentration of Dissolved Organic Carbon";
+	  	$units = "milligrams per liter";
 	  break;
 	  case 'chlor':
-		$data_type = "Surface Concentration of Chlorophyll";
-		$units = "micrograms per liter";
+	  	$data_type = "Surface Concentration of Chlorophyll";
+	  	$units = "micrograms per liter";
 	  break;
 	  case 'ice_duration':
-		$data_type = "Duration of Ice Cover";
-		$units = "days";	  
+	  	$data_type = "Duration of Ice Cover";
+	  	$units = "days";	  
 	  break;
 	  case 'lake_level':
-		$data_type = "Lake Level Elevation";
-		$units = "meters above sea level";	  
+	  	$data_type = "Lake Level Elevation";
+	  	$units = "meters above sea level";	  
 	  break;
 	  case 'secchi':
-		$data_type = "Secchi Depth";
-		$units = "meters";	  
+	  	$data_type = "Secchi Depth";
+	  	$units = "meters";	  
 	  break;
 	  case 'fish':
-	    $data_type = "Species Richness";
-		$units = "number of species";
+	  	$data_type = "Species Richness";
+	  	$units = "number of species";
 	  break;
   }
   //The units get sent to the js file, so set as a global variable.
