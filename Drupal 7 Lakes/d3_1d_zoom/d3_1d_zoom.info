@@ -1,0 +1,6 @@
+name = 1D Plot Zoom (D3)
+description = 1D plots using D3 library zoomable
+core = 7.x
+package = NTL ModDev
+scripts[] = d3.js
+
