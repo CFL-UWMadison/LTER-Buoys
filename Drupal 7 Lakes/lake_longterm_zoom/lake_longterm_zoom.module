@@ -1,0 +1,502 @@
+<?php
+/*
+ *  Extract parameters from the URL;
+*/
+if (arg(1) == 'lake-mendota') $GLOBALS['lakeid'] = 'ME';
+if (arg(1) == 'lake-monona') $GLOBALS['lakeid'] = 'MO';
+if (arg(1) == 'lake-wingra') $GLOBALS['lakeid'] = 'WI';
+if (arg(1) == 'fish-lake') $GLOBALS['lakeid'] = 'FI';
+if (arg(1) == 'trout-lake') $GLOBALS['lakeid'] = 'TR';
+if (arg(1) == 'sparkling-lake') $GLOBALS['lakeid'] = 'SP';
+if (arg(1) == 'crystal-lake') $GLOBALS['lakeid'] = 'CR';
+if (arg(1) == 'trout-bog') $GLOBALS['lakeid'] = 'TB'; 
+if (arg(1) == 'allequash-lake') $GLOBALS['lakeid'] = 'AL';
+if (arg(1) == 'big-muskellunge-lake') $GLOBALS['lakeid'] = 'BM';
+if (arg(1) == 'crystal-bog') $GLOBALS['lakeid'] = 'CB';
+	
+/*
+ *  Implements hook_block_info();
+*/
+function lake_longterm_zoom_block_info() {
+  //$blocks = array();
+  $blocks['lakelt_block'] = array(
+    'info' => t('Lake Long-Term'),
+    'status' => TRUE,
+    'region' => 'sidebar_first',
+  );
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view
+ */
+function lake_longterm_zoom_block_view() {
+
+//  $block['subject'] = t('Lake Long-Term Data');
+  $block['content'] = lake_longterm_zoom_content();
+  return $block;
+}
+
+function lake_longterm_zoom_content() {
+
+  $lakeid = $GLOBALS['lakeid']; 
+  $content = array();
+	$macrophytes = array('ME', 'MO', 'WI', 'FI', 'CR', 'TR');
+
+
+  $content['main_block'] = array(
+    '#type' => 'container',
+    '#attributes' => array(
+       'id' => array('lakelt_main'),
+     ),
+  );
+  $content['main_block']['title'] = array(
+    '#type' => 'markup',
+    '#markup' => '<h5>Long-Term Data:</h5>',
+  );
+  $content['main_block']['css_content'] = array(
+    '#type' => 'markup',
+    '#attached' => array(
+      'css' => array(
+        drupal_get_path('module','lake_longterm_zoom').'/lake_longterm_zoom.css',
+      ),
+    ),  
+  );
+
+
+
+/****************************************************************
+              CHEMICAL CONTAINERS
+****************************************************************/
+//
+//Create a main div for chemical limnology
+  $content['main_block']['container_chemical'] = array(
+    '#type' => 'container',
+    '#attributes' => array(
+       'id' => array('lakelt_chem'),
+     ),
+  );
+  //Title
+  $content['main_block']['container_chemical']['title'] = array(
+    '#type' => 'markup',
+    '#markup' => '<h5 class="lakelt_header">Chemical Limnology</h5>'
+  );
+ //Subcontainer for nitrogen
+  $content['main_block']['container_chemical']['chemical_nitrogen'] = array(
+    '#type' => 'container',
+    '#attributes' => array(
+       'id' => array('lakelt_n'),
+       'class' => array('lakelt_chem_sub'),
+     ),
+  );
+ //Subcontainer for phosphorus
+  $content['main_block']['container_chemical']['chemical_phosphorus'] = array(
+    '#type' => 'container',
+    '#attributes' => array(
+       'id' => array('lakelt_p'),
+       'class' => array('lakelt_chem_sub'),
+     ),
+  );
+ //Subcontainer for doc
+  $content['main_block']['container_chemical']['chemical_doc'] = array(
+    '#type' => 'container',
+    '#attributes' => array(
+       'id' => array('lakelt_doc'),
+      'class' => array('lakelt_chem_sub'),
+     ),
+  ); 
+
+/****************************************************************
+              CHEMICAL CONTENT
+****************************************************************/
+//Nitrogen
+  $n_photo = array(
+   'path' => drupal_get_path('module','lake_longterm_zoom').'/images/n.jpg',
+   'alt' => t('Nitrogen'),
+   'attributes' => array('class' => 'lake_photo_icon'),
+  );
+  $content['main_block']['container_chemical']['chemical_nitrogen']['link'] = array(
+    '#type' => 'link',
+    '#title' => theme('image',$n_photo),
+    '#href' => '1dPlotzoom/'.$lakeid.'/totnuf',
+    '#options' => array(
+       'attributes' => array(),
+       'html' => TRUE,
+    ),
+  );
+  $content['main_block']['container_chemical']['chemical_nitrogen']['label'] = array(
+   '#type' => 'markup',
+   '#markup' => t('<p class="lt_label">Total Nitrogen</p>'),
+  ); 
+//Phosphorus
+  $p_photo = array(
+   'path' => drupal_get_path('module','lake_longterm_zoom').'/images/p.jpg',
+   'alt' => t('Phosphorus'),
+   'attributes' => array('class' => 'lake_photo_icon'),
+  );
+  $content['main_block']['container_chemical']['chemical_phosphorus']['link'] = array(
+    '#type' => 'link',
+    '#title' => theme('image',$p_photo),
+    '#href' => '1dPlotzoom/'.$lakeid.'/totpuf',
+    '#options' => array(
+       'attributes' => array(),
+       'html' => TRUE,
+    ),
+  );
+  $content['main_block']['container_chemical']['chemical_phosphorus']['label'] = array(
+   '#type' => 'markup',
+   '#markup' => t('<p class="lt_label">Total Phosphorus</p>'),
+  ); 
+//DOC
+  $c_photo = array(
+   'path' => drupal_get_path('module','lake_longterm_zoom').'/images/c.jpg',
+   'alt' => t('Carbon'),
+   'attributes' => array('class' => 'lake_photo_icon'),
+  );
+  $content['main_block']['container_chemical']['chemical_doc']['link'] = array(
+    '#type' => 'link',
+    '#title' => theme('image',$c_photo),
+    '#href' => '1dPlotzoom/'.$lakeid.'/doc',
+    '#options' => array(
+       'attributes' => array(),
+       'html' => TRUE,
+    ),
+  );
+  $content['main_block']['container_chemical']['chemical_doc']['label'] = array(
+   '#type' => 'markup',
+   '#markup' => t('<p class="lt_label">Dissolved Organic Carbon</p>'),
+  ); 
+
+
+/* 
+// THE OLD
+//Total Nitrogen
+  $content['main_block']['container_chemical']['chemical_nitrogen']['link'] = array(
+    '#type' => 'link',
+    '#title' => t('<h6 class="lt_text">Total Nitrogen<h6>'),
+    '#href' => '1dPlotzoom/'.$lakeid.'/totnuf',
+    '#options' => array(
+       'attributes' => array(),
+       'html' => TRUE,
+    ),
+  );
+//Total Phosphorus
+  $content['main_block']['container_chemical']['chemical_phosphorus']['link'] = array(
+    '#type' => 'link',
+    '#title' => t('<h6 class="lt_text">Total Phosphorus<h6>'),
+    '#href' => '1dPlotzoom/'.$lakeid.'/totpuf',
+    '#options' => array(
+       'attributes' => array(),
+       'html' => TRUE,
+    ),
+  );
+//Dissolved Organic Carbon
+  $content['main_block']['container_chemical']['chemical_doc']['link'] = array(
+    '#type' => 'link',
+    '#title' => t('<h6 class="lt_text">Dissolved Organic Carbon<h6>'),
+    '#href' => '1dPlotzoom/'.$lakeid.'/doc',
+    '#options' => array(
+       'attributes' => array(),
+       'html' => TRUE,
+    ),
+  );
+*/
+
+/****************************************************************
+              BIOLOGY CONTAINERS
+****************************************************************/
+
+// 
+//Create a main div for biology
+  $content['main_block']['container_biology'] = array(
+    '#type' => 'container',
+    '#attributes' => array(
+       'id' => array('lakelt_bio'),
+     ),
+  );
+  $content['main_block']['container_biology']['title'] = array(
+    '#type' => 'markup',
+    '#markup' => '<h5 class="lakelt_header">Biology</h5>'
+  );
+ //Subcontainer for fish
+  $content['main_block']['container_biology']['biology_fish'] = array(
+    '#type' => 'container',
+    '#attributes' => array(
+       'id' => array('lakelt_fish'),
+       'class' => array('lakelt_bio_sub'),
+     ),
+  );
+
+//Subcontainer for macrophytes  
+if (in_array($lakeid, $macrophytes)) {
+  $content['main_block']['container_biology']['biology_macro'] = array(
+    '#type' => 'container',
+    '#attributes' => array(
+       'id' => array('lakelt_macro'),
+       'class' => array('lakelt_bio_sub'),
+     ),
+  );
+}
+ //Subcontainer for phytoplankton
+  $content['main_block']['container_biology']['biology_phyto'] = array(
+    '#type' => 'container',
+    '#attributes' => array(
+       'id' => array('lakelt_phyto'),
+       'class' => array('lakelt_bio_sub'),
+     ),
+  );
+ //Subcontainer for zooplankton
+  $content['main_block']['container_biology']['biology_zoop'] = array(
+    '#type' => 'container',
+    '#attributes' => array(
+       'id' => array('lakelt_zoop'),
+       'class' => array('lakelt_bio_sub'),
+     ),
+  );
+if ( $lakeid != 'CB') {
+ //Subcontainer for chlorophyll
+  $content['main_block']['container_biology']['biology_chlor'] = array(
+    '#type' => 'container',
+    '#attributes' => array(
+       'id' => array('lakelt_chlor'),
+	   'class' => array('lakelt_bio_sub'),
+     ),
+  );
+}
+/****************************************************************
+              BIOLOGY CONTENT
+****************************************************************/
+
+//Fish
+  $fish_photo = array(
+   'path' => drupal_get_path('module','lake_longterm_zoom').'/images/yellowperch.jpg',
+   'alt' => t('Fish Icon'),
+   'attributes' => array('class' => 'lake_photo_icon'),
+  );
+  $content['main_block']['container_biology']['biology_fish']['link'] = array(
+    '#type' => 'link',
+    '#title' => theme('image',$fish_photo),
+    '#href' => 'https://lter6.limnology.wisc.edu/lake-bio/'.$lakeid.'/fish',
+    '#options' => array(
+       'attributes' => array(),
+       'html' => TRUE,
+    ),
+  );
+  $content['main_block']['container_biology']['biology_fish']['label'] = array(
+   '#type' => 'markup',
+   '#markup' => t('<p class="lt_label">Fish</p>'),
+  ); 
+//Macrophytes
+ if ( in_array($lakeid, $macrophytes) ) {
+  $macrophyte_photo = array(
+   'path' => drupal_get_path('module','lake_longterm_zoom').'/images/macrophyteIcon.jpg',
+   'alt' => t('Macrophyte Icon'),
+   'attributes' => array('class' => 'lake_photo_icon'),
+  );
+  $content['main_block']['container_biology']['biology_macro']['link'] = array(
+    '#type' => 'link',
+    '#title' => theme('image',$macrophyte_photo),
+    '#href' => 'https://lter6.limnology.wisc.edu/lake-bio/'.$lakeid.'/macro',
+    '#options' => array(
+       'attributes' => array(),
+       'html' => TRUE,
+    ),
+  );
+  $content['main_block']['container_biology']['biology_macro']['label'] = array(
+   '#type' => 'markup',
+   '#markup' => t('<p class="lt_label">Macrophytes</p>'),
+  ); 
+}
+//Phytoplankton
+  $phyto_photo = array(
+   'path' => drupal_get_path('module','lake_longterm_zoom').'/images/diatom3.jpg',
+   'alt' => t('Phytoplankton Icon'),
+   'attributes' => array('class' => 'lake_photo_icon'),
+  );
+  $content['main_block']['container_biology']['biology_phyto']['link'] = array(
+    '#type' => 'link',
+    '#title' => theme('image',$phyto_photo),
+    '#href' => 'https://lter6.limnology.wisc.edu/lake-bio/'.$lakeid.'/phyto',
+    '#options' => array(
+       'attributes' => array(),
+       'html' => TRUE,
+    ),
+  );
+  $content['main_block']['container_biology']['biology_phyto']['label'] = array(
+   '#type' => 'markup',
+   '#markup' => t('<p class="lt_label">Phytoplankton</p>'),
+  ); 
+//Zooplankton
+  $zoop_photo = array(
+   'path' => drupal_get_path('module','lake_longterm_zoom').'/images/zooplanktonIcon.jpg',
+   'alt' => t('Zooplankton Icon'),
+   'attributes' => array('class' => 'lake_photo_icon'),
+  );
+  $content['main_block']['container_biology']['biology_zoop']['link'] = array(
+    '#type' => 'link',
+    '#title' => theme('image',$zoop_photo),
+    '#href' => 'https://lter6.limnology.wisc.edu/lake-bio/'.$lakeid.'/zoop',
+    '#options' => array(
+       'attributes' => array(),
+       'html' => TRUE,
+    ),
+  );  
+  $content['main_block']['container_biology']['biology_zoop']['label'] = array(
+   '#type' => 'markup',
+   '#markup' => t('<p class="lt_label">Zooplankton</p>'),
+  ); 
+
+//Chlorophyll
+if ( $lakeid != 'CB') {
+  $chlor_photo = array(
+   'path' => drupal_get_path('module','lake_longterm_zoom').'/images/chlor.jpg',
+   'alt' => t('Chlorophyll Icon'),
+   'attributes' => array('class' => 'lake_photo_icon'),
+  );
+  $content['main_block']['container_biology']['biology_chlor']['link'] = array(
+    '#type' => 'link',
+    '#title' => theme('image',$chlor_photo),
+    '#href' => '1dPlotzoom/'.$lakeid.'/chlor',
+    '#options' => array(
+       'attributes' => array(),
+       'html' => TRUE,
+    ),
+  );
+  $content['main_block']['container_biology']['biology_chlor']['label'] = array(
+   '#type' => 'markup',
+   '#markup' => t('<p class="lt_label">Chlorophyll</p>'),
+  ); 
+}
+
+/*
+//Chlor
+  $content['main_block']['container_biology']['biology_chlor']['link'] = array(
+    '#type' => 'link',
+    '#title' => t('<h6 class="lt_text">Chlorophyll<h6>'),
+    '#href' => '1dPlotzoom/'.$lakeid.'/chlor',
+    '#options' => array(
+       'attributes' => array(),
+       'html' => TRUE,
+    ),
+  );    
+*/  
+  
+/****************************************************************
+              PHYSICAL CONTAINERS
+****************************************************************/
+// 
+// 
+//Create a main div for physical
+  $content['main_block']['container_physical'] = array(
+    '#type' => 'container',
+    '#attributes' => array(
+       'id' => array('lakelt_phys'),
+     ),
+  );
+  $content['main_block']['container_physical']['title'] = array(
+    '#type' => 'markup',
+    '#markup' => '<h5 class="lakelt_header">Physical Limnology</h5>'
+  );
+
+//Subcontainer for ice cover
+if($lakeid != 'FI') {
+  $content['main_block']['container_physical']['physical_ice'] = array(
+    '#type' => 'container',
+    '#attributes' => array(
+       'id' => array('lakelt_ice'),
+	   'class' => array('lakelt_phys_sub'),
+     ),
+  );
+}
+
+ //Subcontainer for water level
+if($lakeid != 'WI' && $lakeid != 'FI') {
+  $content['main_block']['container_physical']['physical_wlevel'] = array(
+    '#type' => 'container',
+    '#attributes' => array(
+       'id' => array('lakelt_wlevel'),
+	   'class' => array('lakelt_phys_sub'),
+     ),
+  );
+}
+ //Subcontainer for secchi depths
+  $content['main_block']['container_physical']['physical_secchi'] = array(
+    '#type' => 'container',
+    '#attributes' => array(
+       'id' => array('lakelt_secchi'),
+	   'class' => array('lakelt_phys_sub'),
+     ),
+  );
+/****************************************************************
+              PHYSICAL CONTENT
+****************************************************************/
+  
+//Ice Duration
+if($lakeid != 'FI') {
+  $ice_photo = array(
+   'path' => drupal_get_path('module','lake_longterm_zoom').'/images/iceIcon.jpg',
+   'alt' => t('Ice Icon'),
+   'attributes' => array('class' => 'lake_photo_icon'),
+  );
+  $content['main_block']['container_physical']['physical_ice']['link'] = array(
+    '#type' => 'link',
+    '#title' => theme('image',$ice_photo),
+    '#href' => '1dPlotzoom/'.$lakeid.'/ice_duration',
+    '#options' => array(
+       'attributes' => array(),
+       'html' => TRUE,
+    ),
+  );
+  $content['main_block']['container_physical']['physical_ice']['label'] = array(
+   '#type' => 'markup',
+   '#markup' => t('<p class="lt_label">Ice Duration</p>'),
+  ); 
+}
+
+if($lakeid != 'WI' && $lakeid != 'FI') {
+  //Lake Levels
+  $wlevel_photo = array(
+   'path' => drupal_get_path('module','lake_longterm_zoom').'/images/waterlevelIcon.jpg',
+   'alt' => t('Lake Level Icon'),
+   'attributes' => array('class' => 'lake_photo_icon'),
+  );
+  $content['main_block']['container_physical']['physical_wlevel']['link'] = array(
+    '#type' => 'link',
+    '#title' => theme('image',$wlevel_photo),
+//    '#href' => 'https://lter.limnology.wisc.edu/lakeinfo/lake-levels?lakeid='.$lakeid.'&system=NTL',
+    '#href' => '1dPlotzoom/'.$lakeid.'/lake_level',
+    '#options' => array(
+       'attributes' => array(),
+       'html' => TRUE,
+    ),
+  );
+  $content['main_block']['container_physical']['physical_wlevel']['label'] = array(
+   '#type' => 'markup',
+   '#markup' => t('<p class="lt_label">Lake Level</p>'),
+  ); 
+}
+  //Secchi Depth
+  $secchi_photo = array(
+   'path' => drupal_get_path('module','lake_longterm_zoom').'/images/secchiIcon.jpg',
+   'alt' => t('Secchi Disk Icon'),
+   'attributes' => array('class' => 'lake_photo_icon'),
+  );
+  $content['main_block']['container_physical']['physical_secchi']['link'] = array(
+    '#type' => 'link',
+    '#title' => theme('image',$secchi_photo),
+    '#href' => '1dPlotzoom/'.$lakeid.'/secchi',
+//    '#href' => 'https://lter.limnology.wisc.edu/lakeinfo/secchi-depths?lakeid='.$lakeid,
+    '#options' => array(
+       'attributes' => array(),
+       'html' => TRUE,
+    ),
+  );  
+  $content['main_block']['container_physical']['physical_secchi']['label'] = array(
+   '#type' => 'markup',
+   '#markup' => t('<p class="lt_label">Secchi Depth</p>'),
+  ); 
+
+  return $content;
+  
+}
+
