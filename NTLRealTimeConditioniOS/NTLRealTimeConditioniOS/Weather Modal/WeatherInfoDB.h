@@ -22,7 +22,7 @@
 -(NSString*) itemArchivePath;
 -(BOOL) saveChanges;
 -(void) loadWeathers;
--(void)favouriteToTheFirst;
--(void) checkForOtherFavourite: (NSString*) newlyFavouriteLakeName;
--(BOOL)noFavourite;
+-(void)homepageToTheFirst;
+-(void) checkForOtherHomepage: (NSString*) newlyHomepageLakeName;
+-(BOOL)noHomepage;
 @end

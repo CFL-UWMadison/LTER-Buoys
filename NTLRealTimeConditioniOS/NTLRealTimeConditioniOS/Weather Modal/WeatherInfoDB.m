@@ -111,7 +111,6 @@
         weatherNew= [self assignPropertyToWeather:weatherNew FromJsonObject:jsonObject];
         [weatherArray addObject:weatherNew];
         weatherNew.favourite = [NSNumber numberWithBool:NO];
-        NSLog(@"%d", [weatherNew.favourite boolValue]);
     }
     return weatherArray;
 }
@@ -129,7 +128,6 @@
         Weather* weatherBeingModified = [self findWeatherByName:[jsonObject objectForKey:@"lakeName"] orID:[jsonObject objectForKey:@"lakeId"] inWeatherArray:dataNeededModified];
         weatherBeingModified = [self assignPropertyToWeather:weatherBeingModified FromJsonObject:jsonObject];
     }
-    NSLog(@"The data has been updated");
     
     return dataNeededModified;
 }
@@ -146,13 +144,15 @@
 
 
 -(NSArray*) getDataFromArgyron{
-    /*NSString* filePath = @"/Users/xu/Desktop/软件/AppForLakeWeather V0.5/AppForLakeWeather V0.5/TestJson.txt";
+    /*
+    NSString* filePath = @"/Users/xu/LTER-Buoys/NTLRealTimeConditioniOS/TestJson.txt";
     NSData* data = [NSData dataWithContentsOfFile:filePath];
-    */
+     */
+    
     NSString* urlString =@"http://thalassa.limnology.wisc.edu:8080/LakeConditionService/webapi/lakeConditions";
     NSURL* url = [NSURL URLWithString:urlString];
+     
     NSData * data = [NSData dataWithContentsOfURL:url];
-    
     NSArray* jsonArray;
     if(data){
         jsonArray = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
@@ -285,7 +285,8 @@
     return [documentDirectory stringByAppendingPathComponent:@"weatherCondition.data"];
 }
 
--(void)favouriteToTheFirst{
+//put the homepage lake to the front
+-(void)homepageToTheFirst{
     //change the order of the array by the favourite
     for (int i =0; i<_privateLakeWeathers.count; i++) {
         Weather* weather = [_privateLakeWeathers objectAtIndex:i];
@@ -297,7 +298,7 @@
     }
 }
 
--(BOOL)noFavourite{
+-(BOOL)noHomepage{
     for(int i =0; i< _privateLakeWeathers.count ;i++){
         Weather* temp = [_privateLakeWeathers objectAtIndex:i];
         if([temp.favourite boolValue]){
@@ -307,7 +308,7 @@
     return YES;
 }
 
--(void) checkForOtherFavourite: (NSString*) newlyFavouriteLakeName{
+-(void) checkForOtherHomepage: (NSString*) newlyFavouriteLakeName{
     for (int i =0; i< _privateLakeWeathers.count;i++){
         Weather* tmp = [_privateLakeWeathers objectAtIndex:i];
         if(![tmp.lakeName isEqualToString:newlyFavouriteLakeName]){

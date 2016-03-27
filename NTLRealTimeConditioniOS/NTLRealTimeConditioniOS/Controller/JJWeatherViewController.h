@@ -7,35 +7,45 @@
 //
 
 #import <UIKit/UIKit.h>
-
 @class Weather;
-@interface JJWeatherViewController : UIViewController <UIPopoverPresentationControllerDelegate>
-//@property (nonatomic)  UIAlertController* ac;
+@interface JJWeatherViewController : UIViewController <UIPopoverPresentationControllerDelegate, UIScrollViewDelegate>
+
+// All of the labels in the xib
+
 @property (weak, nonatomic) IBOutlet UILabel *lakeName;
-@property (weak, nonatomic) IBOutlet UIImageView *questionMark;
-@property (weak, nonatomic) IBOutlet UIImageView *refreshButton;
-@property (weak, nonatomic) IBOutlet UIButton *aboutButton;
 @property (weak, nonatomic) IBOutlet UILabel *airTempC;
 @property (weak, nonatomic) IBOutlet UILabel *windSpeed;
 @property (weak, nonatomic) IBOutlet UILabel *windDir;
 @property (weak, nonatomic) IBOutlet UILabel *waterTempC;
 @property (weak, nonatomic) IBOutlet UILabel *thermocline;
 @property (weak, nonatomic) IBOutlet UILabel *updateTime;
-@property (weak, nonatomic) IBOutlet UILabel *airTempF;
-@property (weak, nonatomic) IBOutlet UILabel *waterTempF;
-@property (weak, nonatomic) IBOutlet UILabel *secchiEstPrompt;
 @property (weak, nonatomic) IBOutlet UILabel *secchiEst;
 @property (weak, nonatomic) IBOutlet UILabel *windSpeedMph;
 @property (weak, nonatomic) IBOutlet UIImageView *windDirImage;
-@property (weak, nonatomic) IBOutlet UIPageControl *pageControl;
-@property (nonatomic) int pageIndex;
-- (IBAction)showAbout:(id)sender;
+
+
+@property (weak, nonatomic) IBOutlet UILabel *airTempPrompt;
+@property (weak, nonatomic) IBOutlet UILabel *waterTempPrompt;
+@property (weak, nonatomic) IBOutlet UILabel *WindDirPrompt;
+@property (weak, nonatomic) IBOutlet UILabel *thermoclinePrompt;
+@property (weak, nonatomic) IBOutlet UILabel *secchiEstPrompt;
+@property (weak, nonatomic) IBOutlet UILabel *windSpeedPrompt;
+
+
+@property (weak, nonatomic) IBOutlet UIButton *aboutButton;
 @property (weak, nonatomic) IBOutlet UIButton *favouriteButton;
 
-@property (nonatomic) Weather* lake; // it will be passed by the model controller
-- (IBAction)setFavourite:(id)sender;
 
--(IBAction)refresh:(id)sender;
--(BOOL) checkOutdatedData: (NSDate*) anotherDate;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityView;
+@property (weak, nonatomic) IBOutlet UIPageControl *pageControl;
+// data field for this view controller
+@property (nonatomic) Weather* lake;
+@property (nonatomic) int pageIndex;
+
+//Action the view controller can do
+- (IBAction)showAbout:(id)sender;
+- (IBAction)setHomePage:(id)sender;
+- (IBAction)refresh:(id)sender;
+
 
 @end

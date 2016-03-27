@@ -33,7 +33,7 @@
     self.pageViewController.delegate = self;
     
     [[WeatherInfoDB sharedDB] loadWeathers];
-    [[WeatherInfoDB sharedDB] favouriteToTheFirst];
+    [[WeatherInfoDB sharedDB] homepageToTheFirst];
     JJWeatherViewController *startingViewController = [self.modelController viewControllerAtIndex:0 storyboard:self.storyboard];
     NSArray *viewControllers = @[startingViewController];
     [self.pageViewController setViewControllers:viewControllers direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
@@ -46,11 +46,11 @@
 
     // Set the page view controller's bounds using an inset rect so that self's view is visible around the edges of the pages.
     CGRect pageViewRect = self.view.bounds;
+    /*
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
         pageViewRect = CGRectInset(pageViewRect, 40.0, 40.0);
-    }
+    }*/
     self.pageViewController.view.frame = pageViewRect;
-
     [self.pageViewController didMoveToParentViewController:self];
     
     // Add the page view controller's gesture recognizers to the book view controller's view so that the gestures are started more easily.
@@ -72,14 +72,13 @@
 }
 
 -(void)displayFavouriteAsFirstPage{
-    if([[WeatherInfoDB sharedDB] noFavourite]){
+    if([[WeatherInfoDB sharedDB] noHomepage]){
         return;
     } else{
-        [[WeatherInfoDB sharedDB] favouriteToTheFirst];
+        [[WeatherInfoDB sharedDB] homepageToTheFirst];
         NSArray* array = [[ WeatherInfoDB sharedDB] allLakes];
         for (int i =0; i<array.count; i++) {
             Weather* weather = [array objectAtIndex:i];
-            NSLog(@"%d, %@",i,weather.lakeName);
         }
     
         JJWeatherViewController *favouriteVC = [self.modelController viewControllerAtIndex:0
