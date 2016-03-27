@@ -1,5 +1,7 @@
 //
 //  ModelController.m
+//
+//
 //  app for limnology Version 0
 //
 //  Created by Junjie on 15/12/8.
@@ -23,8 +25,8 @@
 
 @interface ModelController ()
 
-@property (readonly, strong, nonatomic) NSArray *lakesWeatherData;
-@property (nonatomic) WeatherInfoDB * db;
+@property (readonly, strong, nonatomic) NSArray *lakesWeatherData; // the array for data.
+@property (nonatomic) WeatherInfoDB * db;// the database
 
 @end
 
@@ -68,7 +70,6 @@
         if([viewController.lake.lakeName isEqualToString:weatherInArray.lakeName]){
             return i;
         }
-        
     }
     return -1;
 }
@@ -81,8 +82,6 @@
     if ((index == 0) || (index == NSNotFound)) {
         return nil;
     }
-    NSLog(@"Before is called");
-    NSLog(@"The original index is %lu",(unsigned long)index);
     index--;
     return [self viewControllerAtIndex:index storyboard:viewController.storyboard];
 }
@@ -93,7 +92,6 @@
     if (index == self.lakesWeatherData.count -1 ||   index == NSNotFound) {
         return nil;
     }
-    NSLog(@"After is called, the original index is %lu", (unsigned long)index);
     index++;
     return [self viewControllerAtIndex:index storyboard:viewController.storyboard];
 }
