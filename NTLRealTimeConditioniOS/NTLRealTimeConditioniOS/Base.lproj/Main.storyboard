@@ -407,7 +407,7 @@
                                 <rect key="frame" x="8" y="35" width="304" height="251"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="AirTemp" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" highlighted="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KHI-lv-FA2">
-                                        <rect key="frame" x="105" y="120.5" width="94.5" height="60"/>
+                                        <rect key="frame" x="105" y="125.5" width="94.5" height="60"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="50.5" id="Eq5-3f-jJE"/>
                                         </constraints>
@@ -421,7 +421,7 @@
                                         </variation>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="WaterTemp" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ixe-hy-Z0B">
-                                        <rect key="frame" x="86" y="202.5" width="131" height="60"/>
+                                        <rect key="frame" x="86" y="207.5" width="131" height="60"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="257" id="2Ch-LD-olH"/>
                                             <constraint firstAttribute="height" constant="40" id="vwT-4n-Frg"/>
@@ -437,13 +437,13 @@
                                         </variation>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Air Temperature" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1wh-xG-seB">
-                                        <rect key="frame" x="8" y="99" width="141" height="21.5"/>
+                                        <rect key="frame" x="8" y="104" width="141" height="21.5"/>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                                         <color key="textColor" red="0.64717548079999998" green="0.43587127580000001" blue="0.28642987939999998" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Water Temperature" lineBreakMode="wordWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GlH-oh-GmP">
-                                        <rect key="frame" x="8" y="180.5" width="167" height="21.5"/>
+                                        <rect key="frame" x="8" y="185.5" width="167" height="21.5"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="28" id="BMW-zy-NzJ"/>
                                         </constraints>
@@ -456,14 +456,14 @@
                                             </mask>
                                         </variation>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Data outdated" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RRj-Ub-Zqs">
-                                        <rect key="frame" x="0.0" y="54" width="304" height="37"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sample Date" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RRj-Ub-Zqs">
+                                        <rect key="frame" x="0.0" y="59" width="304" height="37"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="31"/>
                                         <color key="textColor" red="1" green="0.29255908043899792" blue="0.0" alpha="0.77271012931034477" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Mendota" textAlignment="center" lineBreakMode="tailTruncation" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="o4V-eV-eD5">
-                                        <rect key="frame" x="0.0" y="0.0" width="304" height="51.5"/>
+                                        <rect key="frame" x="0.0" y="5" width="304" height="51.5"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="43"/>
                                         <color key="textColor" red="0.55510817310000005" green="0.37253105139999998" blue="0.15463660139999999" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
@@ -524,7 +524,7 @@
                                     <constraint firstItem="ELv-81-lHi" firstAttribute="top" secondItem="o4V-eV-eD5" secondAttribute="top" id="v8h-OB-bJ2"/>
                                     <constraint firstItem="ELv-81-lHi" firstAttribute="top" secondItem="o4V-eV-eD5" secondAttribute="top" id="yqg-zM-1gV"/>
                                     <constraint firstItem="GlH-oh-GmP" firstAttribute="height" secondItem="1wh-xG-seB" secondAttribute="height" id="zBD-RQ-yQE"/>
-                                    <constraint firstItem="o4V-eV-eD5" firstAttribute="top" secondItem="CgK-6r-LCf" secondAttribute="top" id="zOO-Tc-BGj"/>
+                                    <constraint firstItem="o4V-eV-eD5" firstAttribute="top" secondItem="CgK-6r-LCf" secondAttribute="top" constant="5" id="zOO-Tc-BGj"/>
                                 </constraints>
                                 <variation key="default">
                                     <mask key="constraints">
