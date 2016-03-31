@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		959C74171C8C99BE00015326 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 959C74161C8C99BE00015326 /* MessageUI.framework */; };
+		95B419FA1C8C802B0080455B /* RefreshButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 95B419F91C8C802B0080455B /* RefreshButton.png */; };
 		95FED3051C485215008DE29D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 95FED3041C485215008DE29D /* main.m */; };
 		95FED3081C485215008DE29D /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 95FED3071C485215008DE29D /* AppDelegate.m */; };
 		95FED3161C485215008DE29D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 95FED3151C485215008DE29D /* Assets.xcassets */; };
@@ -16,7 +18,6 @@
 		95FED3541C485429008DE29D /* DisclaimerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 95FED34B1C485429008DE29D /* DisclaimerViewController.m */; };
 		95FED3551C485429008DE29D /* DisclaimerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 95FED34C1C485429008DE29D /* DisclaimerViewController.xib */; };
 		95FED3561C485429008DE29D /* JJWeatherViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 95FED34E1C485429008DE29D /* JJWeatherViewController.m */; };
-		95FED3571C485429008DE29D /* JJWeatherViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 95FED34F1C485429008DE29D /* JJWeatherViewController.xib */; };
 		95FED3581C485429008DE29D /* ModelController.m in Sources */ = {isa = PBXBuildFile; fileRef = 95FED3511C485429008DE29D /* ModelController.m */; };
 		95FED3591C485429008DE29D /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 95FED3531C485429008DE29D /* RootViewController.m */; };
 		95FED3611C485435008DE29D /* AppfeatureImage.png in Resources */ = {isa = PBXBuildFile; fileRef = 95FED35A1C485435008DE29D /* AppfeatureImage.png */; };
@@ -53,6 +54,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		959C74161C8C99BE00015326 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
+		95B419F91C8C802B0080455B /* RefreshButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = RefreshButton.png; sourceTree = "<group>"; };
 		95FED3001C485215008DE29D /* NTLRealTimeConditioniOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NTLRealTimeConditioniOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		95FED3041C485215008DE29D /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		95FED3061C485215008DE29D /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -71,7 +74,6 @@
 		95FED34C1C485429008DE29D /* DisclaimerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = DisclaimerViewController.xib; path = NTLRealTimeConditioniOS/Controller/DisclaimerViewController.xib; sourceTree = "<group>"; };
 		95FED34D1C485429008DE29D /* JJWeatherViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JJWeatherViewController.h; path = NTLRealTimeConditioniOS/Controller/JJWeatherViewController.h; sourceTree = "<group>"; };
 		95FED34E1C485429008DE29D /* JJWeatherViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JJWeatherViewController.m; path = NTLRealTimeConditioniOS/Controller/JJWeatherViewController.m; sourceTree = "<group>"; };
-		95FED34F1C485429008DE29D /* JJWeatherViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = JJWeatherViewController.xib; path = NTLRealTimeConditioniOS/Controller/JJWeatherViewController.xib; sourceTree = "<group>"; };
 		95FED3501C485429008DE29D /* ModelController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ModelController.h; path = NTLRealTimeConditioniOS/Controller/ModelController.h; sourceTree = "<group>"; };
 		95FED3511C485429008DE29D /* ModelController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ModelController.m; path = NTLRealTimeConditioniOS/Controller/ModelController.m; sourceTree = "<group>"; };
 		95FED3521C485429008DE29D /* RootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RootViewController.h; path = NTLRealTimeConditioniOS/Controller/RootViewController.h; sourceTree = "<group>"; };
@@ -100,6 +102,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				959C74171C8C99BE00015326 /* MessageUI.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -120,19 +123,32 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		95FED2F71C485215008DE29D = {
+		95C70CB81CA82F080028FEE8 /* SourceCode */ = {
 			isa = PBXGroup;
 			children = (
-				95FED37F1C485855008DE29D /* LaunchScreenXib.xib */,
-				95FED37C1C485743008DE29D /* Main.storyboard */,
-				95FED3681C485442008DE29D /* JJImageTransformer.m */,
 				95FED3691C485442008DE29D /* Weather.h */,
+				95FED3681C485442008DE29D /* JJImageTransformer.m */,
 				95FED36A1C485442008DE29D /* Weather.m */,
 				95FED36B1C485442008DE29D /* Weather+CoreDataProperties.h */,
 				95FED36C1C485442008DE29D /* Weather+CoreDataProperties.m */,
 				95FED36D1C485442008DE29D /* WeatherInfoDB.h */,
 				95FED36E1C485442008DE29D /* WeatherInfoDB.m */,
 				95FED3731C485542008DE29D /* Weather.xcdatamodeld */,
+				95FED34A1C485429008DE29D /* DisclaimerViewController.h */,
+				95FED34B1C485429008DE29D /* DisclaimerViewController.m */,
+				95FED34D1C485429008DE29D /* JJWeatherViewController.h */,
+				95FED34E1C485429008DE29D /* JJWeatherViewController.m */,
+				95FED3501C485429008DE29D /* ModelController.h */,
+				95FED3511C485429008DE29D /* ModelController.m */,
+				95FED3521C485429008DE29D /* RootViewController.h */,
+				95FED3531C485429008DE29D /* RootViewController.m */,
+			);
+			name = SourceCode;
+			sourceTree = "<group>";
+		};
+		95C70CB91CA82F310028FEE8 /* Resource */ = {
+			isa = PBXGroup;
+			children = (
 				95FED35A1C485435008DE29D /* AppfeatureImage.png */,
 				95FED35B1C485435008DE29D /* icon.jpg */,
 				95FED35C1C485435008DE29D /* ntl.jpg */,
@@ -140,16 +156,20 @@
 				95FED35E1C485435008DE29D /* refresh.png */,
 				95FED35F1C485435008DE29D /* settingButton.png */,
 				95FED3601C485435008DE29D /* UW Madison.jpg */,
-				95FED34A1C485429008DE29D /* DisclaimerViewController.h */,
-				95FED34B1C485429008DE29D /* DisclaimerViewController.m */,
+				95B419F91C8C802B0080455B /* RefreshButton.png */,
+			);
+			name = Resource;
+			sourceTree = "<group>";
+		};
+		95FED2F71C485215008DE29D = {
+			isa = PBXGroup;
+			children = (
+				959C74161C8C99BE00015326 /* MessageUI.framework */,
+				95C70CB91CA82F310028FEE8 /* Resource */,
+				95C70CB81CA82F080028FEE8 /* SourceCode */,
+				95FED37F1C485855008DE29D /* LaunchScreenXib.xib */,
+				95FED37C1C485743008DE29D /* Main.storyboard */,
 				95FED34C1C485429008DE29D /* DisclaimerViewController.xib */,
-				95FED34D1C485429008DE29D /* JJWeatherViewController.h */,
-				95FED34E1C485429008DE29D /* JJWeatherViewController.m */,
-				95FED34F1C485429008DE29D /* JJWeatherViewController.xib */,
-				95FED3501C485429008DE29D /* ModelController.h */,
-				95FED3511C485429008DE29D /* ModelController.m */,
-				95FED3521C485429008DE29D /* RootViewController.h */,
-				95FED3531C485429008DE29D /* RootViewController.m */,
 				95FED3021C485215008DE29D /* NTLRealTimeConditioniOS */,
 				95FED3221C485216008DE29D /* NTLRealTimeConditioniOSTests */,
 				95FED32D1C485216008DE29D /* NTLRealTimeConditioniOSUITests */,
@@ -273,6 +293,7 @@
 				TargetAttributes = {
 					95FED2FF1C485215008DE29D = {
 						CreatedOnToolsVersion = 7.1.1;
+						DevelopmentTeam = C658W77DY8;
 					};
 					95FED31E1C485216008DE29D = {
 						CreatedOnToolsVersion = 7.1.1;
@@ -313,9 +334,9 @@
 				95FED3621C485435008DE29D /* icon.jpg in Resources */,
 				95FED3551C485429008DE29D /* DisclaimerViewController.xib in Resources */,
 				95FED37E1C485743008DE29D /* Main.storyboard in Resources */,
-				95FED3571C485429008DE29D /* JJWeatherViewController.xib in Resources */,
 				95FED3671C485435008DE29D /* UW Madison.jpg in Resources */,
 				95FED3631C485435008DE29D /* ntl.jpg in Resources */,
+				95B419FA1C8C802B0080455B /* RefreshButton.png in Resources */,
 				95FED3801C485855008DE29D /* LaunchScreenXib.xib in Resources */,
 				95FED3661C485435008DE29D /* settingButton.png in Resources */,
 				95FED3161C485215008DE29D /* Assets.xcassets in Resources */,
@@ -495,10 +516,16 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				INFOPLIST_FILE = NTLRealTimeConditioniOS/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = LTER.NTLRealTimeConditioniOS;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Lter.NTLRealTimeCondition;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -506,10 +533,16 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				INFOPLIST_FILE = NTLRealTimeConditioniOS/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = LTER.NTLRealTimeConditioniOS;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Lter.NTLRealTimeCondition;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

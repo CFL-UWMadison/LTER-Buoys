@@ -7,10 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <MessageUI/MessageUI.h>
 
-@interface DisclaimerViewController : UIViewController
+@interface DisclaimerViewController : UIViewController <MFMailComposeViewControllerDelegate>
+
+@property MFMailComposeViewController* mail;
+
 - (IBAction)returnButton:(id)sender;
-@property (weak, nonatomic) IBOutlet UINavigationItem *navigator;
+- (IBAction)feedback:(id)sender;
+
 
 
 @end

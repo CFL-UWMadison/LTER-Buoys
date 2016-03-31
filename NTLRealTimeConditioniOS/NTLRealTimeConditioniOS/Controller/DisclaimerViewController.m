@@ -1,12 +1,13 @@
 //
 //  DisclaimerViewController.m
-//  AppForLakeWeather V0.5
+//  It's the view controller controlling the "About" view. This module contains feedback button, disclamier
 //
 //  Created by Junjie on 16/1/9.
 //  Copyright © 2016年 Junjie. All rights reserved.
 //
 
 #import "DisclaimerViewController.h"
+
 
 @interface DisclaimerViewController ()
 
@@ -37,5 +38,22 @@
 - (IBAction)returnButton:(id)sender {
     [self dismissViewControllerAnimated:YES completion:nil];
     
+}
+- (IBAction)feedback:(id)sender {
+    self.mail = [[MFMailComposeViewController alloc]init];
+    self.mail.mailComposeDelegate = self;
+    [self.mail setSubject:@"Feedback for the LTER App"];
+    
+    NSArray* recipents = @[@"jxu259@wisc.edu"];
+    [self.mail setToRecipients:recipents];
+    
+    NSString* messageBody = @"Hello";
+    [self.mail setMessageBody:messageBody isHTML:YES];
+    
+    [self presentViewController:self.mail animated:YES completion:^{NSLog(@"HELLO");}];
+}
+
+-(void) mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error{
+    [self.mail dismissViewControllerAnimated:YES completion:nil];
 }
 @end
