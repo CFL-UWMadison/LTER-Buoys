@@ -54,8 +54,8 @@ function d3_1d_zoom($lakeid,$variable) {
   $content['div_container']['plot_container']['plot_title'] = array(
     '#type' => 'markup',
     '#markup' => $plain_title,
-    '#prefix' => '<h1 style="margin-left:50px;">',
-    '#suffix' => '</h1>',
+    '#prefix' => '<h4 style="margin-left:50px;">',
+    '#suffix' => '</h4>',
   );
   
 
@@ -210,11 +210,11 @@ function get_plain_title_zoom($lakeid, $variable) {
   
   switch ($variable) {
 	  case 'totnuf':
-	  	$data_type = "Surface Concentration of Total N, Unfiltered";
+	  	$data_type = "Surface Concentration of Total N";
 	  	$units = "micrograms per liter";
     break;			
 	  case 'totpuf':
-	  	$data_type = "Surface Concentration of Total P, Unfiltered";
+	  	$data_type = "Surface Concentration of Total P";
 	  	$units = "micrograms per liter";
 	  break;
 	  case 'doc':
