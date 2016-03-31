@@ -26,18 +26,11 @@ function d3_1d_zoom($lakeid,$variable) {
 
   $content = array();
 
-  $content['plot_title'] = array(
-    '#type' => 'markup',
-    '#markup' => $plain_title,
-    '#prefix' => '<h1 style="margin-left:50px;">',
-    '#suffix' => '</h1>',
-  );
-
   //Use a container
   $content['div_container'] = array(
     '#type' => 'container',
     '#attributes' => array(
-       'id' => array('plotDiv'),
+       'id' => array('mainDiv'),
      ),
   );
 
@@ -50,7 +43,23 @@ function d3_1d_zoom($lakeid,$variable) {
     ),  
   );
 
-  $content['div_container']['js_content'] = array(
+  //Create a plot container
+  $content['div_container']['plot_container'] = array(
+    '#type' => 'container',
+    '#attributes' => array(
+       'id' => array('plotDiv'),
+     ),
+  );
+
+  $content['div_container']['plot_container']['plot_title'] = array(
+    '#type' => 'markup',
+    '#markup' => $plain_title,
+    '#prefix' => '<h1 style="margin-left:50px;">',
+    '#suffix' => '</h1>',
+  );
+  
+
+  $content['div_container']['plot_container']['js_content'] = array(
     '#type' => 'markup',
     '#attached' => array(
       'js' => array(

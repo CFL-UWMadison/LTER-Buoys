@@ -1,48 +1,48 @@
-( function( $ ) { 
-		Drupal.behaviors.onedplotzoom = { 
-			attach : function( context, settings ) { 
+( function( $ ) { 
+		Drupal.behaviors.lakebio = { 
+			attach : function( context, settings ) { 
+				
+				//Variables brought over from .module
+				var plot_title = Drupal.settings.plot_title; 
+				var units = Drupal.settings.plot_units; 
+				var Dates = Drupal.settings.Dates; 
+				var Richness = Drupal.settings.Richness; 
+				var Common = Drupal.settings.Common; 
+				var Species = Drupal.settings.Species; 
+				var dataset = Drupal.settings.dataset; 
+				
+				// PLOT HALF
+				//Set up margin and plot limits
+				var margin = { top : 20, right : 20, bottom : 50, left : 50 }, 
+				width = 700 - margin.left - margin.right, 
+				height = 350 - margin.top - margin.bottom; 
+				
+				//set up drag for zoom
+				var drag = d3.behavior.drag( ); 
+				
+				//variables for positioning zoom area
+				var pos; 
+				var bandPos = [ - 1, - 1 ]; 
+				
+				//get the data
+				var data = []; 
+				for( var i = 0; i < Dates.length; i ++ ) { 
+					data.push( { 
+							value: Richness [ i ], 
+							date: Dates [ i ], 
+					} ); 
+				}
 				
-				//Variables brought over from .module
-				var numsamps = Drupal.settings.numsamps; 
-				var Dates = Drupal.settings.Dates; 
-				var datetype = Drupal.settings.datetype; 
-				var Values = Drupal.settings.Values; 
-				var units = Drupal.settings.units; 
-				var dataset = Drupal.settings.dataset;
-				
-				//Set up margin and plot limits - can adjust plot dimensions here
-				var margin = { top : 20, right : 20, bottom : 50, left : 50 }; 
-				var width = 700 - margin.left - margin.right; 
-				var height = 350 - margin.top - margin.bottom; 
-				
-				//set up drag for zoom
-				var drag = d3.behavior.drag( ); 
-				
-				//variables for positioning zoom area
-				var pos; 
-				var bandPos = [ - 1, - 1 ]; 
-				
-				//get the data
-				var data = [ ]; 
-				for( var i = 0; i < numsamps; i ++ ) { 
-					data.push( { 
-							value : Values [ i ], 
-							date : Dates [ i ], 
-					} ); 
-				} 
-				//Massage Date types
-				if( datetype == 'Ymd' ) { 
-					var parseDate = d3.time.format( "%Y-%m-%d" ).parse; 
-				} else if( datetype == 'Y' ) { 
-					var parseDate = d3.time.format( "%Y" ).parse; 
-				} 
-				data.forEach( function( d ) { 
-						d.date = parseDate( d.date ); 
-						d.value = Number( d.value ); 
+				//Massage Data
+				var parseDate = d3.time.format("%Y").parse; 
+				data.forEach( function( d ) { 
+						d.date = parseDate( d.date ); 
+						d.value = Number( d.value ); 
 				} ); 
 				
 				//function to display tooltip
 				bisectDate = d3.bisector( function( d ) { return d.date; } ).left; 
+				
 				
 				//figure out the data ranges min and max
 				var xdomain = d3.max( data, function( d ) { return d.date; } ); 
@@ -57,42 +57,39 @@
 					x2 : xdomain, 
 					y2 : ydomain
 				}; 
-				
-				
+				
 				//put the plot together
 				//add the svg canvas
 				var plotSVG = d3.select( "#plotDiv" )
 					.append( "svg" )
 					.attr( "width", width + margin.left + margin.right )
 					.attr( "height", height + margin.top + margin.bottom )
-					.append( "g" )
-					.attr( "transform", "translate(" + margin.left + "," + margin.top + ")" ); 
-				
+						.append( "g" )
+							.attr( "transform", "translate(" + margin.left + "," + margin.top + ")" ); 
+				
 				//define the actual line
-				var line = d3.svg.line( ) 
-					//.interpolate("basis")
+				var line = d3.svg.line( )
 					.x( function( d ) { return x( d.date ); } )
-					.y( function( d ) { return y( d.value ); } ); 
-				
+					.y( function( d ) { return y( d.value ); } ); 
+				
 				//set the axes ranges    
 				var x = d3.time.scale( )
-					.range( [ 0, width ] )
-					.domain( d3.extent( data, function( d ) { return d.date; } )); 
-				
+					.range( [ 0, width ] ) 
+					.domain(d3.extent(data, function(d) {return d.date;} )); 
+				
 				var y = d3.scale.linear( )
-					.range( [ height, 0 ] )
-					.domain( d3.extent( data, function( d ) { return d.value; } )); 
-				
+					.range( [ height, 0 ] ) 
+					.domain(d3.extent(data, function(d) {return d.value;} )); 
+				
 				//define the axes
 				var xAxis = d3.svg.axis( )
 					.scale( x )
-					.orient( "bottom" ); 
-				
+					.orient( "bottom" ); 
+				
 				var yAxis = d3.svg.axis( )
 					.scale( y )
-					.orient( "left" ); 
-
-				
+					.orient( "left" ); 
+				
 				//define and append the zoom rectangle
 				var band = plotSVG.append( "rect" )
 					.attr( "width", 0 )
@@ -100,22 +97,21 @@
 					.attr( "x", xmin )
 					.attr( "y", 0 )
 					.attr( "class", "band" ); 
-				
+			
 				//append the axes to the graph
 				plotSVG.append( "g" )
 					.attr( "class", "x axis" )
 					.attr( "transform", "translate(0," + height + ")" )
-					.call( xAxis ); 
-				
+					.call( xAxis ); 
+				
 				plotSVG.append( "g" )
 					.attr( "class", "y axis" )
-					.call( yAxis )
-					.append( "text" )
-						.attr( "transform", "rotate(-90)" )
-						.attr( "y", 6 ).attr( "dy", ".71em" )
-						.style( "text-anchor", "end" )
-						.text( units ); 
-				
+					.call( yAxis ).append( "text" )
+					.attr( "transform", "rotate(-90)" )
+					.attr( "y", 6 ).attr( "dy", ".71em" )
+					.style( "text-anchor", "end" )
+					.text( units ); 
+				
 				//append the zoom path      
 				plotSVG.append( "clipPath" )
 					.attr( "id", "clip" )
@@ -123,12 +119,13 @@
 					.attr( "width", width )
 					.attr( "height", height ); 
 				
-				//apend the line
+				//append the line
 				plotSVG.append( "path" )
 					.datum( data )
 					.attr( "class", "line" )
 					.attr( "clip-path", "url(#clip)" )
-					.attr( "d", line ); 
+					.attr( "d", line ); 
+				
 				
 				//append area for tooltip display
 				var focus = plotSVG.append( "g" )
@@ -198,7 +195,6 @@
 						.attr( "x", 30 )
 						.attr( "y", margin.top - 27 )
 						.text( "Drag mouse over area of interest to zoom in" ); 
-						
 				//apend zoom out button and set up
 				var zoomout = plotSVG.append( "g" ); 
 				
@@ -286,6 +282,7 @@
 							.attr( "height", Math.abs( bandPos [ 1 ] - pos [ 1 ] )); 
 				} ); 
 				
+				
 				function zoom( ) { 
 					//recalculate domains
 					if( zoomArea.x1 > zoomArea.x2 ) { 
@@ -341,10 +338,10 @@
 								"translate(" + x( d.date ) + "," + 
 								y( d.value ) + ")" ).attr( "y2", height - y( d.value ) ); 
 				}
-				
-				//////////////////////////////////////////
-			} 
-		}; 
-} )( jQuery ); 
-
+								
+				//////////////////////////////////////////
+			} 
+		}; 
+} )( jQuery ); 
+
 
