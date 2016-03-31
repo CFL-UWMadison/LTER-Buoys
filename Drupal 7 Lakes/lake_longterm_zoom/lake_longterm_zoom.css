@@ -20,7 +20,7 @@
 }
 #lakelt_chem {
   border: 1px solid white;
-  width: 100%;
+  width: 50%;
 }
 .lakelt_chem_sub {
   display: inline-block;
@@ -33,7 +33,7 @@
 }
 #lakelt_bio {
   border: 1px solid white;
-  width: 100%;
+  width: 50%;
 }
 .lakelt_bio_sub {
   display: inline-block;
@@ -46,7 +46,7 @@
 }
 #lakelt_phys {
   border: 1px solid white;
-  width: 100%;
+  width: 50%;
 }
 .lakelt_phys_sub{
 

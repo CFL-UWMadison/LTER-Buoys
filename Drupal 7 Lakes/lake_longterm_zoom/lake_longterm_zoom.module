@@ -42,6 +42,7 @@ function lake_longterm_zoom_content() {
   $lakeid = $GLOBALS['lakeid']; 
   $content = array();
 	$macrophytes = array('ME', 'MO', 'WI', 'FI', 'CR', 'TR');
+	$phytoplankton = array('ME', 'MO', 'TR', 'CR', 'SP');
 
 
   $content['main_block'] = array(
@@ -238,6 +239,7 @@ if (in_array($lakeid, $macrophytes)) {
   );
 }
  //Subcontainer for phytoplankton
+if (in_array($lakeid, $phytoplankton)) {
   $content['main_block']['container_biology']['biology_phyto'] = array(
     '#type' => 'container',
     '#attributes' => array(
@@ -245,6 +247,7 @@ if (in_array($lakeid, $macrophytes)) {
        'class' => array('lakelt_bio_sub'),
      ),
   );
+}
  //Subcontainer for zooplankton
   $content['main_block']['container_biology']['biology_zoop'] = array(
     '#type' => 'container',
@@ -308,6 +311,7 @@ if ( $lakeid != 'CB') {
   ); 
 }
 //Phytoplankton
+if (in_array($lakeid, $phytoplankton)) {
   $phyto_photo = array(
    'path' => drupal_get_path('module','lake_longterm_zoom').'/images/diatom3.jpg',
    'alt' => t('Phytoplankton Icon'),
@@ -326,6 +330,7 @@ if ( $lakeid != 'CB') {
    '#type' => 'markup',
    '#markup' => t('<p class="lt_label">Phytoplankton</p>'),
   ); 
+}
 //Zooplankton
   $zoop_photo = array(
    'path' => drupal_get_path('module','lake_longterm_zoom').'/images/zooplanktonIcon.jpg',
