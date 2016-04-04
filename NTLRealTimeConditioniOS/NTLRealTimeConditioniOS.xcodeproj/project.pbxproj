@@ -21,8 +21,6 @@
 		95FED3581C485429008DE29D /* ModelController.m in Sources */ = {isa = PBXBuildFile; fileRef = 95FED3511C485429008DE29D /* ModelController.m */; };
 		95FED3591C485429008DE29D /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 95FED3531C485429008DE29D /* RootViewController.m */; };
 		95FED3611C485435008DE29D /* AppfeatureImage.png in Resources */ = {isa = PBXBuildFile; fileRef = 95FED35A1C485435008DE29D /* AppfeatureImage.png */; };
-		95FED3621C485435008DE29D /* icon.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 95FED35B1C485435008DE29D /* icon.jpg */; };
-		95FED3631C485435008DE29D /* ntl.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 95FED35C1C485435008DE29D /* ntl.jpg */; };
 		95FED3641C485435008DE29D /* questionmMark.png in Resources */ = {isa = PBXBuildFile; fileRef = 95FED35D1C485435008DE29D /* questionmMark.png */; };
 		95FED3651C485435008DE29D /* refresh.png in Resources */ = {isa = PBXBuildFile; fileRef = 95FED35E1C485435008DE29D /* refresh.png */; };
 		95FED3661C485435008DE29D /* settingButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 95FED35F1C485435008DE29D /* settingButton.png */; };
@@ -79,8 +77,6 @@
 		95FED3521C485429008DE29D /* RootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RootViewController.h; path = NTLRealTimeConditioniOS/Controller/RootViewController.h; sourceTree = "<group>"; };
 		95FED3531C485429008DE29D /* RootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RootViewController.m; path = NTLRealTimeConditioniOS/Controller/RootViewController.m; sourceTree = "<group>"; };
 		95FED35A1C485435008DE29D /* AppfeatureImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = AppfeatureImage.png; path = "NTLRealTimeConditioniOS/Icon and Image/AppfeatureImage.png"; sourceTree = "<group>"; };
-		95FED35B1C485435008DE29D /* icon.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = icon.jpg; path = "NTLRealTimeConditioniOS/Icon and Image/icon.jpg"; sourceTree = "<group>"; };
-		95FED35C1C485435008DE29D /* ntl.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = ntl.jpg; path = "NTLRealTimeConditioniOS/Icon and Image/ntl.jpg"; sourceTree = "<group>"; };
 		95FED35D1C485435008DE29D /* questionmMark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = questionmMark.png; path = "NTLRealTimeConditioniOS/Icon and Image/questionmMark.png"; sourceTree = "<group>"; };
 		95FED35E1C485435008DE29D /* refresh.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = refresh.png; path = "NTLRealTimeConditioniOS/Icon and Image/refresh.png"; sourceTree = "<group>"; };
 		95FED35F1C485435008DE29D /* settingButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = settingButton.png; path = "NTLRealTimeConditioniOS/Icon and Image/settingButton.png"; sourceTree = "<group>"; };
@@ -150,8 +146,6 @@
 			isa = PBXGroup;
 			children = (
 				95FED35A1C485435008DE29D /* AppfeatureImage.png */,
-				95FED35B1C485435008DE29D /* icon.jpg */,
-				95FED35C1C485435008DE29D /* ntl.jpg */,
 				95FED35D1C485435008DE29D /* questionmMark.png */,
 				95FED35E1C485435008DE29D /* refresh.png */,
 				95FED35F1C485435008DE29D /* settingButton.png */,
@@ -331,11 +325,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				95FED3191C485215008DE29D /* LaunchScreen.storyboard in Resources */,
-				95FED3621C485435008DE29D /* icon.jpg in Resources */,
 				95FED3551C485429008DE29D /* DisclaimerViewController.xib in Resources */,
 				95FED37E1C485743008DE29D /* Main.storyboard in Resources */,
 				95FED3671C485435008DE29D /* UW Madison.jpg in Resources */,
-				95FED3631C485435008DE29D /* ntl.jpg in Resources */,
 				95B419FA1C8C802B0080455B /* RefreshButton.png in Resources */,
 				95FED3801C485855008DE29D /* LaunchScreenXib.xib in Resources */,
 				95FED3661C485435008DE29D /* settingButton.png in Resources */,

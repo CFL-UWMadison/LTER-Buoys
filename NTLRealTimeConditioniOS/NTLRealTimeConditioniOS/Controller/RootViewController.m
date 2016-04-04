@@ -23,7 +23,6 @@
 
 @synthesize modelController = _modelController;
 
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     NSLog(@"Root View has been loaded");
@@ -32,6 +31,7 @@
     self.pageViewController = [[UIPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:nil];
     self.pageViewController.delegate = self;
     
+    [[WeatherInfoDB sharedDB] setAppRelaunch:YES];
     [[WeatherInfoDB sharedDB] loadWeathers];
     [[WeatherInfoDB sharedDB] homepageToTheFirst];
     JJWeatherViewController *startingViewController = [self.modelController viewControllerAtIndex:0 storyboard:self.storyboard];
@@ -55,6 +55,7 @@
     
     // Add the page view controller's gesture recognizers to the book view controller's view so that the gestures are started more easily.
     self.view.gestureRecognizers = self.pageViewController.gestureRecognizers;
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -76,11 +77,6 @@
         return;
     } else{
         [[WeatherInfoDB sharedDB] homepageToTheFirst];
-        NSArray* array = [[ WeatherInfoDB sharedDB] allLakes];
-        for (int i =0; i<array.count; i++) {
-            Weather* weather = [array objectAtIndex:i];
-        }
-    
         JJWeatherViewController *favouriteVC = [self.modelController viewControllerAtIndex:0
                                                                             storyboard:self.storyboard];
         NSArray* vControllers = @[favouriteVC];
