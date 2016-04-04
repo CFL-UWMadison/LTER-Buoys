@@ -12,9 +12,10 @@
 #import "Weather.h"
 #import "ModelController.h"
 #import "DisclaimerViewController.h"
+#import "RootViewController.h"
 
 @interface JJWeatherViewController()
-
+@property (atomic,strong) NSTimer* timer;
 -(void)stopActivityView;
 @end
 
@@ -26,7 +27,6 @@
     [self.favouriteButton setTitle:@"Unset this page" forState:UIControlStateSelected];
     [self.favouriteButton setTitleColor:[UIColor redColor]forState:UIControlStateSelected];
     self.activityView.hidesWhenStopped= YES;
- 
 }
 
 - (void)didReceiveMemoryWarning {
@@ -37,11 +37,18 @@
 -(void) viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     [self changeFontSizeByModal];
+    [[WeatherInfoDB sharedDB] loadWeathers];
     [self displayData];
-  
+    self.timer = [NSTimer scheduledTimerWithTimeInterval:60 target:self selector:@selector(autoRefresh:) userInfo:nil repeats:YES];
     
 }
 
+-(void) viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+    [self.timer invalidate];
+}
+
+//Action methods
 - (IBAction)setHomePage:(id)sender{
     if([self.lake.favourite boolValue] == NO){
         self.lake.favourite = [NSNumber numberWithBool:YES];
@@ -73,6 +80,17 @@
     [self performSelector:@selector(stopActivityView) withObject:nil afterDelay:1.0];
  
 }
+
+
+
+
+//
+-(void) autoRefresh: (NSTimer*) timer{
+    [[WeatherInfoDB sharedDB] loadWeathers];
+    [self displayData];
+    NSLog(@"THIS WORKS!");
+}
+
 
 -(void)displayData{
     self.lakeName.text = self.lake.lakeName;
@@ -173,8 +191,6 @@
 }
 
 -(void) raiseTheAlert {
-    
-    
     //present the view controller
     UIAlertController* ac = [UIAlertController alertControllerWithTitle:@"Outdated information" message:@"Reminder: The information you are about to view is still outdated for 5 days." preferredStyle: UIAlertControllerStyleAlert];
     UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"Continue" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {}];
@@ -227,19 +243,6 @@
     return @"N/A";
     
 }
-
-
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
-
 
 //present the disclaimer over the current page.
 - (IBAction)showAbout:(id)sender {

@@ -77,7 +77,7 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kba-lI-lgw">
-                                <rect key="frame" x="-28" y="-2" width="0.0" height="0.0"/>
+                                <rect key="frame" x="-56" y="-8" width="0.0" height="0.0"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
@@ -407,7 +407,7 @@
                                 <rect key="frame" x="8" y="35" width="304" height="251"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="AirTemp" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" highlighted="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KHI-lv-FA2">
-                                        <rect key="frame" x="105" y="125.5" width="94.5" height="60"/>
+                                        <rect key="frame" x="105" y="123" width="94.5" height="60"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="50.5" id="Eq5-3f-jJE"/>
                                         </constraints>
@@ -421,7 +421,7 @@
                                         </variation>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="WaterTemp" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ixe-hy-Z0B">
-                                        <rect key="frame" x="86" y="207.5" width="131" height="60"/>
+                                        <rect key="frame" x="86" y="205" width="131" height="60"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="257" id="2Ch-LD-olH"/>
                                             <constraint firstAttribute="height" constant="40" id="vwT-4n-Frg"/>
@@ -437,13 +437,13 @@
                                         </variation>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Air Temperature" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1wh-xG-seB">
-                                        <rect key="frame" x="8" y="104" width="141" height="21.5"/>
+                                        <rect key="frame" x="8" y="101.5" width="141" height="21.5"/>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                                         <color key="textColor" red="0.64717548079999998" green="0.43587127580000001" blue="0.28642987939999998" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Water Temperature" lineBreakMode="wordWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GlH-oh-GmP">
-                                        <rect key="frame" x="8" y="185.5" width="167" height="21.5"/>
+                                        <rect key="frame" x="8" y="183" width="167" height="21.5"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="28" id="BMW-zy-NzJ"/>
                                         </constraints>
@@ -457,7 +457,7 @@
                                         </variation>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sample Date" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RRj-Ub-Zqs">
-                                        <rect key="frame" x="0.0" y="59" width="304" height="37"/>
+                                        <rect key="frame" x="0.0" y="56.5" width="304" height="37"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="31"/>
                                         <color key="textColor" red="1" green="0.29255908043899792" blue="0.0" alpha="0.77271012931034477" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
@@ -500,7 +500,7 @@
                                     <constraint firstItem="RRj-Ub-Zqs" firstAttribute="top" secondItem="o4V-eV-eD5" secondAttribute="bottom" constant="2.5" id="PKH-AJ-fuU"/>
                                     <constraint firstItem="t5d-mx-oyk" firstAttribute="leading" secondItem="o4V-eV-eD5" secondAttribute="trailing" constant="-33" id="Pr9-ou-nGN"/>
                                     <constraint firstItem="ixe-hy-Z0B" firstAttribute="height" secondItem="KHI-lv-FA2" secondAttribute="height" id="Q82-yJ-XnA"/>
-                                    <constraint firstItem="RRj-Ub-Zqs" firstAttribute="top" secondItem="o4V-eV-eD5" secondAttribute="bottom" constant="2.5" id="QYQ-LR-fz5"/>
+                                    <constraint firstItem="RRj-Ub-Zqs" firstAttribute="top" secondItem="o4V-eV-eD5" secondAttribute="bottom" id="QYQ-LR-fz5"/>
                                     <constraint firstItem="ELv-81-lHi" firstAttribute="leading" secondItem="o4V-eV-eD5" secondAttribute="trailing" constant="-48" id="QwV-C2-NqX"/>
                                     <constraint firstItem="o4V-eV-eD5" firstAttribute="height" secondItem="1wh-xG-seB" secondAttribute="height" multiplier="2.6" priority="600" id="RR5-zB-fS3"/>
                                     <constraint firstAttribute="trailing" secondItem="ELv-81-lHi" secondAttribute="trailing" constant="8" id="Tcg-QI-yvY"/>

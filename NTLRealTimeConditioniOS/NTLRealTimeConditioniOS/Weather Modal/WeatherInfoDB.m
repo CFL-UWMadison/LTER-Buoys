@@ -14,6 +14,9 @@
 @property (nonatomic) NSMutableArray* privateLakeWeathers;
 @property(nonatomic,strong) NSManagedObjectContext *context;
 @property(nonatomic,strong) NSManagedObjectModel *model;
+@property(atomic,strong) NSTimer* timer;
+
+
 
 @end
 
@@ -25,10 +28,13 @@
     static WeatherInfoDB* db;
     if(!db){
         db = [[self alloc] initPrivate];
-        
     }
     
     return db;
+}
+
+-(void)refreshData:(NSTimer*) timer{
+    [self loadWeathers];
 }
 
 -(instancetype) init{
@@ -55,11 +61,9 @@
         if (![psc addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:url options:nil error:&error]) {
             [NSException raise:@"Open fail" format:[error localizedDescription]];
         }
-    
         //initialize the context
         _context = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
         _context.persistentStoreCoordinator = psc;
-        [self loadWeathers];
     }
     return  self;
 }
@@ -76,16 +80,18 @@
 //load the weather
 -(void) loadWeathers{
     
+    if(self.appRelaunch){
     //Fetch the data from the local file
-    NSFetchRequest* request = [[NSFetchRequest alloc]init];
-    NSEntityDescription* entity = [NSEntityDescription entityForName:@"Weather" inManagedObjectContext:self.context];
-    request.entity = entity;
-    NSError* error;
-    NSArray* result = [self.context executeFetchRequest:request error:&error];
-    _privateLakeWeathers = [NSMutableArray arrayWithArray:result];
-    
+        NSFetchRequest* request = [[NSFetchRequest alloc]init];
+        NSEntityDescription* entity = [NSEntityDescription entityForName:@"Weather" inManagedObjectContext:self.context];
+        request.entity = entity;
+        NSError* error;
+        NSArray* result = [self.context executeFetchRequest:request error:&error];
+        _privateLakeWeathers = [NSMutableArray arrayWithArray:result];
+        self.appRelaunch = NO;
+    }
     //Decide whether the lake should
-    if(_privateLakeWeathers.count !=3){
+    if(_privateLakeWeathers.count != 3){
         self.privateLakeWeathers = [self insertNewWeatherToDB];
     }else{
         self.privateLakeWeathers = [self updateWeathersFromWeb:self.privateLakeWeathers];
@@ -122,7 +128,6 @@
     if(!jsonArray){
         return dataNeededModified;
     }
-    
     for (int i =0; i<jsonArray.count; i++) {
         NSDictionary* jsonObject = [jsonArray objectAtIndex:i];
         Weather* weatherBeingModified = [self findWeatherByName:[jsonObject objectForKey:@"lakeName"] orID:[jsonObject objectForKey:@"lakeId"] inWeatherArray:dataNeededModified];
@@ -282,10 +287,10 @@
     //Get one and the only document directory from that list
     NSString* documentDirectory = [documentDirectories firstObject];
     
-    return [documentDirectory stringByAppendingPathComponent:@"weatherCondition.data"];
+    return [documentDirectory stringByAppendingPathComponent:@"NTLLakeCondition.data"];
 }
 
-//put the homepage lake to the front
+//put the homepage lake to the front, called in AppleDelegate
 -(void)homepageToTheFirst{
     //change the order of the array by the favourite
     for (int i =0; i<_privateLakeWeathers.count; i++) {
@@ -296,6 +301,7 @@
             _privateLakeWeathers[0] = weather;
         }
     }
+    [self saveChanges];
 }
 
 -(BOOL)noHomepage{
@@ -308,6 +314,7 @@
     return YES;
 }
 
+//Called in WeatherViewController
 -(void) checkForOtherHomepage: (NSString*) newlyFavouriteLakeName{
     for (int i =0; i< _privateLakeWeathers.count;i++){
         Weather* tmp = [_privateLakeWeathers objectAtIndex:i];

@@ -18,7 +18,6 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    
     // Override point for customization after application launch.
     return YES;
 }
@@ -36,7 +35,6 @@
 - (void)applicationWillEnterForeground:(UIApplication *)application {
     RootViewController* rvc = (RootViewController* )self.window.rootViewController;
     [rvc displayFavouriteAsFirstPage];
-    
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
 }
 

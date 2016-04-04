@@ -13,6 +13,7 @@
 @interface WeatherInfoDB : NSObject
 
 @property (nonatomic,readonly,copy) NSArray* allLakes;
+@property(nonatomic) BOOL appRelaunch;
 
 //The initializer for the database.
 //It only allow one databases in the whole program.
@@ -25,4 +26,5 @@
 -(void)homepageToTheFirst;
 -(void) checkForOtherHomepage: (NSString*) newlyHomepageLakeName;
 -(BOOL)noHomepage;
+-(void) refreshData:(NSTimer*) timer;
 @end
