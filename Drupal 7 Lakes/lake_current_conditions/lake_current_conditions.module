@@ -78,9 +78,16 @@ function lake_current_conditions_content() {
     '#markup' => '<h3>Current Conditions:</h3>'
   );
   $content['container_main']['updated'] = array(
+  	'#type' => 'container',
+    '#attributes' => array(
+       'id' => array('updated')
+       ),
+    );
+  $content['container_main']['updated']['title'] = array(
     '#type' => 'markup',
     '#markup' => 'last updated: '.$cctimestamp
-  );
+     );
+  
   $content['container_main']['css_content'] = array(
     '#type' => 'markup',
     '#attached' => array(
@@ -215,7 +222,7 @@ function lake_current_conditions_content() {
 
 function get_wind_dir($winddir){
 	switch ($winddir) {
-	case (348.75 < $winddir && $winddir <= 11.25):
+	case (348.75 < $winddir || $winddir <= 11.25):
 		$ccwinddir = "N";
 	break;
 	case (11.25 < $winddir && $winddir <= 33.75):

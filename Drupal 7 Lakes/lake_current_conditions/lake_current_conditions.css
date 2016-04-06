@@ -23,6 +23,10 @@
   width: 50%;
   margin-bottom: 5em;
 }
+#updated {
+	font-size: .8em;
+	color: #F19F4D;
+}
 .lakecc_class {
   display: inline-block;
   vertical-align: top;
