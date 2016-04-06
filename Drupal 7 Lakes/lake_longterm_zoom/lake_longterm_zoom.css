@@ -29,7 +29,7 @@
   border: 1px solid white;  
   width: 150px;
   height: 100px;
-  margin: .75em;
+  margin: .1em;
 }
 #lakelt_bio {
   border: 1px solid white;
@@ -42,7 +42,7 @@
   border: 1px solid white;  
   width: 150px;
   height: 100px;
-  margin: .75em;
+  margin: .1em;
 }
 #lakelt_phys {
   border: 1px solid white;
@@ -56,5 +56,5 @@
   border: 1px solid white;  
   width: 150px;
   height: 100px;
-  margin: .75em;
+  margin: .1em;
 }

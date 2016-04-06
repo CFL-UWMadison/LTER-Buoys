@@ -53,7 +53,7 @@ function lake_longterm_zoom_content() {
   );
   $content['main_block']['title'] = array(
     '#type' => 'markup',
-    '#markup' => '<h5>Long-Term Data:</h5>',
+    '#markup' => '<h3>Long-Term Data:</h3>',
   );
   $content['main_block']['css_content'] = array(
     '#type' => 'markup',

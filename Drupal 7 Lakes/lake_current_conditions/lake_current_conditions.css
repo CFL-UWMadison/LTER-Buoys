@@ -1,24 +1,27 @@
 .cc_label {
-  font-size: 14px;
+  font-size: 1em;
 }
 .cc_text {
-  font-size: 15px;
+  font-size: 1em;
   font-style: normal;
 }
 .lake_photo_icon {
   display: block;
 /*  margin: auto;*/
+  margin-left: 20%;
   margin-top: 15%;
   height: 60%;
   width: 60%;
 }
 .lakecc_header {
-  color: black;
-  margin: 0em;
+  margin: 1em;
+  font-size: 1.1em;
+  text-decoration: underline;
 }
 #lakecc {
   border: 1px solid white;
-  width: 960px;
+  width: 50%;
+  margin-bottom: 5em;
 }
 .lakecc_class {
   display: inline-block;
@@ -27,5 +30,5 @@
   border: 1px solid white;  
   width: 150px;
   height: 100px;
-  margin: .75em;
+  margin: .1em;
 }

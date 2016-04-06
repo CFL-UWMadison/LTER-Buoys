@@ -1,13 +1,10 @@
-
 <?php
 /*
  *  Extract parameters from the URL;
 */
-if (arg(1) == 'sparkling-lake') {
-   $GLOBALS['lakeid'] = 'SP';
-} else {
-   $GLOBALS['lakeid'] = 'TR';
-}
+if (arg(1) == 'sparkling-lake') $GLOBALS['lakeid'] = 'SP';
+if (arg(1) == 'trout-lake') $GLOBALS['lakeid'] = 'TR';
+if (arg(1) == 'lake-mendota') $GLOBALS['lakeid'] = 'ME';
 
 /*
  *  Implements hook_block_info();
@@ -35,21 +32,56 @@ function lake_current_conditions_block_view() {
 function lake_current_conditions_content() {
 
   $lakeid = $GLOBALS['lakeid']; 
+  
+	//get data from our own database
+  $sqlstatement = "SELECT * FROM buoy_current_conditions WHERE buoy_current_conditions.lakeid = '".$lakeid."'";
+
+	db_set_active('dbmaker');
+	$result = db_query($sqlstatement);
+	db_set_active('default');
+  
+	foreach ($result as $row) {
+		$cctimestamp = $row->sampledate;
+		
+		//calculate how old the current conditions are in number of days
+		$datetime1 = new DateTime($cctimestamp);
+		$datetime2 = new DateTime('now');
+		$interval = $datetime1->diff($datetime2);
+		$cctimesince = $interval->format('%a');//number of days
+		
+		$ccairtemp = $row->airtemp;
+		$ccwatertemp = $row->watertemp;
+		$ccwindspeed = $row->windspeed;
+		$ccwinddir_deg = $row->winddir;
+		$ccwinddir = get_wind_dir($ccwinddir_deg);
+		$ccsecchi = sprintf("%.1f",$row->secchi_est);
+		$ccairtemp_f = (9/5)*($ccairtemp)+32;  
+		$ccwatertemp_f = (9/5)*($ccwatertemp)+32;
+		$ccwindspeed_mph = sprintf("%.1f",(2.23694)*$ccwindspeed);	
+	}
   $content = array();
 
   //Main DIV
-  $content['container_current'] = array(
+  $content['container_main'] = array(
     '#type' => 'container',
     '#attributes' => array(
        'id' => array('lakecc'),
      ),
   );
+
+//check how old the current conditions are  
+  if ($cctimesince < 3) {
+
   //Title
-  $content['container_current']['title'] = array(
+  $content['container_main']['title'] = array(
     '#type' => 'markup',
-    '#markup' => '<h5>Current Conditions:</h5>'
+    '#markup' => '<h3>Current Conditions:</h3>'
   );
-  $content['container_current']['css_content'] = array(
+  $content['container_main']['updated'] = array(
+    '#type' => 'markup',
+    '#markup' => 'last updated: '.$cctimestamp
+  );
+  $content['container_main']['css_content'] = array(
     '#type' => 'markup',
     '#attached' => array(
       'css' => array(
@@ -61,9 +93,16 @@ function lake_current_conditions_content() {
 /****************************************************************
               CURRENT CONDITIONS SUB-CONTAINERS
 ****************************************************************/
+  //Main DIV
+  $content['container_main']['container_current'] = array(
+    '#type' => 'container',
+    '#attributes' => array(
+       'id' => array('lakecurrent'),
+     ),
+  );
 
  //Subcontainer for watertemp
-  $content['container_current']['current_watertemp'] = array(
+  $content['container_main']['container_current']['current_watertemp'] = array(
     '#type' => 'container',
     '#attributes' => array(
        'id' => array('lake_cc_wtemp'),
@@ -71,7 +110,7 @@ function lake_current_conditions_content() {
      ),
   );
  //Subcontainer for tempmap
-  $content['container_current']['current_tempmap'] = array(
+  $content['container_main']['container_current']['current_tempmap'] = array(
     '#type' => 'container',
     '#attributes' => array(
        'id' => array('lake_cc_tmap'),
@@ -79,7 +118,7 @@ function lake_current_conditions_content() {
      ),
   );
  //Subcontainer for airtemp
-  $content['container_current']['current_airtemp'] = array(
+  $content['container_main']['container_current']['current_airtemp'] = array(
     '#type' => 'container',
     '#attributes' => array(
        'id' => array('lake_cc_air'),
@@ -87,7 +126,7 @@ function lake_current_conditions_content() {
      ),
   );
  //Subcontainer for winds
-  $content['container_current']['current_winds'] = array(
+  $content['container_main']['container_current']['current_winds'] = array(
     '#type' => 'container',
     '#attributes' => array(
        'id' => array('lake_cc_winds'),
@@ -95,7 +134,7 @@ function lake_current_conditions_content() {
      ),
   );
  //Subcontainer for clarity
-  $content['container_current']['current_clarity'] = array(
+  $content['container_main']['container_current']['current_clarity'] = array(
     '#type' => 'container',
     '#attributes' => array(
        'id' => array('lake_cc_clarity'),
@@ -105,9 +144,9 @@ function lake_current_conditions_content() {
 /****************************************************************
               CURRENT CONDITIONS CONTENT
 ****************************************************************/
-  $content['container_current']['current_watertemp']['text'] = array(
+  $content['container_main']['container_current']['current_watertemp']['text'] = array(
     '#type' => 'markup',
-    '#markup' => t('<h6 class="cc_text">Water Temp</h6>'),
+    '#markup' => t('<h6 class="cc_text">Water Temp</h6>'.$ccwatertemp_f.'&nbsp;(&deg;F),<br />'.$ccwatertemp.'&nbsp;(&deg;C)'),
   );
 /*
 //Tempmap Version 1
@@ -136,7 +175,7 @@ function lake_current_conditions_content() {
    'alt' => t('Temp Map'),
    'attributes' => array('class' => 'lake_photo_icon'),
   );
-  $content['container_current']['current_tempmap']['link'] = array(
+  $content['container_main']['container_current']['current_tempmap']['link'] = array(
     '#type' => 'link',
     '#title' => theme('image',$tempmap_photo),
     '#href' => 'https://lter6.limnology.wisc.edu/lakeTempMap/'.$lakeid,
@@ -145,25 +184,86 @@ function lake_current_conditions_content() {
        'html' => TRUE,
     ),
   );
-  $content['container_current']['current_tempmap']['label'] = array(
+  $content['container_main']['container_current']['current_tempmap']['label'] = array(
    '#type' => 'markup',
    '#markup' => t('<p class="cc_label">Lake Heat Map</p>'),
   );   
   
-  $content['container_current']['current_airtemp']['text'] = array(
+  $content['container_main']['container_current']['current_airtemp']['text'] = array(
     '#type' => 'markup',
-    '#markup' => t('<h6 class="cc_text">Air Temp</h6>'),
+    '#markup' => t('<h6 class="cc_text">Air Temp</h6>'.$ccairtemp_f.'&nbsp;(&deg;F),<br />'.$ccairtemp.'&nbsp;(&deg;C)'),
   );
-  $content['container_current']['current_winds']['text'] = array(
+  $content['container_main']['container_current']['current_winds']['text'] = array(
     '#type' => 'markup',
-    '#markup' => t('<h6 class="cc_text">Winds</h6>'),
+    '#markup' => t('<h6 class="cc_text">Winds</h6>'.$ccwindspeed_mph.'&nbsp;(mph)<br/>'.$ccwinddir.'&nbsp;('.$ccwinddir_deg.'&nbsp;deg)'),
   );
-  $content['container_current']['current_clarity']['text'] = array(
+  $content['container_main']['container_current']['current_clarity']['text'] = array(
     '#type' => 'markup',
-    '#markup' => t('<h6 class="cc_text">Water Clarity</h6>'),
+    '#markup' => t('<h6 class="cc_text">Water Clarity</h6>Estimated Secchi Depth<br/>'.$ccsecchi.'&nbsp;(m)'),
   );
 
+  }else {
+	  //Title
+  $content['container_main']['title'] = array(
+    '#type' => 'markup',
+    '#markup' => '<h5>Current Conditions are not available</h5>'
+  );
+}
+
   return $content;
-  
+}  
+
+function get_wind_dir($winddir){
+	switch ($winddir) {
+	case (348.75 < $winddir && $winddir <= 11.25):
+		$ccwinddir = "N";
+	break;
+	case (11.25 < $winddir && $winddir <= 33.75):
+		$ccwinddir = "NNE";
+	break;
+	case (33.75 < $winddir && $winddir <= 56.25):
+		$ccwinddir = "NE";
+	break;
+	case (56.25 < $winddir && $winddir <= 78.75):
+		$ccwinddir = "ENE";
+	break;	
+	case (78.75 < $winddir && $winddir <= 101.25):
+		$ccwinddir = "E";
+	break;
+	case (101.25 < $winddir && $winddir <= 123.75):
+		$ccwinddir = "ESE";
+	break;
+	case (123.75 < $winddir && $winddir <= 146.25):
+		$ccwinddir = "SE";
+	break;
+	case (146.25 < $winddir && $winddir <= 168.75):
+		$ccwinddir = "SSE";
+	break;
+	case (168.75 < $winddir && $winddir <= 191.25):
+		$ccwinddir = "S";
+	break;
+	case (191.25 < $winddir && $winddir <= 213.75):
+		$ccwinddir = "SSW";
+	break;
+	case (213.75 < $winddir && $winddir <= 236.25):
+		$ccwinddir = "SW";
+	break;
+	case (236.25 < $winddir && $winddir <= 258.75):
+		$ccwinddir = "WSW";
+	break;
+	case (258.75 < $winddir && $winddir <= 281.25):
+		$ccwinddir = "W";
+	break;
+	case (281.25 < $winddir && $winddir <= 303.75):
+		$ccwinddir = "WNW";
+	break;
+	case (303.75 < $winddir && $winddir <= 326.25):
+		$ccwinddir = "NW";
+	break;
+	case (326.25 < $winddir && $winddir <= 348.75):
+		$ccwinddir = "NNW";
+	break;
+	}
+return $ccwinddir;	
 }
 
