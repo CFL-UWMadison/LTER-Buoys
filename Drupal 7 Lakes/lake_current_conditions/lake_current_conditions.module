@@ -2,9 +2,10 @@
 /*
  *  Extract parameters from the URL;
 */
+$GLOBALS['year4'] = 2016;
 if (arg(1) == 'sparkling-lake') $GLOBALS['lakeid'] = 'SP';
-if (arg(1) == 'trout-lake') $GLOBALS['lakeid'] = 'TR';
-if (arg(1) == 'lake-mendota') $GLOBALS['lakeid'] = 'ME';
+if (arg(1) == 'trout-lake')  $GLOBALS['lakeid'] = 'TR';
+if (arg(1) == 'lake-mendota')  $GLOBALS['lakeid'] = 'ME';
 
 /*
  *  Implements hook_block_info();
@@ -32,7 +33,8 @@ function lake_current_conditions_block_view() {
 function lake_current_conditions_content() {
 
   $lakeid = $GLOBALS['lakeid']; 
-  
+  $year4 = $GLOBALS['year4']; 
+
 	//get data from our own database
   $sqlstatement = "SELECT * FROM buoy_current_conditions WHERE buoy_current_conditions.lakeid = '".$lakeid."'";
 
@@ -71,12 +73,13 @@ function lake_current_conditions_content() {
 
 //check how old the current conditions are  
   if ($cctimesince < 3) {
-
+/*
   //Title
   $content['container_main']['title'] = array(
     '#type' => 'markup',
     '#markup' => '<h3>Current Conditions:</h3>'
   );
+  */
   $content['container_main']['updated'] = array(
   	'#type' => 'container',
     '#attributes' => array(
@@ -153,7 +156,7 @@ function lake_current_conditions_content() {
 ****************************************************************/
   $content['container_main']['container_current']['current_watertemp']['text'] = array(
     '#type' => 'markup',
-    '#markup' => t('<h6 class="cc_text">Water Temp</h6>'.$ccwatertemp_f.'&nbsp;(&deg;F),<br />'.$ccwatertemp.'&nbsp;(&deg;C)'),
+    '#markup' => t('<h6>Water Temp</h6>'.$ccwatertemp_f.'&nbsp;(&deg;F),<br />'.$ccwatertemp.'&nbsp;(&deg;C)'),
   );
 /*
 //Tempmap Version 1
@@ -168,7 +171,7 @@ function lake_current_conditions_content() {
 //Tempmap Version 2
   $content['container_current']['current_tempmap']['link'] = array(
     '#type' => 'link',
-    '#title' => t('<h6 class="cc_text">Temp Depth Map</h6>'),
+    '#title' => t('<h6>Temp Depth Map</h6>'),
     '#href' => 'https://lter6.limnology.wisc.edu/lakeTempMap/'.$lakeid,
     '#options' => array(
        'attributes' => array(),
@@ -185,7 +188,7 @@ function lake_current_conditions_content() {
   $content['container_main']['container_current']['current_tempmap']['link'] = array(
     '#type' => 'link',
     '#title' => theme('image',$tempmap_photo),
-    '#href' => 'https://lter6.limnology.wisc.edu/lakeTempMap/'.$lakeid,
+    '#href' => 'https://lter6.limnology.wisc.edu/lakeTempMap/'.$lakeid.'/'.$year4,
     '#options' => array(
        'attributes' => array(),
        'html' => TRUE,
@@ -198,22 +201,22 @@ function lake_current_conditions_content() {
   
   $content['container_main']['container_current']['current_airtemp']['text'] = array(
     '#type' => 'markup',
-    '#markup' => t('<h6 class="cc_text">Air Temp</h6>'.$ccairtemp_f.'&nbsp;(&deg;F),<br />'.$ccairtemp.'&nbsp;(&deg;C)'),
+    '#markup' => t('<h6>Air Temp</h6>'.$ccairtemp_f.'&nbsp;(&deg;F),<br />'.$ccairtemp.'&nbsp;(&deg;C)'),
   );
   $content['container_main']['container_current']['current_winds']['text'] = array(
     '#type' => 'markup',
-    '#markup' => t('<h6 class="cc_text">Winds</h6>'.$ccwindspeed_mph.'&nbsp;(mph)<br/>'.$ccwinddir.'&nbsp;('.$ccwinddir_deg.'&nbsp;deg)'),
+    '#markup' => t('<h6>Winds</h6>'.$ccwindspeed_mph.'&nbsp;(mph)<br/>'.$ccwinddir.'&nbsp;('.$ccwinddir_deg.'&nbsp;deg)'),
   );
   $content['container_main']['container_current']['current_clarity']['text'] = array(
     '#type' => 'markup',
-    '#markup' => t('<h6 class="cc_text">Water Clarity</h6>Estimated Secchi Depth<br/>'.$ccsecchi.'&nbsp;(m)'),
+    '#markup' => t('<h6>Water Clarity</h6>Estimated Secchi Depth<br/>'.$ccsecchi.'&nbsp;(m)'),
   );
 
   }else {
 	  //Title
   $content['container_main']['title'] = array(
     '#type' => 'markup',
-    '#markup' => '<h5>Current Conditions are not available</h5>'
+    '#markup' => '<h5>not available</h5>'
   );
 }
 
