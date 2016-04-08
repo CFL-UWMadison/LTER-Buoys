@@ -50,8 +50,8 @@ function d3_lake_bio_zoom($lakeid,$variable) {
   $content['main_container']['plot_container']['plot_title'] = array(
     '#type' => 'markup',
     '#markup' => $plain_title,
-    '#prefix' => '<h1 style="margin-left:50px;">',
-    '#suffix' => '</h1>',
+    '#prefix' => '<h4 style="margin-left:50px;">',
+    '#suffix' => '</h4>',
   );
   
   //Create a table container
@@ -66,8 +66,8 @@ function d3_lake_bio_zoom($lakeid,$variable) {
   $content['main_container']['table_container']['title'] = array(
     '#type' => 'markup',
     '#markup' => 'Species List',   
-    '#prefix' => '<h1 style="margin-left:50px;">',
-    '#suffix' => '</h1>',
+    '#prefix' => '<h4 style="margin-left:50px;">',
+    '#suffix' => '</h4>',
   );
 
    
@@ -291,19 +291,19 @@ function d3_lake_bio_zoom_get_plain_title($lakeid, $variable) {
   $lakename = d3_lake_bio_zoom_get_lakename($lakeid);
   switch ($variable) {
 	  case 'fish':
-		$result_type = "Species Richness by Year";
+		$result_type = "Fish Species Richness by Year";
 		$plot_units = "number of species";
       break;			
 	  case 'macro':
-		$result_type = "Species Richness by Year";
+		$result_type = "Macrophyte Species Richness by Year";
 		$plot_units = "number of species";
       break;
 	  case 'phyto':
-		$result_type = "Species Richness by Year";
+		$result_type = "Phytoplankton Species Richness by Year";
 		$plot_units = "number of species";
       break;
 	  case 'zoop':
-		$result_type = "Species Richness by Year";
+		$result_type = "Zooplankton Species Richness by Year";
 		$plot_units = "number of species";
       break;	  
   }

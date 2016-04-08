@@ -292,16 +292,16 @@
 						.append( "rect" )
 							.attr( "class", "getData" )
 							.attr( "width", 75 )
-							.attr( "height", 40 )
-							.attr( "x", width - 100 )
-							.attr( "y", height +( margin.bottom - 20 ) ); 
+							.attr( "height", 35 )
+							.attr( "x", 450 )
+							.attr( "y", -30 ); 
 
 				getdata.append( "text" )
 					.attr( "class", "getDataText" )
 					.attr( "width", 75 )
 					.attr( "height", 30 )
-					.attr( "x", width - 90 )
-					.attr( "y", height +( margin.bottom - 5 ) )
+					.attr( "x", 460 )
+					.attr( "y", -7 )
 					.text( "Get Data" ); 
 					
 				//append zoom instructions
@@ -309,7 +309,7 @@
 					.append( "text" )
 						.attr( "class", "zoomInText" )
 						.attr( "x", 30 )
-						.attr( "y", margin.top - 27 )
+						.attr( "y", -7 )
 						.text( "Drag mouse over area of interest to zoom in" ); 
 				//apend zoom out button and set up
 				var zoomout = plotSVG.append( "g" ); 
@@ -317,9 +317,9 @@
 				zoomout.append( "rect" )
 					.attr( "class", "zoomOut" )
 					.attr( "width", 75 )
-					.attr( "height", 40 )
-					.attr( "x", - 12 )
-					.attr( "y", height +( margin.bottom - 20 ) )
+					.attr( "height", 35 )
+					.attr( "x", 350 )
+					.attr( "y", -30 )
 					.on( "click", function( ) { 
 						zoomOut( ); 
 					} ); 
@@ -328,8 +328,8 @@
 					.attr( "class", "zoomOutText" )
 					.attr( "width", 75 )
 					.attr( "height", 30 )
-					.attr( "x", - 10 )
-					.attr( "y", height +( margin.bottom - 5 ) )
+					.attr( "x", 360 )
+					.attr( "y", -7 )
 					.text( "Zoom Out" ); 
 				
 				zoom( ); 
@@ -423,7 +423,7 @@
 				
 				var zoomOut = function( ) { 
 					x.domain( [ xmin, xdomain ] ); 
-					y.domain( [ 0, ydomain ] ); 
+					y.domain( [ ymin, ydomain ] ); 
 					
 					var t = plotSVG.transition( ).duration( 750 ); 
 					t.select( ".x.axis" ).call( xAxis ); 

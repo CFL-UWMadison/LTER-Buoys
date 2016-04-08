@@ -122,7 +122,7 @@ function get_data1dzoom($lakeid, $variable) {
 
 			$response = curl_exec($client);
 
-			//parse json output to get station ID, lat, long, gauge height
+			//parse json output to get gauge height and date
 			$output = json_decode($response, True);
 		
 			foreach($output['value']['timeSeries'] as $timeseries){
