@@ -10,16 +10,10 @@ var Temps = Drupal.settings.temps_array;    //2D array
 var Dates = Drupal.settings.dates_array;   //1D array
 //Convert Dates to Date format
 for (var i=0; i<Dates.length; i++) { Dates[i] = d3.time.format("%Y-%m-%d").parse(Dates[i]);}
-/*
-for (i=0;i<numdays;i++) {
-  document.write(Dates[i]);
-  document.write(" ");
-}
-*/
 
 var padding = 10;
 var tempmap_border = [5*padding,padding+880,padding,padding+300]; //left,right,top,bottom
-var legend_border = [tempmap_border[1]+20,tempmap_border[1]+40,padding,padding+270];
+var legend_border = [tempmap_border[1]+30,tempmap_border[1]+50,padding,padding+270];
 
 //Generate a 4-tuble for every cell in the map: rect y, height, x, temp
 var Cellvals = new Array(numdepths*numdays);
@@ -39,8 +33,8 @@ for (var ridx=0; ridx<numdepths; ridx++) {
 		Cellvals[i][1] = cell_height_pix;
 		Cellvals[i][2] = cidx*cell_width;  
 		Cellvals[i][3] = Temps[ridx][cidx];
-	}
-}
+	}//for cidx
+}//for ridx
 */
 
 //
@@ -71,6 +65,12 @@ for (var didx=1; didx<numdepths; didx++) {
    cell_ht[didx] = cell_bdr[didx] - cell_bdr[didx-1];
 }//for didx
 
+/*
+//Debugging printout 
+for (var didx=0; didx<numdepths; didx++) {
+ document.write(didx," ",cell_y[didx]," ",cell_bdr[didx]," ",cell_ht[didx],"<br>");
+}
+*/
 for (var ridx=0; ridx<numdepths; ridx++) {
 	for (var cidx=0; cidx<numdays; cidx++) {
 		i = ridx*numdays + cidx;
@@ -79,8 +79,11 @@ for (var ridx=0; ridx<numdepths; ridx++) {
 		Cellvals[i][1] = cell_ht[ridx];      //height
 		Cellvals[i][2] = cidx*cell_width;    //x
 		Cellvals[i][3] = Temps[ridx][cidx];  //temp
-	}
-}
+                //Debugging print
+		//if (cidx == 0) 
+                //  document.write(ridx," ",Cellvals[i][0]," ",Cellvals[i][1]," ",Cellvals[i][2]," ",Cellvals[i][3],"<br>")
+	}//for cidx
+}//for ridx
 //Scale the y axis
 var avg_cell_height = Math.floor((tempmap_border[3]-tempmap_border[2])/(numdepths-1));
 var map_yaxis = d3.scale.linear()

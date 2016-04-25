@@ -7,10 +7,10 @@ function d3_tempmap_menu() {
   $items = array();
 
   //"lakeTempMap" will be the URL
-  $items['lakeTempMap/%'] = array(
+  $items['lakeTempMap/%/%'] = array(
     'title' => '',
     'page callback' => 'd3_tempmap_basic', //php function name
-    'page arguments' => array(1),  //mult. args are (1,2,3)...
+    'page arguments' => array(1,2),  //mult. args are (1,2,3)...
     'access arguments' => array('access content'),
     //can put callback function in separate file: see 'file' or Drupalize video 9
   );
@@ -18,16 +18,17 @@ function d3_tempmap_menu() {
 }
 
 
-function d3_tempmap_basic($lakeid) {
+function d3_tempmap_basic($lakeid, $year4) {
 
   //Get the water temp data from the database.
-  get_waterTemps($lakeid);
+  get_waterTemps($lakeid, $year4);
 
   $content = array();
 
-  //Display a lake name title
-  if ($lakeid == 'TR') $lakename = '  Trout Lake';
-  if ($lakeid == 'SP') $lakename = '  Sparkling Lake';
+  //Display a lake name title and year
+  if ($lakeid == 'TR') $lakename = '  Trout Lake  -  '.$year4;
+  if ($lakeid == 'SP') $lakename = '  Sparkling Lake  - '.$year4;
+  if ($lakeid == 'ME') $lakename = '  Lake Mendota  -  '.$year4;
   $content['raw_markup'] = array(
     '#type' => 'markup',
     '#markup' => $lakename,
@@ -74,9 +75,10 @@ function d3_tempmap_basic($lakeid) {
   return $content;
 }
 
-function get_waterTemps($lakeid) { 
+function get_waterTemps($lakeid,$year4) { 
 
-$php_cur_year = 2015;
+$php_cur_year = 2016;
+
 
 if ($lakeid == 'SP') {
   //SP data
@@ -90,8 +92,14 @@ else if ($lakeid == 'TR') {
   $php_depths = array(0,0.25,0.5,0.75,1,1.5,2,2.5,3,3.5,4,5,6,7,8,9,10,11,12,13,14,16,20,25,30); 
   $php_num_depths = 25;
 }
+else if ($lakeid == 'ME') {
+  //ME data
+  $table_name = "sensor_mendota_lake_watertemp_daily";
+  $php_depths = array(0,0.5,1,1.5,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20); 
+  $php_num_depths = 23;
+}
 
-$sql_getdays = "(SELECT min(daynum) as minday, max(daynum) as maxday FROM `".$table_name."` where year4 = 2015)";
+$sql_getdays = "(SELECT min(daynum) as minday, max(daynum) as maxday FROM `".$table_name."` where year4=".$year4.")";
 db_set_active('dbmaker');
 $result = db_query($sql_getdays);
 db_set_active('default');
@@ -111,22 +119,22 @@ for ($col=0; $col<$php_numdays; $col++) { for ($row=0; $row<$php_num_depths; $ro
 for ($col=0; $col<$php_numdays; $col++) {
      $curday = $php_min_day + $col;
 
-     $sqlstatement = "(SELECT sampledate, depth, wtemp FROM `".$table_name."` where year4=2015 and daynum=" .$curday .")";
+     $sqlstatement = "(SELECT sampledate, depth, wtemp FROM `".$table_name."` where year4=".$year4."  and daynum=" .$curday .")";
      db_set_active('dbmaker');
      $result = db_query($sqlstatement);
      db_set_active('default');
  
-	 foreach ($result as $row) { 
+     foreach ($result as $row) { 
         $php_dates[$col] = $row->sampledate;	 		
 		$depth = $row->depth;
 		$wtemp = $row->wtemp;
 		//Brute force way to order depths but doesn't require that depth order in the table remain constant.
 		for ($i=0; $i<$php_num_depths; $i++) {
 			if ($depth==$php_depths[$i]) {			    
-                $php_temps[$i][$col] = $wtemp;  //2d array of [depths][days]
-            }//if
+                           $php_temps[$i][$col] = $wtemp;  //2d array of [depths][days]
+                        }//if
 		}//for $i			
-	}//foreach	 
+     }//foreach	 
 }//for $col
 
 $GLOBALS['numdays'] = $php_numdays; 
