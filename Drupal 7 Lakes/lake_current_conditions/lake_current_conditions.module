@@ -5,6 +5,7 @@
 if (arg(1) == 'sparkling-lake') $GLOBALS['lakeid'] = 'SP';
 if (arg(1) == 'trout-lake') $GLOBALS['lakeid'] = 'TR';
 if (arg(1) == 'lake-mendota') $GLOBALS['lakeid'] = 'ME';
+$GLOBALS['year4'] = 2016;
 
 /*
  *  Implements hook_block_info();
@@ -32,6 +33,7 @@ function lake_current_conditions_block_view() {
 function lake_current_conditions_content() {
 
   $lakeid = $GLOBALS['lakeid']; 
+  $year4 = $GLOBALS['year4'];
   
 	//get data from our own database
   $sqlstatement = "SELECT * FROM buoy_current_conditions WHERE buoy_current_conditions.lakeid = '".$lakeid."'";
@@ -188,7 +190,7 @@ function lake_current_conditions_content() {
   $content['container_main']['container_current']['current_tempmap']['link'] = array(
     '#type' => 'link',
     '#title' => theme('image',$tempmap_photo),
-    '#href' => '/lakeTempMap/'.$lakeid,
+    '#href' => 'https://lter6.limnology.wisc.edu/lakeTempMap/'.$lakeid.'/'.$year4,
     '#options' => array(
        'attributes' => array(),
        'html' => TRUE,
