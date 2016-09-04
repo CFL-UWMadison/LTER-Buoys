@@ -7,8 +7,32 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9508536E1D5CDC900051B0E0 /* WebEntranceTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 9508536D1D5CDC900051B0E0 /* WebEntranceTest.m */; };
+		9520290A1D20915A00E74077 /* UnitConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 952029091D20915A00E74077 /* UnitConverter.m */; };
+		953B830D1D50F1AB0084F1AB /* WeatherDataWebEntrance.m in Sources */ = {isa = PBXBuildFile; fileRef = 953B830C1D50F1AB0084F1AB /* WeatherDataWebEntrance.m */; };
+		954535531D11AA44001C7AB8 /* UpdateModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9545354E1D11AA44001C7AB8 /* UpdateModel.m */; };
+		954535541D11AA44001C7AB8 /* UpdateInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 954535501D11AA44001C7AB8 /* UpdateInfoViewController.m */; };
+		954535551D11AA44001C7AB8 /* LetsStartViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 954535521D11AA44001C7AB8 /* LetsStartViewController.m */; };
+		954535581D11AA54001C7AB8 /* LetsStartViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 954535561D11AA54001C7AB8 /* LetsStartViewController.xib */; };
+		954535591D11AA54001C7AB8 /* UpdateInfoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 954535571D11AA54001C7AB8 /* UpdateInfoViewController.xib */; };
+		9545355D1D11AA64001C7AB8 /* LakeMendota.JPG in Resources */ = {isa = PBXBuildFile; fileRef = 9545355A1D11AA64001C7AB8 /* LakeMendota.JPG */; };
+		9545355E1D11AA64001C7AB8 /* New_interface_1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 9545355B1D11AA64001C7AB8 /* New_interface_1.jpg */; };
+		9545355F1D11AA64001C7AB8 /* New_interface_2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 9545355C1D11AA64001C7AB8 /* New_interface_2.jpg */; };
+		954567351D75761A00DA81B4 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 954567341D75761A00DA81B4 /* Reachability.m */; };
+		954567371D75767F00DA81B4 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 954567361D75767F00DA81B4 /* SystemConfiguration.framework */; };
+		9576565D1D78D47E0039D617 /* IphoneModelSizeIdentifier.m in Sources */ = {isa = PBXBuildFile; fileRef = 9576565C1D78D47E0039D617 /* IphoneModelSizeIdentifier.m */; };
+		9576565F1D78DA2B0039D617 /* ModelIdentifierTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 9576565E1D78DA2B0039D617 /* ModelIdentifierTest.m */; };
+		957656611D7A62820039D617 /* WeatherInfoDBTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 957656601D7A62820039D617 /* WeatherInfoDBTest.m */; };
 		959C74171C8C99BE00015326 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 959C74161C8C99BE00015326 /* MessageUI.framework */; };
 		95B419FA1C8C802B0080455B /* RefreshButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 95B419F91C8C802B0080455B /* RefreshButton.png */; };
+		95C471B21D611344007CF77D /* WeatherPropertyModifier.m in Sources */ = {isa = PBXBuildFile; fileRef = 95C471B11D611344007CF77D /* WeatherPropertyModifier.m */; };
+		95D884141D6605B20098E2FD /* WeatherModifierTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 95D884131D6605B20098E2FD /* WeatherModifierTest.m */; };
+		95E053E91D0C97CF005B22BE /* setting.png in Resources */ = {isa = PBXBuildFile; fileRef = 95E053E81D0C97CF005B22BE /* setting.png */; };
+		95F1CBA81CF502DF0048D548 /* temperature.png in Resources */ = {isa = PBXBuildFile; fileRef = 95F1CBA71CF502DF0048D548 /* temperature.png */; };
+		95F1CBAA1CF502E40048D548 /* waterIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 95F1CBA91CF502E40048D548 /* waterIcon.png */; };
+		95F1CBAC1CF502ED0048D548 /* windIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 95F1CBAB1CF502ED0048D548 /* windIcon.png */; };
+		95F555B41D0233A300C85AA3 /* MenuViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 95F555B21D0233A300C85AA3 /* MenuViewController.xib */; };
+		95F555F61D03435D00C85AA3 /* MenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 95F555F51D03435D00C85AA3 /* MenuViewController.m */; };
 		95FED3051C485215008DE29D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 95FED3041C485215008DE29D /* main.m */; };
 		95FED3081C485215008DE29D /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 95FED3071C485215008DE29D /* AppDelegate.m */; };
 		95FED3161C485215008DE29D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 95FED3151C485215008DE29D /* Assets.xcassets */; };
@@ -18,7 +42,7 @@
 		95FED3541C485429008DE29D /* DisclaimerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 95FED34B1C485429008DE29D /* DisclaimerViewController.m */; };
 		95FED3551C485429008DE29D /* DisclaimerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 95FED34C1C485429008DE29D /* DisclaimerViewController.xib */; };
 		95FED3561C485429008DE29D /* JJWeatherViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 95FED34E1C485429008DE29D /* JJWeatherViewController.m */; };
-		95FED3581C485429008DE29D /* ModelController.m in Sources */ = {isa = PBXBuildFile; fileRef = 95FED3511C485429008DE29D /* ModelController.m */; };
+		95FED3581C485429008DE29D /* WeatherModelController.m in Sources */ = {isa = PBXBuildFile; fileRef = 95FED3511C485429008DE29D /* WeatherModelController.m */; };
 		95FED3591C485429008DE29D /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 95FED3531C485429008DE29D /* RootViewController.m */; };
 		95FED3611C485435008DE29D /* AppfeatureImage.png in Resources */ = {isa = PBXBuildFile; fileRef = 95FED35A1C485435008DE29D /* AppfeatureImage.png */; };
 		95FED3641C485435008DE29D /* questionmMark.png in Resources */ = {isa = PBXBuildFile; fileRef = 95FED35D1C485435008DE29D /* questionmMark.png */; };
@@ -32,6 +56,7 @@
 		95FED3751C485542008DE29D /* Weather.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 95FED3731C485542008DE29D /* Weather.xcdatamodeld */; };
 		95FED37E1C485743008DE29D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 95FED37C1C485743008DE29D /* Main.storyboard */; };
 		95FED3801C485855008DE29D /* LaunchScreenXib.xib in Resources */ = {isa = PBXBuildFile; fileRef = 95FED37F1C485855008DE29D /* LaunchScreenXib.xib */; };
+		95FFD9B31D047E0F00FE9A6E /* UserSetting.m in Sources */ = {isa = PBXBuildFile; fileRef = 95FFD9B21D047E0F00FE9A6E /* UserSetting.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -52,8 +77,42 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		9508536D1D5CDC900051B0E0 /* WebEntranceTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebEntranceTest.m; sourceTree = "<group>"; };
+		952029081D20915A00E74077 /* UnitConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnitConverter.h; sourceTree = "<group>"; };
+		952029091D20915A00E74077 /* UnitConverter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UnitConverter.m; sourceTree = "<group>"; };
+		953B830B1D50F1AB0084F1AB /* WeatherDataWebEntrance.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WeatherDataWebEntrance.h; sourceTree = "<group>"; };
+		953B830C1D50F1AB0084F1AB /* WeatherDataWebEntrance.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WeatherDataWebEntrance.m; sourceTree = "<group>"; };
+		9545354D1D11AA44001C7AB8 /* UpdateInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UpdateInfoViewController.h; sourceTree = "<group>"; };
+		9545354E1D11AA44001C7AB8 /* UpdateModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UpdateModel.m; sourceTree = "<group>"; };
+		9545354F1D11AA44001C7AB8 /* UpdateModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UpdateModel.h; sourceTree = "<group>"; };
+		954535501D11AA44001C7AB8 /* UpdateInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UpdateInfoViewController.m; sourceTree = "<group>"; };
+		954535511D11AA44001C7AB8 /* LetsStartViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LetsStartViewController.h; sourceTree = "<group>"; };
+		954535521D11AA44001C7AB8 /* LetsStartViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LetsStartViewController.m; sourceTree = "<group>"; };
+		954535561D11AA54001C7AB8 /* LetsStartViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LetsStartViewController.xib; sourceTree = "<group>"; };
+		954535571D11AA54001C7AB8 /* UpdateInfoViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UpdateInfoViewController.xib; sourceTree = "<group>"; };
+		9545355A1D11AA64001C7AB8 /* LakeMendota.JPG */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = LakeMendota.JPG; sourceTree = "<group>"; };
+		9545355B1D11AA64001C7AB8 /* New_interface_1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = New_interface_1.jpg; sourceTree = "<group>"; };
+		9545355C1D11AA64001C7AB8 /* New_interface_2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = New_interface_2.jpg; sourceTree = "<group>"; };
+		954567331D75761900DA81B4 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
+		954567341D75761A00DA81B4 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
+		954567361D75767F00DA81B4 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		954567381D75BEBD00DA81B4 /* UserSettingDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserSettingDelegate.h; sourceTree = "<group>"; };
+		9576565B1D78D47E0039D617 /* IphoneModelSizeIdentifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IphoneModelSizeIdentifier.h; sourceTree = "<group>"; };
+		9576565C1D78D47E0039D617 /* IphoneModelSizeIdentifier.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IphoneModelSizeIdentifier.m; sourceTree = "<group>"; };
+		9576565E1D78DA2B0039D617 /* ModelIdentifierTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModelIdentifierTest.m; sourceTree = "<group>"; };
+		957656601D7A62820039D617 /* WeatherInfoDBTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WeatherInfoDBTest.m; sourceTree = "<group>"; };
 		959C74161C8C99BE00015326 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		95B419F91C8C802B0080455B /* RefreshButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = RefreshButton.png; sourceTree = "<group>"; };
+		95C471B01D611344007CF77D /* WeatherPropertyModifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WeatherPropertyModifier.h; sourceTree = "<group>"; };
+		95C471B11D611344007CF77D /* WeatherPropertyModifier.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WeatherPropertyModifier.m; sourceTree = "<group>"; };
+		95D884131D6605B20098E2FD /* WeatherModifierTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WeatherModifierTest.m; sourceTree = "<group>"; };
+		95E053E81D0C97CF005B22BE /* setting.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = setting.png; sourceTree = "<group>"; };
+		95F1CBA71CF502DF0048D548 /* temperature.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = temperature.png; sourceTree = "<group>"; };
+		95F1CBA91CF502E40048D548 /* waterIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = waterIcon.png; sourceTree = "<group>"; };
+		95F1CBAB1CF502ED0048D548 /* windIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = windIcon.png; sourceTree = "<group>"; };
+		95F555B21D0233A300C85AA3 /* MenuViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MenuViewController.xib; sourceTree = "<group>"; };
+		95F555F41D03435D00C85AA3 /* MenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuViewController.h; sourceTree = "<group>"; };
+		95F555F51D03435D00C85AA3 /* MenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuViewController.m; sourceTree = "<group>"; };
 		95FED3001C485215008DE29D /* NTLRealTimeConditioniOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NTLRealTimeConditioniOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		95FED3041C485215008DE29D /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		95FED3061C485215008DE29D /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -72,8 +131,8 @@
 		95FED34C1C485429008DE29D /* DisclaimerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = DisclaimerViewController.xib; path = NTLRealTimeConditioniOS/Controller/DisclaimerViewController.xib; sourceTree = "<group>"; };
 		95FED34D1C485429008DE29D /* JJWeatherViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JJWeatherViewController.h; path = NTLRealTimeConditioniOS/Controller/JJWeatherViewController.h; sourceTree = "<group>"; };
 		95FED34E1C485429008DE29D /* JJWeatherViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JJWeatherViewController.m; path = NTLRealTimeConditioniOS/Controller/JJWeatherViewController.m; sourceTree = "<group>"; };
-		95FED3501C485429008DE29D /* ModelController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ModelController.h; path = NTLRealTimeConditioniOS/Controller/ModelController.h; sourceTree = "<group>"; };
-		95FED3511C485429008DE29D /* ModelController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ModelController.m; path = NTLRealTimeConditioniOS/Controller/ModelController.m; sourceTree = "<group>"; };
+		95FED3501C485429008DE29D /* WeatherModelController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WeatherModelController.h; path = NTLRealTimeConditioniOS/Controller/WeatherModelController.h; sourceTree = "<group>"; };
+		95FED3511C485429008DE29D /* WeatherModelController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WeatherModelController.m; path = NTLRealTimeConditioniOS/Controller/WeatherModelController.m; sourceTree = "<group>"; };
 		95FED3521C485429008DE29D /* RootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RootViewController.h; path = NTLRealTimeConditioniOS/Controller/RootViewController.h; sourceTree = "<group>"; };
 		95FED3531C485429008DE29D /* RootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RootViewController.m; path = NTLRealTimeConditioniOS/Controller/RootViewController.m; sourceTree = "<group>"; };
 		95FED35A1C485435008DE29D /* AppfeatureImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = AppfeatureImage.png; path = "NTLRealTimeConditioniOS/Icon and Image/AppfeatureImage.png"; sourceTree = "<group>"; };
@@ -91,6 +150,8 @@
 		95FED3741C485542008DE29D /* Weather.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Weather.xcdatamodel; sourceTree = "<group>"; };
 		95FED37D1C485743008DE29D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = NTLRealTimeConditioniOS/Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		95FED37F1C485855008DE29D /* LaunchScreenXib.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = LaunchScreenXib.xib; path = NTLRealTimeConditioniOS/LaunchScreenXib.xib; sourceTree = "<group>"; };
+		95FFD9B11D047E0F00FE9A6E /* UserSetting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserSetting.h; sourceTree = "<group>"; };
+		95FFD9B21D047E0F00FE9A6E /* UserSetting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserSetting.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,6 +159,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				954567371D75767F00DA81B4 /* SystemConfiguration.framework in Frameworks */,
 				959C74171C8C99BE00015326 /* MessageUI.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -119,25 +181,55 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		9545354C1D11A9FF001C7AB8 /* UpdateInformationController */ = {
+			isa = PBXGroup;
+			children = (
+				954535561D11AA54001C7AB8 /* LetsStartViewController.xib */,
+				954535571D11AA54001C7AB8 /* UpdateInfoViewController.xib */,
+				9545354D1D11AA44001C7AB8 /* UpdateInfoViewController.h */,
+				9545354E1D11AA44001C7AB8 /* UpdateModel.m */,
+				9545354F1D11AA44001C7AB8 /* UpdateModel.h */,
+				954535501D11AA44001C7AB8 /* UpdateInfoViewController.m */,
+				954535511D11AA44001C7AB8 /* LetsStartViewController.h */,
+				954535521D11AA44001C7AB8 /* LetsStartViewController.m */,
+				9545355A1D11AA64001C7AB8 /* LakeMendota.JPG */,
+				9545355B1D11AA64001C7AB8 /* New_interface_1.jpg */,
+				9545355C1D11AA64001C7AB8 /* New_interface_2.jpg */,
+			);
+			name = UpdateInformationController;
+			sourceTree = "<group>";
+		};
 		95C70CB81CA82F080028FEE8 /* SourceCode */ = {
 			isa = PBXGroup;
 			children = (
-				95FED3691C485442008DE29D /* Weather.h */,
-				95FED3681C485442008DE29D /* JJImageTransformer.m */,
-				95FED36A1C485442008DE29D /* Weather.m */,
-				95FED36B1C485442008DE29D /* Weather+CoreDataProperties.h */,
-				95FED36C1C485442008DE29D /* Weather+CoreDataProperties.m */,
+				954567331D75761900DA81B4 /* Reachability.h */,
+				954567341D75761A00DA81B4 /* Reachability.m */,
+				95C79B3E1D160542001F6A45 /* CoreData File */,
+				9545354C1D11A9FF001C7AB8 /* UpdateInformationController */,
 				95FED36D1C485442008DE29D /* WeatherInfoDB.h */,
 				95FED36E1C485442008DE29D /* WeatherInfoDB.m */,
-				95FED3731C485542008DE29D /* Weather.xcdatamodeld */,
+				95C471B01D611344007CF77D /* WeatherPropertyModifier.h */,
+				95C471B11D611344007CF77D /* WeatherPropertyModifier.m */,
+				953B830B1D50F1AB0084F1AB /* WeatherDataWebEntrance.h */,
+				953B830C1D50F1AB0084F1AB /* WeatherDataWebEntrance.m */,
+				952029081D20915A00E74077 /* UnitConverter.h */,
+				952029091D20915A00E74077 /* UnitConverter.m */,
 				95FED34A1C485429008DE29D /* DisclaimerViewController.h */,
 				95FED34B1C485429008DE29D /* DisclaimerViewController.m */,
 				95FED34D1C485429008DE29D /* JJWeatherViewController.h */,
 				95FED34E1C485429008DE29D /* JJWeatherViewController.m */,
-				95FED3501C485429008DE29D /* ModelController.h */,
-				95FED3511C485429008DE29D /* ModelController.m */,
+				9576565B1D78D47E0039D617 /* IphoneModelSizeIdentifier.h */,
+				9576565C1D78D47E0039D617 /* IphoneModelSizeIdentifier.m */,
+				95F555F41D03435D00C85AA3 /* MenuViewController.h */,
+				95F555F51D03435D00C85AA3 /* MenuViewController.m */,
+				95F555B21D0233A300C85AA3 /* MenuViewController.xib */,
+				95FED3501C485429008DE29D /* WeatherModelController.h */,
+				95FED3511C485429008DE29D /* WeatherModelController.m */,
 				95FED3521C485429008DE29D /* RootViewController.h */,
 				95FED3531C485429008DE29D /* RootViewController.m */,
+				95FFD9B11D047E0F00FE9A6E /* UserSetting.h */,
+				95FFD9B21D047E0F00FE9A6E /* UserSetting.m */,
+				954567381D75BEBD00DA81B4 /* UserSettingDelegate.h */,
 			);
 			name = SourceCode;
 			sourceTree = "<group>";
@@ -146,18 +238,36 @@
 			isa = PBXGroup;
 			children = (
 				95FED35A1C485435008DE29D /* AppfeatureImage.png */,
+				95F1CBA91CF502E40048D548 /* waterIcon.png */,
+				95F1CBA71CF502DF0048D548 /* temperature.png */,
+				95F1CBAB1CF502ED0048D548 /* windIcon.png */,
 				95FED35D1C485435008DE29D /* questionmMark.png */,
 				95FED35E1C485435008DE29D /* refresh.png */,
 				95FED35F1C485435008DE29D /* settingButton.png */,
 				95FED3601C485435008DE29D /* UW Madison.jpg */,
 				95B419F91C8C802B0080455B /* RefreshButton.png */,
+				95E053E81D0C97CF005B22BE /* setting.png */,
 			);
 			name = Resource;
+			sourceTree = "<group>";
+		};
+		95C79B3E1D160542001F6A45 /* CoreData File */ = {
+			isa = PBXGroup;
+			children = (
+				95FED3681C485442008DE29D /* JJImageTransformer.m */,
+				95FED3691C485442008DE29D /* Weather.h */,
+				95FED36A1C485442008DE29D /* Weather.m */,
+				95FED36B1C485442008DE29D /* Weather+CoreDataProperties.h */,
+				95FED36C1C485442008DE29D /* Weather+CoreDataProperties.m */,
+				95FED3731C485542008DE29D /* Weather.xcdatamodeld */,
+			);
+			name = "CoreData File";
 			sourceTree = "<group>";
 		};
 		95FED2F71C485215008DE29D = {
 			isa = PBXGroup;
 			children = (
+				954567361D75767F00DA81B4 /* SystemConfiguration.framework */,
 				959C74161C8C99BE00015326 /* MessageUI.framework */,
 				95C70CB91CA82F310028FEE8 /* Resource */,
 				95C70CB81CA82F080028FEE8 /* SourceCode */,
@@ -206,7 +316,11 @@
 			isa = PBXGroup;
 			children = (
 				95FED3231C485216008DE29D /* NTLRealTimeConditioniOSTests.m */,
+				957656601D7A62820039D617 /* WeatherInfoDBTest.m */,
+				9508536D1D5CDC900051B0E0 /* WebEntranceTest.m */,
 				95FED3251C485216008DE29D /* Info.plist */,
+				95D884131D6605B20098E2FD /* WeatherModifierTest.m */,
+				9576565E1D78DA2B0039D617 /* ModelIdentifierTest.m */,
 			);
 			path = NTLRealTimeConditioniOSTests;
 			sourceTree = "<group>";
@@ -324,17 +438,27 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				95F1CBAC1CF502ED0048D548 /* windIcon.png in Resources */,
+				954535581D11AA54001C7AB8 /* LetsStartViewController.xib in Resources */,
 				95FED3191C485215008DE29D /* LaunchScreen.storyboard in Resources */,
+				9545355D1D11AA64001C7AB8 /* LakeMendota.JPG in Resources */,
 				95FED3551C485429008DE29D /* DisclaimerViewController.xib in Resources */,
+				95F1CBAA1CF502E40048D548 /* waterIcon.png in Resources */,
 				95FED37E1C485743008DE29D /* Main.storyboard in Resources */,
 				95FED3671C485435008DE29D /* UW Madison.jpg in Resources */,
+				9545355E1D11AA64001C7AB8 /* New_interface_1.jpg in Resources */,
+				95F1CBA81CF502DF0048D548 /* temperature.png in Resources */,
+				95F555B41D0233A300C85AA3 /* MenuViewController.xib in Resources */,
 				95B419FA1C8C802B0080455B /* RefreshButton.png in Resources */,
 				95FED3801C485855008DE29D /* LaunchScreenXib.xib in Resources */,
+				9545355F1D11AA64001C7AB8 /* New_interface_2.jpg in Resources */,
 				95FED3661C485435008DE29D /* settingButton.png in Resources */,
 				95FED3161C485215008DE29D /* Assets.xcassets in Resources */,
 				95FED3641C485435008DE29D /* questionmMark.png in Resources */,
+				95E053E91D0C97CF005B22BE /* setting.png in Resources */,
 				95FED3611C485435008DE29D /* AppfeatureImage.png in Resources */,
 				95FED3651C485435008DE29D /* refresh.png in Resources */,
+				954535591D11AA54001C7AB8 /* UpdateInfoViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -359,16 +483,26 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				95FED3581C485429008DE29D /* ModelController.m in Sources */,
+				95FED3581C485429008DE29D /* WeatherModelController.m in Sources */,
+				95C471B21D611344007CF77D /* WeatherPropertyModifier.m in Sources */,
 				95FED3711C485442008DE29D /* Weather+CoreDataProperties.m in Sources */,
+				9520290A1D20915A00E74077 /* UnitConverter.m in Sources */,
 				95FED3081C485215008DE29D /* AppDelegate.m in Sources */,
 				95FED3561C485429008DE29D /* JJWeatherViewController.m in Sources */,
 				95FED3701C485442008DE29D /* Weather.m in Sources */,
 				95FED3721C485442008DE29D /* WeatherInfoDB.m in Sources */,
 				95FED3591C485429008DE29D /* RootViewController.m in Sources */,
+				95F555F61D03435D00C85AA3 /* MenuViewController.m in Sources */,
 				95FED3541C485429008DE29D /* DisclaimerViewController.m in Sources */,
+				954535551D11AA44001C7AB8 /* LetsStartViewController.m in Sources */,
+				953B830D1D50F1AB0084F1AB /* WeatherDataWebEntrance.m in Sources */,
 				95FED3751C485542008DE29D /* Weather.xcdatamodeld in Sources */,
+				954567351D75761A00DA81B4 /* Reachability.m in Sources */,
 				95FED36F1C485442008DE29D /* JJImageTransformer.m in Sources */,
+				9576565D1D78D47E0039D617 /* IphoneModelSizeIdentifier.m in Sources */,
+				954535541D11AA44001C7AB8 /* UpdateInfoViewController.m in Sources */,
+				95FFD9B31D047E0F00FE9A6E /* UserSetting.m in Sources */,
+				954535531D11AA44001C7AB8 /* UpdateModel.m in Sources */,
 				95FED3051C485215008DE29D /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -377,6 +511,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9576565F1D78DA2B0039D617 /* ModelIdentifierTest.m in Sources */,
+				9508536E1D5CDC900051B0E0 /* WebEntranceTest.m in Sources */,
+				95D884141D6605B20098E2FD /* WeatherModifierTest.m in Sources */,
+				957656611D7A62820039D617 /* WeatherInfoDBTest.m in Sources */,
 				95FED3241C485216008DE29D /* NTLRealTimeConditioniOSTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -460,7 +598,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -497,7 +635,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
