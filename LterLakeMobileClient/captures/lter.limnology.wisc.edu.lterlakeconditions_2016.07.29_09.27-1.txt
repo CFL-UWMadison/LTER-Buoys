@@ -1,0 +1,2 @@
+Bad activity command, or no activities match: lter.limnology.wisc.edu.lterlakeconditions
+Use -h for help.

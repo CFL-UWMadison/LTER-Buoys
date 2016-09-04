@@ -1,0 +1,47 @@
+Activity Resolver Table:
+  Non-Data Actions:
+      android.intent.action.MAIN:
+        363a50df lter.limnology.wisc.edu.lterlakeconditions/.activities.MainActivity
+
+Registered ContentProviders:
+  lter.limnology.wisc.edu.lterlakeconditions/.provider.WeatherProvider:
+    Provider{6f2912c lter.limnology.wisc.edu.lterlakeconditions/.provider.WeatherProvider}
+
+ContentProvider Authorities:
+  [lter.limnology.wisc.edu]:
+    Provider{6f2912c lter.limnology.wisc.edu.lterlakeconditions/.provider.WeatherProvider}
+      applicationInfo=ApplicationInfo{118b67f5 lter.limnology.wisc.edu.lterlakeconditions}
+
+Key Set Manager:
+  [lter.limnology.wisc.edu.lterlakeconditions]
+      Signing KeySets: 7
+
+Packages:
+  Package [lter.limnology.wisc.edu.lterlakeconditions] (e86198a):
+    userId=10054 gids=[3003, 1028, 1015]
+    pkg=Package{159d1bfb lter.limnology.wisc.edu.lterlakeconditions}
+    codePath=/data/app/lter.limnology.wisc.edu.lterlakeconditions-1
+    resourcePath=/data/app/lter.limnology.wisc.edu.lterlakeconditions-1
+    legacyNativeLibraryDir=/data/app/lter.limnology.wisc.edu.lterlakeconditions-1/lib
+    primaryCpuAbi=null
+    secondaryCpuAbi=null
+    versionCode=1 targetSdk=22
+    versionName=1.0
+    splits=[base]
+    applicationInfo=ApplicationInfo{118b67f5 lter.limnology.wisc.edu.lterlakeconditions}
+    flags=[ DEBUGGABLE HAS_CODE ALLOW_CLEAR_USER_DATA ALLOW_BACKUP ]
+    dataDir=/data/data/lter.limnology.wisc.edu.lterlakeconditions
+    supportsScreens=[small, medium, large, xlarge, resizeable, anyDensity]
+    timeStamp=2016-07-29 09:24:10
+    firstInstallTime=2016-07-17 12:46:21
+    lastUpdateTime=2016-07-29 09:24:11
+    signatures=PackageSignatures{318d9418 [1ef78e71]}
+    permissionsFixed=true haveGids=true installStatus=1
+    pkgFlags=[ DEBUGGABLE HAS_CODE ALLOW_CLEAR_USER_DATA ALLOW_BACKUP ]
+    User 0:  installed=true hidden=false stopped=false notLaunched=false enabled=0
+    grantedPermissions:
+      android.permission.INTERNET
+      android.permission.READ_EXTERNAL_STORAGE
+      android.permission.READ_PHONE_STATE
+      android.permission.ACCESS_NETWORK_STATE
+      android.permission.WRITE_EXTERNAL_STORAGE
