@@ -23,6 +23,7 @@
 		9576565D1D78D47E0039D617 /* IphoneModelSizeIdentifier.m in Sources */ = {isa = PBXBuildFile; fileRef = 9576565C1D78D47E0039D617 /* IphoneModelSizeIdentifier.m */; };
 		9576565F1D78DA2B0039D617 /* ModelIdentifierTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 9576565E1D78DA2B0039D617 /* ModelIdentifierTest.m */; };
 		957656611D7A62820039D617 /* WeatherInfoDBTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 957656601D7A62820039D617 /* WeatherInfoDBTest.m */; };
+		957656641D7DA5620039D617 /* UserSettingTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 957656631D7DA5620039D617 /* UserSettingTest.m */; };
 		959C74171C8C99BE00015326 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 959C74161C8C99BE00015326 /* MessageUI.framework */; };
 		95B419FA1C8C802B0080455B /* RefreshButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 95B419F91C8C802B0080455B /* RefreshButton.png */; };
 		95C471B21D611344007CF77D /* WeatherPropertyModifier.m in Sources */ = {isa = PBXBuildFile; fileRef = 95C471B11D611344007CF77D /* WeatherPropertyModifier.m */; };
@@ -101,6 +102,8 @@
 		9576565C1D78D47E0039D617 /* IphoneModelSizeIdentifier.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IphoneModelSizeIdentifier.m; sourceTree = "<group>"; };
 		9576565E1D78DA2B0039D617 /* ModelIdentifierTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModelIdentifierTest.m; sourceTree = "<group>"; };
 		957656601D7A62820039D617 /* WeatherInfoDBTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WeatherInfoDBTest.m; sourceTree = "<group>"; };
+		957656631D7DA5620039D617 /* UserSettingTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserSettingTest.m; sourceTree = "<group>"; };
+		9576566B1D7DD6B40039D617 /* WeatherDBDataEntranceProtocal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WeatherDBDataEntranceProtocal.h; sourceTree = "<group>"; };
 		959C74161C8C99BE00015326 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		95B419F91C8C802B0080455B /* RefreshButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = RefreshButton.png; sourceTree = "<group>"; };
 		95C471B01D611344007CF77D /* WeatherPropertyModifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WeatherPropertyModifier.h; sourceTree = "<group>"; };
@@ -199,19 +202,28 @@
 			name = UpdateInformationController;
 			sourceTree = "<group>";
 		};
-		95C70CB81CA82F080028FEE8 /* SourceCode */ = {
+		957656621D7D01B90039D617 /* WeatherDatabase */ = {
 			isa = PBXGroup;
 			children = (
-				954567331D75761900DA81B4 /* Reachability.h */,
-				954567341D75761A00DA81B4 /* Reachability.m */,
-				95C79B3E1D160542001F6A45 /* CoreData File */,
-				9545354C1D11A9FF001C7AB8 /* UpdateInformationController */,
 				95FED36D1C485442008DE29D /* WeatherInfoDB.h */,
 				95FED36E1C485442008DE29D /* WeatherInfoDB.m */,
 				95C471B01D611344007CF77D /* WeatherPropertyModifier.h */,
 				95C471B11D611344007CF77D /* WeatherPropertyModifier.m */,
 				953B830B1D50F1AB0084F1AB /* WeatherDataWebEntrance.h */,
 				953B830C1D50F1AB0084F1AB /* WeatherDataWebEntrance.m */,
+				9576566B1D7DD6B40039D617 /* WeatherDBDataEntranceProtocal.h */,
+			);
+			name = WeatherDatabase;
+			sourceTree = "<group>";
+		};
+		95C70CB81CA82F080028FEE8 /* SourceCode */ = {
+			isa = PBXGroup;
+			children = (
+				957656621D7D01B90039D617 /* WeatherDatabase */,
+				954567331D75761900DA81B4 /* Reachability.h */,
+				954567341D75761A00DA81B4 /* Reachability.m */,
+				95C79B3E1D160542001F6A45 /* CoreData File */,
+				9545354C1D11A9FF001C7AB8 /* UpdateInformationController */,
 				952029081D20915A00E74077 /* UnitConverter.h */,
 				952029091D20915A00E74077 /* UnitConverter.m */,
 				95FED34A1C485429008DE29D /* DisclaimerViewController.h */,
@@ -321,6 +333,7 @@
 				95FED3251C485216008DE29D /* Info.plist */,
 				95D884131D6605B20098E2FD /* WeatherModifierTest.m */,
 				9576565E1D78DA2B0039D617 /* ModelIdentifierTest.m */,
+				957656631D7DA5620039D617 /* UserSettingTest.m */,
 			);
 			path = NTLRealTimeConditioniOSTests;
 			sourceTree = "<group>";
@@ -514,6 +527,7 @@
 				9576565F1D78DA2B0039D617 /* ModelIdentifierTest.m in Sources */,
 				9508536E1D5CDC900051B0E0 /* WebEntranceTest.m in Sources */,
 				95D884141D6605B20098E2FD /* WeatherModifierTest.m in Sources */,
+				957656641D7DA5620039D617 /* UserSettingTest.m in Sources */,
 				957656611D7A62820039D617 /* WeatherInfoDBTest.m in Sources */,
 				95FED3241C485216008DE29D /* NTLRealTimeConditioniOSTests.m in Sources */,
 			);

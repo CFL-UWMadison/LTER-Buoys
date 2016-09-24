@@ -2,6 +2,11 @@
 //  WeatherInfoDB.m
 //  AppForLiminology View
 //
+//  By using the Notification center might be a good way to update the data. As long as db
+//  receives a notification, it will update the data.
+//
+//  I need to better understand the nil message problem. I remember it will not cause null pointer.
+//
 //  Created by Junjie on 15/12/27.
 //  Copyright © 2015年 Junjie. All rights reserved.
 //
@@ -9,14 +14,20 @@
 #import "WeatherInfoDB.h"
 @import CoreData;
 #import "Weather.h"
+#import "WeatherDataWebEntrance.h"
+#import "WeatherPropertyModifier.h"
+
+@class WeatherDataWebEntrance;
+@class WeatherPropertyModifier;
+NSString* const serverURL = @"";
 
 @interface WeatherInfoDB ()
+
 @property (nonatomic) NSMutableArray* privateLakeWeathers;
-@property(nonatomic,strong) NSManagedObjectContext *context;
-@property(nonatomic,strong) NSManagedObjectModel *model;
-@property(atomic,strong) NSTimer* timer;
-
-
+@property(nonatomic,strong) NSManagedObjectContext *localStoreContext;
+@property(nonatomic,strong) NSManagedObjectModel *weatherCoreDataModel;
+@property (nonatomic) int hardCodeLakeNum; // I forgot when I did this.....
+@property (nonatomic, strong) WeatherPropertyModifier* modifier;
 
 @end
 
@@ -29,218 +40,300 @@
     if(!db){
         db = [[self alloc] initPrivate];
     }
-    
     return db;
-}
-
--(void)refreshData:(NSTimer*) timer{
-    [self loadWeathers];
 }
 
 -(instancetype) init{
     return [WeatherInfoDB sharedDB];
 }
 
+/*
+-(instancetype) initWhenFirstLaunch{
+    self.appRelaunch = YES;
+    [self fetchDataIfAppRelaunch];
+    
+}*/
+
 //Override the accessor, let the allLakes to a private immutable array
 -(NSArray*) allLakes{
     return [self.privateLakeWeathers copy];
 }
 
-//This is the private
+
+
+//This is the private method for initializing the database. It's a part of the singleton design
 -(instancetype) initPrivate{
     self = [super init];
     if (self) {
-        self.model = [NSManagedObjectModel mergedModelFromBundles:nil];
         
-        NSPersistentStoreCoordinator* psc = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:_model];
+        NSPersistentStoreCoordinator* psc = [self initializePerisistentStoreCoordinator];
+        // this psc will be used to hold the infomation about the local store
+        // it will be used for the initialization of the model context
         
-        NSString* path = self.itemArchivePath;
-        NSURL *url = [NSURL fileURLWithPath:path];
+        NSURL *localPersistanceURL = [NSURL fileURLWithPath:self.itemArchivePath];
+        // This path is the relative path for the program to find the database in the bundle
+        // The path needs to be changed everytime I change the model
         
-        NSError* error;
-        if (![psc addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:url options:nil error:&error]) {
-            [NSException raise:@"Open fail" format:[error localizedDescription]];
-        }
-        //initialize the context
-        _context = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
-        _context.persistentStoreCoordinator = psc;
+        [self addLocalStoreToCooridinator:psc WithStoreURL:localPersistanceURL];
+        
+        _localStoreContext = [self initializeAContextWithCooridinator:psc];
+        // This context will be used throughout the database to read and save data to the local
+        // store
+        
+        self.dataEntrance = [[WeatherDataWebEntrance alloc] initWithDatabase:self];
+        // This entrance will be used to fetch data from the outside.
+        
+        _modifier = [[WeatherPropertyModifier alloc] init];
+        // This modifier will be responsible for assigning the data from the json string object to the
+        // the Weather object.
+        
+        _hardCodeLakeNum = 3;
+        
+        // This will set this db to respond to the update data notification
+        // to update the data
+        [self addUpdateDataNotificationReceiver];
+    
+        self.appRelaunch = YES;
+        [self fetchDataIfAppRelaunch];
+        
     }
+    
+    NSLog(@"**** The database has been created successfully ****");
+    
     return  self;
+}
+
+- (NSPersistentStoreCoordinator*) initializePerisistentStoreCoordinator{
+    _weatherCoreDataModel =[NSManagedObjectModel mergedModelFromBundles:nil];
+    return [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:_weatherCoreDataModel];
+}
+
+//This will return where does the local file store. You should be able to change the string
+//to store the data
+-(NSString*) itemArchivePath{
+    NSArray* documentDirectories = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    
+    //Get one and the only document directory from that list
+    NSString* documentDirectory = [documentDirectories firstObject];
+    
+    return [documentDirectory stringByAppendingPathComponent:@"NTLLakeConditionV1.1.4.2.data"];
+}
+
+- (void) addLocalStoreToCooridinator: (NSPersistentStoreCoordinator*) psc WithStoreURL:(NSURL*)
+localPersistanceURL{
+    NSError* error;
+    if (![psc addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:localPersistanceURL options:nil error:&error]) {
+        [NSException raise:@"Open fail" format:[error localizedDescription]];
+    }
+}
+
+-(NSManagedObjectContext*) initializeAContextWithCooridinator: (NSPersistentStoreCoordinator*) psc{
+    
+    // initialize the new context
+    NSManagedObjectContext* tempContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
+    
+    // add the persistent store coordinator
+    tempContext.persistentStoreCoordinator = psc;
+    return tempContext;
+}
+
+-(void) addUpdateDataNotificationReceiver{
+    // The object at the end should be set to nil, or this observer will stop working.
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:(@selector(receiveUpdateNotification:)) name:@"DataNeedsUpdateNotification" object:nil];
+}
+
+-(void) receiveUpdateNotification:(NSNotification*) note{
+    // as long as it receives this notification, the db will update the data. And Logically it will update
+    // the data on the screen
+    
+    NSLog(@"**** The database has been notified to update the lake data ****");
+    
+    [self loadWeathers];
+}
+
+// Should only be called when the app get launched (which means after user has killed the process)
+-(void) fetchDataIfAppRelaunch{
+    if (self.appRelaunch){
+        _privateLakeWeathers = [self getLakesFromLocalPersistance:self.localStoreContext];
+        self.appRelaunch = NO;
+    }
+}
+
+-(NSMutableArray*) getLakesFromLocalPersistance:(NSManagedObjectContext*) context{
+    NSFetchRequest* request = [[NSFetchRequest alloc]init];
+    NSEntityDescription* entity = [NSEntityDescription entityForName:@"Weather" inManagedObjectContext:self.localStoreContext];
+    request.entity = entity;
+    NSError* error;
+    NSArray* result = [self.localStoreContext executeFetchRequest:request error:&error];
+    return [NSMutableArray arrayWithArray:result];
+}
+
+
+
+// this timer is used to auto refresh the database in a specific time. I'm thinking about change
+// the startTimer to receive an parameter
+-(void) startTimer:(int) timerIntervalInSeconds{
+    
+    self.timer = [NSTimer scheduledTimerWithTimeInterval:timerIntervalInSeconds target:self selector:@selector(autoRefresh:) userInfo:nil repeats:YES];
+    
+    NSLog(@"**** The timer in the weather database has been set to 60 seconds and get started ****");
+}
+
+-(void) endTimer{
+    [self.timer invalidate];
+}
+
+-(void) autoRefresh:(NSTimer*) timer{
+    [self loadWeathers];
+    
+    NSLog(@"**** The database has autorefreshed. ****");
+    
+    return;
+}
+
+
+
+//load the weather
+-(NSArray*) loadWeathers{
+    
+    // At the very first launch of the app, there might be no data
+    // So check whether there is anything in the persistance database
+    // If not, I used a placeholder data to initialize the database
+    if(_privateLakeWeathers.count != self.hardCodeLakeNum)
+        [self insertNewWeatherToDB];
+    
+    // After the web entrance gets the data, it will execute a method to update the
+    // data inside this class
+    [self.dataEntrance getWeatherData];
+
+    //Save the change to the local database
+    if(![self saveChanges]){
+        [NSException raise:@"SaveFailure" format:@"Something goes wrong with the core data saving"];
+    }
+    
+    // return the copy of the lake
+    return [self allLakes];
 }
 
 -(BOOL) saveChanges{
     NSError* error;
-    BOOL done = [self.context save:&error];
+    BOOL done = [self.localStoreContext save:&error];
     if(!done){
-        NSLog(@"Saving isn't successful: %@", [error localizedDescription]);
+        NSLog(@"**** Saving isn't successful: %@ ****", [error localizedDescription]);
     }
+    NSLog(@"**** The save to the local database is successful. ****");
+    
     return done;
 }
 
-//load the weather
--(void) loadWeathers{
+// Insert new entities to the database if the local data
+// file gets created. This method should only be called under these two scenarios
+// 1: It's the first time the user uses this app
+// 2: The developer has changed the name of the local data file, which enforces the app to create a new local db
+// It will initialize a placeholder hard coded in the place holder.
+-(void) insertNewWeatherToDB{
     
-    if(self.appRelaunch){
-    //Fetch the data from the local file
-        NSFetchRequest* request = [[NSFetchRequest alloc]init];
-        NSEntityDescription* entity = [NSEntityDescription entityForName:@"Weather" inManagedObjectContext:self.context];
-        request.entity = entity;
-        NSError* error;
-        NSArray* result = [self.context executeFetchRequest:request error:&error];
-        _privateLakeWeathers = [NSMutableArray arrayWithArray:result];
-        self.appRelaunch = NO;
-    }
-    //Decide whether the lake should
-    if(_privateLakeWeathers.count != 3){
-        self.privateLakeWeathers = [self insertNewWeatherToDB];
-    }else{
-        self.privateLakeWeathers = [self updateWeathersFromWeb:self.privateLakeWeathers];
-    }
-    
-    //save the change to the file
-    if(![self saveChanges]){
-        [NSException raise:@"SaveFailure" format:@"Something goes wrong with the core data saving"];
-    }
+    NSArray* jsonArray = [self dataPlaceHolder];
+    self.privateLakeWeathers = [self createWeathers:jsonArray];
 }
 
-//insert new entities to the local db
--(NSMutableArray*) insertNewWeatherToDB{
-    NSArray* jsonArray = [self getDataFromArgyron];
+-(NSArray*) dataPlaceHolder{
+    NSString* placeHolderString =  @"[{\"airTemp\":9.9,\"lakeId\":\"ME\",\"lakeName\":\"Lake Mendota\",\"phycoMedian\":386.46,\"sampleDate\":\"2016-05-10T19:45:55\",\"secchiEst\":2.24,\"secchiEstTimestamp\":\"2016-05-10T19:00:00\",\"thermoclineDepth\":null,\"waterTemp\":10.0,\"windDir\":107,\"windSpeed\":4.9},{\"airTemp\":11.6,\"lakeId\":\"SP\",\"lakeName\":\"Sparkling Lake\",\"sampleDate\":\"2016-05-10T19:00:00\",\"thermoclineDepth\":5.56,\"waterTemp\":11.42,\"windDir\":106,\"windSpeed\":2.2},{\"airTemp\":17.0,\"lakeId\":\"TR\",\"lakeName\":\"Trout Lake\",\"sampleDate\":\"2015-11-03T15:41:00\",\"thermoclineDepth\":7.51,\"waterTemp\":9.7,\"windDir\":142,\"windSpeed\":2.4}]";
+    NSData* data = [placeHolderString dataUsingEncoding:NSUTF8StringEncoding];
+    NSArray* jsonArray = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
+    return jsonArray;
+}
+
+-(NSMutableArray*) createWeathers: (NSArray*) dummyWeathers{
     NSMutableArray* weatherArray= [[NSMutableArray alloc] init];
     
-    for (int i =0; i< jsonArray.count; i++) {
-        //create the new neity
-        Weather* weatherNew= [NSEntityDescription insertNewObjectForEntityForName:@"Weather" inManagedObjectContext:self.context];
-        NSDictionary* jsonObject = [jsonArray objectAtIndex:i];
-        weatherNew.lakeName = [jsonObject objectForKey:@"lakeName"];
-        weatherNew.iD = [jsonObject objectForKey:@"lakeId"];
-        weatherNew= [self assignPropertyToWeather:weatherNew FromJsonObject:jsonObject];
-        [weatherArray addObject:weatherNew];
-        weatherNew.favourite = [NSNumber numberWithBool:NO];
+    for (NSDictionary* dummyWeather in dummyWeathers) {
+        [weatherArray addObject: [self createNewLakeWeatherWithInfo:dummyWeather]];
     }
     return weatherArray;
 }
 
--(NSMutableArray*) updateWeathersFromWeb:(NSMutableArray*) dataNeededModified{
-    NSArray* jsonArray = [self getDataFromArgyron];
+-(Weather*) createNewLakeWeatherWithInfo: (NSDictionary*) dummyWeather{
+    Weather* weatherNew= [self createEmptyNewWeather];
     
-    //if no internet, use the old data.
-    if(!jsonArray){
-        return dataNeededModified;
-    }
-    for (int i =0; i<jsonArray.count; i++) {
-        NSDictionary* jsonObject = [jsonArray objectAtIndex:i];
-        Weather* weatherBeingModified = [self findWeatherByName:[jsonObject objectForKey:@"lakeName"] orID:[jsonObject objectForKey:@"lakeId"] inWeatherArray:dataNeededModified];
-        weatherBeingModified = [self assignPropertyToWeather:weatherBeingModified FromJsonObject:jsonObject];
-    }
+    // These two aren't get assigned in the assignPropertyToWeather method
+    weatherNew.lakeName = [dummyWeather objectForKey:@"lakeName"];
+    weatherNew.lakeId = [dummyWeather objectForKey:@"lakeId"];
+    weatherNew= [self assignPropertyToWeather:weatherNew FromJsonObject:dummyWeather];
+    return weatherNew;
+}
+
+// This method will use the WeatherPropertyModifer to assign the value from the website
+// to the value in the current database lakes.
+// @return: the original weather but with the new data.
+-(Weather*) assignPropertyToWeather:(Weather*)weatherTmp FromJsonObject:jsonObject{
+    weatherTmp = [self.modifier modificationFromJSONSource:jsonObject ToTargetWeather:weatherTmp];
+    return weatherTmp;
+}
+
+// The new method will be created by the managed object context
+-(Weather*) createEmptyNewWeather{
+    return [NSEntityDescription insertNewObjectForEntityForName:@"Weather" inManagedObjectContext:self.localStoreContext];
+}
+
+
+
+// This method will get process the data returned from web entrance, and start the chain of
+// modify the current data in the memeory and ask the delegate to respond
+- (void) URLSession:(NSURLSession *)session dataTask:(NSURLSessionDataTask *)dataTask didReceiveData:(NSData *)data{
+    NSArray* jsonArray = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
     
-    return dataNeededModified;
+    [self changeLakeData:jsonArray];
+    NSLog(@"**** The data has been received through the network. ****");
+}
+
+-(void) changeLakeData: (NSArray*) jsonArray {
+    // This will go through the jsonArray to assign the data
+    [self modifyEachLakeDataBasedOnNewJsonArray:jsonArray];
+    
+    [self callDelegateToRespondToDataChange: self.delegate];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        self.currentController.unconnected = NO;
+        [self.currentController displayData];
+    });
+}
+
+-(void) modifyEachLakeDataBasedOnNewJsonArray:(NSArray*) jsonArray{
+    if(jsonArray){
+        for (NSDictionary* jsonObject in jsonArray) {
+            [self modifyOneLakeDataFromJsonObject:jsonObject];
+        }
+    }
+}
+
+-(void) modifyOneLakeDataFromJsonObject:(NSDictionary*) jsonObject{
+    Weather* weatherBeingModified = [self findWeatherByName:[jsonObject objectForKey:@"lakeName"] orID:[jsonObject objectForKey:@"lakeId"] inWeatherArray:self.privateLakeWeathers];
+    weatherBeingModified = [self assignPropertyToWeather:weatherBeingModified FromJsonObject:jsonObject];
 }
 
 -(Weather*) findWeatherByName:(NSString*) name orID:(NSString*)iD inWeatherArray: (NSMutableArray*) weatherArray{
     for (int i =0; i<weatherArray.count; i++) {
         Weather* weatherTmp = [weatherArray objectAtIndex:i];
-        if ([weatherTmp.lakeName isEqualToString:name]|| [weatherTmp.iD isEqualToString:iD]) {
+        if ([weatherTmp.lakeName isEqualToString:name]|| [weatherTmp.lakeId isEqualToString:iD]) {
             return weatherTmp;
         }
     }
     return nil;
 }
 
-
--(NSArray*) getDataFromArgyron{
-    /*
-    NSString* filePath = @"/Users/xu/LTER-Buoys/NTLRealTimeConditioniOS/TestJson.txt";
-    NSData* data = [NSData dataWithContentsOfFile:filePath];
-     */
-    
-    NSString* urlString =@"http://thalassa.limnology.wisc.edu:8080/LakeConditionService/webapi/lakeConditions";
-    NSURL* url = [NSURL URLWithString:urlString];
-     
-    NSData * data = [NSData dataWithContentsOfURL:url];
-    NSArray* jsonArray;
-    if(data){
-        jsonArray = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
-    }else{
-        jsonArray = nil;
+-(void) callDelegateToRespondToDataChange:(id<WeatherInfoDBDelegate>) delegate{
+    if (delegate){
+        [delegate weatherInfoDBAfterDataUpdated:self];
+    }else {
+        NSLog(@"No delegate has been assigned to this weatherInfoDB");
+        @throw [NSException exceptionWithName:@"NoDelegateException" reason:@"No delegate has been assigned to this weatherInfoDB" userInfo:nil];
     }
-    return jsonArray;
-}
-
--(Weather*) assignPropertyToWeather:(Weather*)weatherTmp  FromJsonObject:jsonObject{
-    
-    //assign air temperature
-    if([jsonObject objectForKey:@"airTemp"] == [NSNull null]){
-        weatherTmp.airTempC = [NSNumber numberWithDouble:999];
-    }else{
-        weatherTmp.airTempC = [jsonObject objectForKey:@"airTemp"];
-    }
-    
-    //assign water temperature
-    if([jsonObject objectForKey:@"waterTemp"]== [NSNull null] ){
-            weatherTmp.waterTempC = [NSNumber numberWithDouble:999];
-         }else{
-            weatherTmp.waterTempC = ([jsonObject objectForKey:@"waterTemp"]);
-    }
-    
-    //assign wind direction
-    if([jsonObject objectForKey:@"windDir"]== [NSNull null]){
-        weatherTmp.windDir = [NSNumber numberWithDouble:999];
-    }else{
-        weatherTmp.windDir = [jsonObject objectForKey:@"windDir"];
-    }
-    
-    //assign the image of the wind direction
-    if([weatherTmp.windDir doubleValue] >=0 && [weatherTmp.windDir doubleValue]<= 360 && [self imageOfwindDir:weatherTmp]){
-        weatherTmp.windDirImage = [self imageOfwindDir:weatherTmp];
-    }else{
-        weatherTmp.windDirImage = nil;
-    }
-    
-    //assign the wind speed
-    if([jsonObject objectForKey:@"windSpeed"] == [NSNull null]){
-        weatherTmp.windSpeed = [NSNumber numberWithDouble:999];
-    }else{
-        weatherTmp.windSpeed = [jsonObject objectForKey:@"windSpeed"];
-    }
-    
-    //assign the thermocline depth
-    if([jsonObject objectForKey:@"thermoclineDepth"] == [NSNull null]){
-        weatherTmp.thermocline = [NSNumber numberWithDouble:999];
-    }else{
-        weatherTmp.thermocline = [jsonObject objectForKey:@"thermoclineDepth"];
-    }
-    
-    //assign the fahrenheit air temperature
-    if([weatherTmp.airTempC doubleValue] == -999){
-        weatherTmp.airTempF = [NSNumber numberWithDouble:999];
-    }else{
-        weatherTmp.airTempF = [self convertCToF:weatherTmp.airTempC];
-    }
-    
-    //assign the fehrenheit water temperture
-    if([weatherTmp.waterTempC doubleValue] == 999){
-        weatherTmp.waterTempF = [NSNumber numberWithDouble:999];
-    }else{
-        weatherTmp.waterTempF =[self convertCToF:weatherTmp.waterTempC];
-    }
-    
-    weatherTmp.sampleDate = [self convertStringToDate:[jsonObject objectForKey:@"sampleDate"]];
-    
-    
-    //assign the time stamp
-    weatherTmp.sampleDate = [self convertStringToDate:[jsonObject objectForKey:@"sampleDate"]];
-    if([weatherTmp.lakeName containsString:@"Mendota"]){
-        // Set the special property for lake Mendota
-        weatherTmp.phychoMedian = [jsonObject objectForKey:@"phychoMedian"];
-        weatherTmp.secchiEst = [jsonObject objectForKey:@"secchiEst"];
-        weatherTmp.sEDate= [self convertStringToDate:[jsonObject objectForKey:@"secchiEstTimestamp"]];
-    }
-    
-    return weatherTmp;
 }
 
 
+
+// I probably need to put this one to the Weather Property Modifier
 -(UIImage*) imageOfwindDir:(Weather*) weatherTmp{
     NSString* urlString;
     if([weatherTmp.lakeName containsString:@"Sparkling"]){
@@ -260,61 +353,68 @@
     return windDir;
     
 }
+
 /*
  This method is a private function which is used to convert the string of the date to the NSDate
  The original input should be like 2015-11-07T17:10:00
  */
+/*
 -(NSDate*) convertStringToDate: (NSString*) dateString{
     NSDateFormatter* dateFormat = [[NSDateFormatter alloc] init];
     
-    
     [dateFormat setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss"]; //HH:mm:ss
     NSDate* date =[[NSDate alloc] init];
-    date = [dateFormat dateFromString:dateString]; //17:00:00
+    
+    date = [dateFormat dateFromString:dateString];
     return date;
-}
+}*/
 
+/*
 -(NSNumber*) convertCToF: (NSNumber*) cTemp{
     double fTemp = [cTemp doubleValue]*9/5 + 32;
     
     return [NSNumber numberWithDouble:fTemp];
-}
+}*/
 
-
--(NSString*) itemArchivePath{
-    NSArray* documentDirectories = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    
-    //Get one and the only document directory from that list
-    NSString* documentDirectory = [documentDirectories firstObject];
-    
-    return [documentDirectory stringByAppendingPathComponent:@"NTLLakeCondition.data"];
-}
-
+// Let's see, how do I change these codes?
 //put the homepage lake to the front, called in AppleDelegate
--(void)homepageToTheFirst{
+
+// Now if this method returns YES, it means there exists a homepage and it gets done
+// If this method return NO, it means there exists no homepage
+-(BOOL)homepageToTheFirst{
+    
+    if ([self noHomepage]){
+        return NO;
+    }
+    
     //change the order of the array by the favourite
     for (int i =0; i<_privateLakeWeathers.count; i++) {
         Weather* weather = [_privateLakeWeathers objectAtIndex:i];
-        if([weather.favourite boolValue] == YES && i!= 0){
+        if([self weatherIsHomepage:weather] && i!= 0){
             NSLog(@"The favourite lake is %@", weather.lakeName);
             _privateLakeWeathers[i] = _privateLakeWeathers[0];
             _privateLakeWeathers[0] = weather;
         }
     }
     [self saveChanges];
-}
-
--(BOOL)noHomepage{
-    for(int i =0; i< _privateLakeWeathers.count ;i++){
-        Weather* temp = [_privateLakeWeathers objectAtIndex:i];
-        if([temp.favourite boolValue]){
-            return  NO;
-        }
-    }
     return YES;
 }
 
+-(BOOL) weatherIsHomepage:(Weather*) weather{
+    return [weather.lakeId isEqualToString:[self getUserSettingHomepage]];
+}
+
+-(NSString*) getUserSettingHomepage{
+    UserSetting* userSetting = [UserSetting sharedSetting];
+    return userSetting.homepage;
+}
+
+-(BOOL) noHomepage{
+    return [[self getUserSettingHomepage] isEqualToString:@"None"];
+}
+
 //Called in WeatherViewController
+/*
 -(void) checkForOtherHomepage: (NSString*) newlyFavouriteLakeName{
     for (int i =0; i< _privateLakeWeathers.count;i++){
         Weather* tmp = [_privateLakeWeathers objectAtIndex:i];
@@ -324,4 +424,6 @@
     }
     [self saveChanges];
 }
+ */
+
 @end

@@ -1,24 +1,21 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="10147" systemVersion="15B42" minimumToolsVersion="Xcode 7.0">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11232" systemVersion="16A323" minimumToolsVersion="Xcode 7.0" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
     <entity name="Weather" representedClassName="Weather" syncable="YES">
-        <attribute name="airTemp" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
-        <attribute name="airTempF" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
-        <attribute name="favourite" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="airTemp" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="lakeId" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="lakeName" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="phychoMedian" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
-        <attribute name="sampleDate" optional="YES" attributeType="Date" syncable="YES"/>
-        <attribute name="secchiEst" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
-        <attribute name="secchiEstTimestamp" optional="YES" attributeType="Date" syncable="YES"/>
-        <attribute name="thermoclineDepth" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
-        <attribute name="waterTemp" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
-        <attribute name="waterTempF" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
-        <attribute name="windDir" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="phycoMedian" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="sampleDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="secchiEst" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="secchiEstTimestamp" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="thermoclineDepth" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="waterTemp" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="windDir" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="windDirImage" optional="YES" attributeType="Transformable" valueTransformerName="JJImageTransformer" syncable="YES"/>
-        <attribute name="windGust" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
-        <attribute name="windSpeed" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="windGust" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="windSpeed" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="NO" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Weather" positionX="-63" positionY="-18" width="128" height="285"/>
+        <element name="Weather" positionX="-63" positionY="-18" width="128" height="240"/>
     </elements>
 </model>

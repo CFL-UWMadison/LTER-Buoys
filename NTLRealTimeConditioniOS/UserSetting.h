@@ -16,9 +16,10 @@
 
 @property (nonatomic) BOOL isBritish;
 @property (nonatomic) BOOL isFirstOpen;
-@property (nonatomic) NSString* version;
+@property (nonatomic, strong) NSString* userSettingVersion;
 @property (nonatomic) BOOL justUpdated;
-
+@property (nonatomic, strong) NSString* homepage;
+@property (nonatomic) BOOL testBritish;
 
 +(UserSetting*) sharedSetting;
 -(void) saveUserSetting;

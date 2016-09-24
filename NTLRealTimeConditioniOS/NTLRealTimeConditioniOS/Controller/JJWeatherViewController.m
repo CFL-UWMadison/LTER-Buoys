@@ -8,24 +8,83 @@
 //
 
 #import "JJWeatherViewController.h"
-#import "WeatherInfoDB.h"
 #import "Weather.h"
-#import "ModelController.h"
+#import "WeatherModelController.h"
 #import "DisclaimerViewController.h"
 #import "RootViewController.h"
+#import <math.h>
+#import "IphoneModelSizeIdentifier.h"
+
+@class IphoneModalSizeIndentifier;
 
 @interface JJWeatherViewController()
+// For automatically updating the data
 @property (atomic,strong) NSTimer* timer;
--(void)stopActivityView;
+@property (nonatomic,weak) MenuViewController* mvc;
+
+// I'm trying to get rid of this db dependency. My ideal is JJWeatherViewController only holds the Menu.
+@property (nonatomic, weak) WeatherInfoDB* db;
+
 @end
 
 @implementation JJWeatherViewController
 
++(JJWeatherViewController*) newWeatherVCWithDatabase:(WeatherInfoDB*) weatherInfoDB
+                                        InStoryBoard:(UIStoryboard*) storyboard{
+    JJWeatherViewController* newinstance = [storyboard instantiateViewControllerWithIdentifier:@"JJWeatherViewController"];
+    [newinstance setWeatherDB:weatherInfoDB];
+    //[newinstance addNetworkDidCheckNotification];
+    
+    return newinstance;
+}
+
+-(void) setWeatherDB:(WeatherInfoDB*) db{
+    self.db = db;
+}
+
+-(void) addNetworkDidCheckNotification{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:(@selector(receiveNetworkNotification:)) name:@"NetworkDidCheckNotification" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserverForName:@"NetworkDidCheckNotification" object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification * _Nonnull note) {
+        [self receiveNetworkNotification:note];
+    }];
+    
+    
+}
+
+-(void) receiveNetworkNotification:(NSNotification *) notification{
+    NSDictionary* dict = [notification userInfo];
+    BOOL isNetworkOn = [dict objectForKey:@"isNetworkOn"];
+    
+    //display the network connection based on the networkNotification
+    [self displayNetworkConnection:isNetworkOn];
+    
+    // display unconnection
+    self.unconnected = !isNetworkOn;
+}
+
+//This method will be used to display the information about the network connection
+-(void)displayNetworkConnection: (BOOL) connected{
+    if(!connected){
+        self.forMoreInformation.text = @" Network Connection Failed! ";
+        self.forMoreInformation.font = [UIFont boldSystemFontOfSize:17];
+        self.forMoreInformation.textColor = [UIColor redColor];
+    }else{
+        self.forMoreInformation.font = [UIFont systemFontOfSize:10];
+        self.forMoreInformation.textColor = [UIColor blackColor];
+        self.forMoreInformation.text = @"For more information, https://lter.limnology.wisc.edu/about/lakes";
+    }
+}
+
+//The inherited method from the view controller
 - (void)viewDidLoad {
     [super viewDidLoad];
+
+    //Home page button will be set to the
     [self.favouriteButton setTitle:@"Set as Homepage" forState:UIControlStateNormal];
     [self.favouriteButton setTitle:@"Unset this page" forState:UIControlStateSelected];
     [self.favouriteButton setTitleColor:[UIColor redColor]forState:UIControlStateSelected];
+    
+    // Set up the activity view
     self.activityView.hidesWhenStopped= YES;
 }
 
@@ -34,141 +93,344 @@
     // Dispose of any resources that can be recreated.
 }
 
--(void) viewWillAppear:(BOOL)animated{
+- (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    [self changeFontSizeByModal];
-    [[WeatherInfoDB sharedDB] loadWeathers];
-    [self displayData];
-    self.timer = [NSTimer scheduledTimerWithTimeInterval:60 target:self selector:@selector(autoRefresh:) userInfo:nil repeats:YES];
     
+    [self changeFontSizeByModal];
+    [self sendUpdateDataNotification];
+    [self displayData];
+}
+
+-(void)sendUpdateDataNotification{
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"DataNeedsUpdateNotification" object:self];
+}
+
+// The current controller will not be used in the future. Only the Root view controller will know it.
+-(void) viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+    self.db.currentController = self;
 }
 
 -(void) viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
-    [self.timer invalidate];
 }
 
-//Action methods
+// Set or unset this lake view as homepage
 - (IBAction)setHomePage:(id)sender{
-    if([self.lake.favourite boolValue] == NO){
-        self.lake.favourite = [NSNumber numberWithBool:YES];
-        [[WeatherInfoDB sharedDB] checkForOtherHomepage:self.lake.lakeName];
-        self.favouriteButton.selected = YES;
-        
-    }
-    else{
-        self.lake.favourite = [NSNumber numberWithBool:NO];
-        self.favouriteButton.selected = NO;
-        
-    }
-    [[WeatherInfoDB sharedDB] saveChanges];
     
+    if ([self isHomepage]){
+        [self setUserSettingHomePage: @"None"];
+        self.favouriteButton.selected = NO;
+    }else{
+        [self setUserSettingHomePage: self.lake.lakeId];
+        self.favouriteButton.selected = YES;
+    }
 }
 
+-(BOOL) isHomepage{
+
+    NSString* homepage = [self readInHomePage];
+    NSLog(@"the homepage is %@", homepage);
+    NSString* thisLakeID = self.lake.lakeId;
+    
+    if([homepage isEqualToString:thisLakeID]){
+        return YES;
+    } else{
+        return NO;
+    }
+}
+
+-(NSString*) readInHomePage{
+    UserSetting* userSetting = [UserSetting sharedSetting];
+    return userSetting.homepage;
+}
+
+-(void) setUserSettingHomePage:(NSString*) lakeID {
+    UserSetting* userSetting = [UserSetting sharedSetting];
+    userSetting.homepage = lakeID;
+    [userSetting saveUserSetting];
+}
+
+//the refresh will be pressed to refresh the data
 -(IBAction)refresh:(id)sender{
     //activity view used to give user feedback on the action
     [self.activityView startAnimating];
     
     //refresh the data
-    [[WeatherInfoDB sharedDB] loadWeathers];
-    [self displayData];
+    [self sendUpdateDataNotification];
+    //[self displayData];
+    
+    
     if([self checkOutdatedData:self.lake.sampleDate]){
         [self raiseTheAlert];
     }
     
     //stop the activity view after 1 second
     [self performSelector:@selector(stopActivityView) withObject:nil afterDelay:1.0];
- 
 }
 
 
 
-
-//
--(void) autoRefresh: (NSTimer*) timer{
-    [[WeatherInfoDB sharedDB] loadWeathers];
+/*
+- (IBAction)configureUnit:(id)sender {
+    NSString* type = [self.unitControl titleForSegmentAtIndex: [self.unitControl selectedSegmentIndex]];
+    
+    if([type isEqualToString:@"Bri"]){
+        self.unitType = britishUnit;
+    } else{
+        self.unitType = metricUnit;
+    }
+    
     [self displayData];
-    NSLog(@"THIS WORKS!");
+}
+*/
+
+
+-(void) endTimer{
+    [self.timer invalidate];
 }
 
+//The method for auto refresh
+-(void) autoRefresh: (NSTimer*) timer{
+    //[self.db loadWeathers];
+    [self displayData];
+    NSLog(@"auto display");
+}
 
+//the whole display data probably need to be rewritten. This time I need to create two pretty similar case. The first one is for metric and the second is for British. So here comes the question, how do I organize the control.
 -(void)displayData{
-    self.lakeName.text = self.lake.lakeName;
     
-    //display air temperature
-    double airTempC =[self.lake.airTempC doubleValue];
-    if(airTempC>= -10 && airTempC <=50){
-        self.airTempC.text = [NSString stringWithFormat:@"%.00f ºC / %.00f ºF", airTempC,[self.lake.airTempF doubleValue]];
-    }else{
-        self.airTempC.text =@"N/A";
+    BOOL isBritish = [UserSetting sharedSetting].isBritish;
+    if (isBritish) {
+        self.unitType = britishUnit;
+    } else {
+        self.unitType = metricUnit;
     }
     
-    //display water temperature
-    double waterTempC = [self.lake.waterTempC doubleValue];
-    if (waterTempC>= -5 && waterTempC <=50) {
-        self.waterTempC.text = [NSString stringWithFormat:@"%.00f ºC / %.00f ºF",waterTempC,[self.lake. waterTempF doubleValue]];
-    }else{
-        self.waterTempC.text = @"N/A";
-    }
-    
-    //display wind speed
-    double windSpeed = [self.lake.windSpeed doubleValue];
-    double windSpeedMph = windSpeed* 2.23694;
-    if(windSpeed>=0 && windSpeed<= 30){
-          self.windSpeed.text = [NSString stringWithFormat:@"%.01f m/s",windSpeed];
-         self.windSpeedMph.text =[NSString stringWithFormat:@"%.01f mph",windSpeedMph];
-    }
-    else{
-        self.windSpeed.text = @"";
-        self.windSpeedMph.text = @"N/A";
+    switch (self.unitType) {
+        case metricUnit:
+            [self displayDataInMetric];
+            
+            break;
         
-    }
-   
-    //Display Wind direction.
-    self.windDir.text = [self directionForWind:[self.lake.windDir doubleValue]];
-    if(self.lake.windDirImage){
-        self.windDirImage.image = self.lake.windDirImage;
-    }
-    
-    
-    //display thermocline
-    double thermocline = [self.lake.thermocline doubleValue];
-    if(thermocline>= 0 && thermocline <=100){
-        self.thermocline.text = [NSString stringWithFormat:@"%.00f ft",thermocline* 3.2808];
-        
-    }else{
-        self.thermocline.text = @"N/A";
+        case britishUnit:
+            [self displayDataInBritish];
+            
+            break;
+            
     }
     
     //display the sample date
     NSString* updateTime = [self dateString:self.lake.sampleDate];
-    self.updateTime.text = [NSString stringWithFormat:@"Last updated: %@", updateTime];
-    self.updateTime.font = [UIFont systemFontOfSize:20];
-           
-    //display secchiEst
-    if(![self.lake.lakeName containsString:@"Mendota"]){
-        self.secchiEstPrompt.text = @"";
-        self.secchiEst.text = @"";
-    } else{
-        double secchiEst = [self.lake.secchiEst doubleValue];
-        //what's the safe threshold
-        if (secchiEst>=-1) {
-            self.secchiEst.text = [NSString stringWithFormat:@"%.00f ft", secchiEst * 3.2808];
-        } else {
-            self.secchiEst.text = @"N/A";
-        }
-    }
+    self.updateTime.text = [NSString stringWithFormat:@"Updated: %@", updateTime];
+    
     self.pageControl.currentPage = self.pageIndex;
     [self.pageControl updateCurrentPageDisplay];
     
-    //display whether favourite or not
-    if([self.lake.favourite boolValue]){
+    //display whether this lake is homepage
+    [self displayHomePage];
+    
+    //[self displayNetworkConnection:self.unconnected];
+    
+}
+
+-(void) displayHomePage{
+    if([self isHomepage]){
         self.favouriteButton.selected = YES;
     }else{
         self.favouriteButton.selected = NO;
     }
+}
+
+-(double) celeciusToF:(double) celcius{
+    double f = celcius * 1.8 + 32;
+    return f;
+}
+
+-(void) displayDataInBritish{
+    NSLog(@"Displaying In British");
     
-   }
+    self.lakeName.text = self.lake.lakeName;
+    
+    //display air temperature, the standard I set is arbitrary, but consistent with the metric Unit
+    double airTempF = [self celeciusToF:[self.lake.airTemp doubleValue]];
+    
+    if(airTempF>= 14 && airTempF <= 122){
+        self.airTemp.text = [NSString stringWithFormat:@"%.00f", airTempF];
+        self.airTempUnit.text = @"°F";
+    }else{
+        self.airTemp.text = @"N/A";
+        self.airTempUnit.text = @"";
+    }
+    
+    
+    //display water temperature
+    double waterTempF = [self celeciusToF:[self.lake.waterTemp doubleValue]];
+    if (waterTempF>= 23 && waterTempF <=122) {
+        self.waterTemp.text = [NSString stringWithFormat:@"%.00f", waterTempF];
+        self.waterTempUnit.text = @"°F";
+    }else{
+        self.waterTemp.text = @"N/A";
+        self.waterTempUnit.text = @"";
+    }
+    
+    //display wind speed
+    double windSpeedMph = [self.lake.windSpeed doubleValue]* 2.23694;
+    windSpeedMph = round(windSpeedMph);
+    if(windSpeedMph>=0 && windSpeedMph<= 67){
+        self.windSpeed.text =[NSString stringWithFormat:@"%.00f",windSpeedMph];
+        self.windSpeedUnit.text = @"mph";
+        
+    }
+    else{
+        self.windSpeed.text = @"N/A";
+        self.windSpeedUnit.text = @"";
+    }
+    
+    double windGustMph = [self.lake.windGust doubleValue]* 2.23694;
+    windGustMph = round(windGustMph);
+    if(windGustMph >= 0 && windGustMph <= 67 && windGustMph > windSpeedMph ){
+        self.windGust.text = [NSString stringWithFormat:@"%.00f", windGustMph];
+        self.windGustPrompt.text = @"GUST";
+        }else{
+        self.windGust.text = @"";
+        self.windGustPrompt.text = @"";
+        
+       // self.windGust.text = @"N/A";
+       // self.windGustPrompt.text = @"GUST";
+    }
+
+    
+    
+    self.windDir.text = [NSString stringWithFormat:@"%.00f°", [self.lake.windDir doubleValue]];
+    
+    //Display Wind direction.
+    /*self.windDir.text = [self directionForWind:[self.lake.windDir doubleValue]];
+    if(self.lake.windDirImage){
+        self.windDirImage.image = self.lake.windDirImage;
+    }*/
+    
+    //display thermocline
+    double thermoclineFeet = [self.lake.thermoclineDepth doubleValue] * 3.2808;
+    if(thermoclineFeet >= 0 && thermoclineFeet <=164){
+        self.thermocline.text = [NSString stringWithFormat:@"%.00f",thermoclineFeet];
+        self.thermoclineUnit.text = @"ft";
+    }else{
+        self.thermocline.text = @"N/A";
+        self.thermoclineUnit.text = @"";
+        
+    }
+    
+    //display secchiEst
+    if(![self.lake.lakeName containsString:@"Mendota"]){
+        self.secchiEstPrompt.text = @"";
+        self.secchiEst.text = @"";
+        self.secchiEstUnit.text = @"";
+    } else{
+        double secchiEstFeet = [self.lake.secchiEst doubleValue]*3.2808;
+        if (secchiEstFeet>=-3.2) {
+            self.secchiEst.text = [NSString stringWithFormat:@"%.00f", secchiEstFeet];
+            self.secchiEstUnit.text = @"ft";
+        } else {
+            self.secchiEst.text = @"N/A";
+        }
+    }
+}
+
+-(void) displayDataInMetric{
+    
+    NSLog(@"Displaying In Metric");
+    
+    self.lakeName.text = self.lake.lakeName;
+    
+    //display air temperature, the standard I set is arbitrary, but consistent with the metric Unit
+    double airTempC = [self.lake.airTemp doubleValue];
+    if(airTempC>= -10 && airTempC <= 50){
+        self.airTemp.text = [NSString stringWithFormat:@"%.00f", airTempC];
+        self.airTempUnit.text = @"°C";
+        
+    }else{
+        self.airTemp.text = @"N/A";
+        self.airTempUnit.text = @"";
+        
+    }
+        
+    //display water temperature
+    double waterTempC = [self.lake.waterTemp doubleValue];
+    if (waterTempC>= -5 && waterTempC <= 50) {
+        self.waterTemp.text = [NSString stringWithFormat:@"%.00f", waterTempC];
+        self.waterTempUnit.text = @"°C";
+        
+    }else{
+        self.waterTemp.text = @"N/A";
+        self.waterTempUnit.text = @"";
+    }
+        
+    //display wind speed
+    double windSpeedMs = [self.lake.windSpeed doubleValue];
+    windSpeedMs = round(windSpeedMs);
+    if(windSpeedMs>=0 && windSpeedMs<= 30){
+        self.windSpeed.text =[NSString stringWithFormat:@"%.00f",windSpeedMs];
+        self.windSpeedUnit.text = @"m/s";
+    }
+    else{
+        self.windSpeed.text = @"N/A";
+        self.windSpeedUnit.text = @"";
+    }
+    
+    self.windDir.text = [NSString stringWithFormat:@"%.00f°", [self.lake.windDir doubleValue]];
+    /*
+    //Display Wind direction.
+    self.windDir.text = [self directionForWind:[self.lake.windDir doubleValue]];
+    if(self.lake.windDirImage){
+        self.windDirImage.image = self.lake.windDirImage;
+    }*/
+        
+    
+    //display windGust
+    double windGustMs = [self.lake.windGust doubleValue];
+    windGustMs = round(windGustMs);
+    if(windGustMs >= 0 && windGustMs <= 30 && windGustMs > windSpeedMs){
+        self.windGust.text = [NSString stringWithFormat:@"%.00f", windGustMs];
+        self.windGustPrompt.text = @"GUST";
+    }else{
+        self.windGust.text = @"";
+        self.windGustPrompt.text = @"";
+    }
+    
+    
+    
+    //display thermocline
+    double thermoclineM = [self.lake.thermoclineDepth doubleValue];
+    if(thermoclineM >= 0 && thermoclineM <=50){
+        self.thermocline.text = [NSString stringWithFormat:@"%.00f",thermoclineM];
+        self.thermoclineUnit.text = @"m";
+        
+    }else{
+        self.thermocline.text = @"N/A";
+        self.thermoclineUnit.text = @"";
+    }
+    
+    
+    //display secchiEst
+    if(![self.lake.lakeName containsString:@"Mendota"]){
+        self.secchiEstPrompt.text = @"";
+        self.secchiEst.text = @"";
+        self.secchiEstUnit.text = @"";
+        
+    } else{
+        double secchiEstMeter = [self.lake.secchiEst doubleValue];
+        if (secchiEstMeter>=-1 ) {
+            self.secchiEst.text = [NSString stringWithFormat:@"%.00f", secchiEstMeter];
+            self.secchiEstUnit.text = @"m";
+        } else {
+            self.secchiEst.text = @"N/A";
+            self.secchiEstUnit.text = @"";
+        }
+    }
+    
+    
+}
 
 //This method check whether the data is outdated for 5 days. If yes, an alert will show up.
 -(BOOL) checkOutdatedData: (NSDate*) anotherDate{
@@ -190,6 +452,7 @@
     return NO;
 }
 
+//the method for present the alert information
 -(void) raiseTheAlert {
     //present the view controller
     UIAlertController* ac = [UIAlertController alertControllerWithTitle:@"Outdated information" message:@"Reminder: The information you are about to view is still outdated for 5 days." preferredStyle: UIAlertControllerStyleAlert];
@@ -201,12 +464,14 @@
 //convert the date to the specific format, such 1:10 09/30
 -(NSString*) dateString: (NSDate*) date{
     NSDateFormatter* format = [[NSDateFormatter alloc]init];
-    format.dateFormat = @"MM/dd HH:mm";
+    format.dateFormat = @"MM/dd/yyyy HH:mm";
     return [format stringFromDate:date];
 }
 
+//convert the wind, which is represented by the double to a string
 -(NSString*) directionForWind: (double) windDir{
-    if(windDir> 348.75 && windDir<=11.25){
+    
+    if((windDir> 348.75 && windDir<= 360) || (windDir >= 0 && windDir<=11.25)){
         return @"N";
     }else if(windDir> 11.25 && windDir<= 33.75){
         return @"NNE";
@@ -236,7 +501,7 @@
         return @"WNW";
     } else if (windDir> 303.75 && windDir <= 326.25){
         return @"NW";
-    } else if (windDir> 326.25 && windDir < 348.75){
+    } else if (windDir> 326.25 && windDir <= 348.75){
         return @"NNW";
     }
     
@@ -246,87 +511,131 @@
 
 //present the disclaimer over the current page.
 - (IBAction)showAbout:(id)sender {
-    DisclaimerViewController* dvc = [[DisclaimerViewController alloc] init];
+    
+    
+    MenuViewController* mvc = [[MenuViewController alloc] init];
+    
+    mvc.currentController = self;
+    mvc.modalPresentationStyle = UIModalPresentationOverCurrentContext;
+    [self presentViewController:mvc animated:YES completion:nil];
+    
+    /*DisclaimerViewController* dvc = [[DisclaimerViewController alloc] init];
     dvc.modalPresentationStyle = UIModalPresentationOverCurrentContext;
-    [self presentViewController:dvc animated:YES completion:nil];
-}
-
--(NSString*) identifyModal{
-    if ([[UIScreen mainScreen] bounds].size.height == 568) {
-        return @"iPhone 5";
-    } else if([[UIScreen mainScreen] bounds].size.height == 480) {
-        return @"iPhone 4";
-    } else if([[UIScreen mainScreen] bounds].size.height == 736) {
-        return @"iPhone 6Plus";
-    }
-    return @"iPhone 6";
+    [self presentViewController:dvc animated:YES completion:nil];*/
 }
 
 
+//TODO:
 //differnet Modal will have different size font to fit the screen
 -(void) changeFontSizeByModal{
-    if([[self identifyModal] isEqualToString:@"iPhone 6Plus"]){
-        self.airTempC.font = [UIFont systemFontOfSize:30];
-        self.windSpeed.font = [UIFont systemFontOfSize:28];
-        self.windSpeedMph.font = [UIFont systemFontOfSize:28];
-        self.waterTempC.font = [UIFont systemFontOfSize:30];
-        self.thermocline.font = [UIFont systemFontOfSize:28];
-        self.windDir.font = [UIFont systemFontOfSize:28];
-        self.secchiEst.font = [UIFont systemFontOfSize:28];
-        self.lakeName.font = [UIFont systemFontOfSize:39];
-        self.updateTime.font = [UIFont systemFontOfSize:33];
-        self.airTempPrompt.font = [UIFont boldSystemFontOfSize:23];
-        self.waterTempPrompt.font = [UIFont boldSystemFontOfSize:23];
-        self.windDir.font = [ UIFont systemFontOfSize:28];
-        self.WindDirPrompt.font = [UIFont boldSystemFontOfSize:23];
-        self.windSpeedPrompt.font =[UIFont boldSystemFontOfSize:23];
-        self.thermoclinePrompt.font = [UIFont boldSystemFontOfSize:23];
-        self.updateTime.font = [UIFont systemFontOfSize:21];
-        self.secchiEstPrompt.font = [UIFont boldSystemFontOfSize:23];
-    }
-    if ([[self identifyModal] isEqualToString:@"iPhone 5"]) {
+    IphoneModelSizeIdentifier* identifier = [[IphoneModelSizeIdentifier alloc] init];
+    NSString* modal = [identifier identifyModel:[UIScreen mainScreen]];
+    
+    // font size for almost all content
+    int contentFontSize;
+    
+    // font size for almost all prompt
+    int promptFontSize;
+    
+    // fonr size for almost unit
+    int unitFontSize;
+    
+    //some specific size
+    int thermoAndSeccFontSize;
+    int updateTimeFontSize;
+    int lakeNameFontSize;
+    int windGustFontSize;
+    int windGustPromptFontSize;
+    int thermoAndSeccUnitFontSize;
+    int thermoAndSecchPromptFontSize;
+    
+    if( [modal isEqualToString:@"iPhone 6Plus"]){
+        
+        contentFontSize = 58;
+        promptFontSize = 28;
+        unitFontSize = 28;
+        
+        lakeNameFontSize = 50;
+        thermoAndSeccFontSize = 25;
+        updateTimeFontSize = 33;
+        windGustFontSize = 24;
+        windGustPromptFontSize = 18;
+        thermoAndSeccUnitFontSize = 28;
+        thermoAndSecchPromptFontSize = 25;
+        
+    }else if ([modal isEqualToString:@"iPhone 5"]) {
         NSLog(@"This is a iphone 5");
-        self.airTempC.font = [UIFont systemFontOfSize:25];
-        self.windSpeed.font = [UIFont systemFontOfSize:23];
-        self.windSpeedMph.font = [UIFont systemFontOfSize:23];
-        self.waterTempC.font = [UIFont systemFontOfSize:25];
-        self.thermocline.font = [UIFont systemFontOfSize:23];
-        self.windDir.font = [UIFont systemFontOfSize:23];
-        self.secchiEst.font = [UIFont systemFontOfSize:23];
-        self.lakeName.font = [UIFont systemFontOfSize:34];
-        self.updateTime.font = [UIFont systemFontOfSize:28];
-        self.airTempPrompt.font = [UIFont boldSystemFontOfSize:18];
-        self.waterTempPrompt.font = [UIFont boldSystemFontOfSize:18];
-        self.windDir.font = [ UIFont systemFontOfSize:23];
-        self.WindDirPrompt.font = [UIFont boldSystemFontOfSize:18];
-        self.windSpeedPrompt.font =[UIFont boldSystemFontOfSize:18];
-        self.thermoclinePrompt.font = [UIFont boldSystemFontOfSize:18];
-        self.updateTime.font = [UIFont systemFontOfSize:16];
-        self.secchiEstPrompt.font = [UIFont boldSystemFontOfSize:18];
         
+        contentFontSize = 44;
+        promptFontSize = 23;
+        unitFontSize = 25;
         
-    } else if ([[self identifyModal] isEqualToString:@"iPhone 4"]){
-        self.airTempC.font = [UIFont systemFontOfSize:23];
-        self.windSpeed.font = [UIFont systemFontOfSize:20];
-        self.windSpeedMph.font = [UIFont systemFontOfSize:20];
-        self.waterTempC.font = [UIFont systemFontOfSize:23];
-        self.thermocline.font = [UIFont systemFontOfSize:20];
-        self.windDir.font = [UIFont systemFontOfSize:20];
-        self.secchiEst.font = [UIFont systemFontOfSize:20];
-        self.lakeName.font = [UIFont systemFontOfSize:32];
-        self.updateTime.font = [UIFont systemFontOfSize:28];
-        self.airTempPrompt.font = [UIFont boldSystemFontOfSize:16];
-        self.waterTempPrompt.font = [UIFont boldSystemFontOfSize:16];
-        self.windDir.font = [ UIFont systemFontOfSize:20];
-        self.WindDirPrompt.font = [UIFont boldSystemFontOfSize:16];
-        self.windSpeedPrompt.font =[UIFont boldSystemFontOfSize:16];
-        self.thermoclinePrompt.font = [UIFont boldSystemFontOfSize:16];
-        self.updateTime.font = [UIFont systemFontOfSize:14];
-        self.secchiEstPrompt.font = [UIFont boldSystemFontOfSize:16];
+        lakeNameFontSize = 38;
+        thermoAndSeccFontSize = 20;
+        thermoAndSeccUnitFontSize = 22;
+        updateTimeFontSize = 20;
+        windGustFontSize = 22;
+        windGustPromptFontSize = 14;
+        thermoAndSecchPromptFontSize = 20;
+        
+    } else if ([modal isEqualToString:@"iPhone 4"]){
+         NSLog(@"This is an iPhone 4");
+        
+        contentFontSize = 36;
+        promptFontSize = 22;
+        unitFontSize = 22;
+        
+        lakeNameFontSize = 40;
+        thermoAndSeccFontSize = 36;
+        thermoAndSeccUnitFontSize = 20;
+        thermoAndSecchPromptFontSize = 20;
+        updateTimeFontSize = 20;
+        windGustFontSize = 22;
+        windGustPromptFontSize = 12;
+        
+    }else if ([modal isEqualToString:@"iPhone 6"]) {
+        NSLog(@"This is an iPhone 6");
+        
+        contentFontSize = 50;
+        promptFontSize = 26;
+        unitFontSize = 26;
+        
+        lakeNameFontSize = 46;
+        thermoAndSeccFontSize = 50;
+        thermoAndSeccUnitFontSize = 23;
+        thermoAndSecchPromptFontSize = 23;
+        updateTimeFontSize = 25;
+        windGustFontSize = 24;
+        windGustPromptFontSize = 12;
     }
     
+    self.airTemp.font = [UIFont systemFontOfSize:contentFontSize];
+    self.windSpeed.font = [UIFont systemFontOfSize:contentFontSize];
+    self.waterTemp.font = [UIFont systemFontOfSize:contentFontSize];
+    self.thermocline.font = [UIFont systemFontOfSize:contentFontSize];
+    self.windDir.font = [UIFont systemFontOfSize:contentFontSize];
+    self.secchiEst.font = [UIFont systemFontOfSize:thermoAndSeccFontSize];
+    self.windDir.font = [ UIFont systemFontOfSize:contentFontSize];
+    self.lakeName.font = [UIFont systemFontOfSize:lakeNameFontSize];
+    self.updateTime.font = [UIFont systemFontOfSize:updateTimeFontSize];
+    self.windGust.font = [UIFont systemFontOfSize:windGustFontSize];
+    
+    self.airTempPrompt.font = [UIFont boldSystemFontOfSize:promptFontSize];
+    self.waterTempPrompt.font = [UIFont boldSystemFontOfSize:promptFontSize];
+    self.WindDirPrompt.font = [UIFont boldSystemFontOfSize:promptFontSize];
+    self.windSpeedPrompt.font =[UIFont boldSystemFontOfSize:promptFontSize];
+    self.thermoclinePrompt.font = [UIFont boldSystemFontOfSize:thermoAndSecchPromptFontSize];
+    self.secchiEstPrompt.font = [UIFont boldSystemFontOfSize:thermoAndSecchPromptFontSize];
+    self.windGustPrompt.font =[UIFont systemFontOfSize: windGustPromptFontSize];
+    
+    self.airTempUnit.font = [UIFont systemFontOfSize:unitFontSize];
+    self.waterTempUnit.font = [UIFont systemFontOfSize:unitFontSize];
+    self.windSpeedUnit.font = [UIFont systemFontOfSize:unitFontSize];
+    self.thermoclineUnit.font = [UIFont systemFontOfSize:thermoAndSeccUnitFontSize];
+    self.secchiEstUnit.font = [UIFont systemFontOfSize:thermoAndSeccUnitFontSize];
 }
 
+//for other methods to stop the animation of the activity view.
 -(void)stopActivityView{
     [self.activityView stopAnimating];
 }

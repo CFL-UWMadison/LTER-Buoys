@@ -15,6 +15,8 @@
 
 @interface WeatherPropertyModifier : NSObject
 
+// This method is used to assign the new data from the json source into the corresponding
+// property in a weather
 -(Weather*) modificationFromJSONSource: (NSDictionary*) jsonSource ToTargetWeather: (Weather*) weather;
 
 @end

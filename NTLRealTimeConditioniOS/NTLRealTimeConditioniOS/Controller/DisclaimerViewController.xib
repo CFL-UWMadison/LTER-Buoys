@@ -99,15 +99,6 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZFI-jg-nf8">
                                         <rect key="frame" x="0.0" y="273" width="375" height="69"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Data provided by North Temperatre Lakes Long-tem Ecologyical Reserch site" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RxQ-Ml-mq3">
-                                                <rect key="frame" x="24" y="29" width="332" height="40"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="40" id="nJY-hl-Wx2"/>
-                                                </constraints>
-                                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                                <color key="textColor" red="0.87017227559999999" green="0.54250579239999996" blue="0.2720770991" alpha="1" colorSpace="calibratedRGB"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Real-Time Lake Conditions" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NoF-99-3rM">
                                                 <rect key="frame" x="0.0" y="0.0" width="375" height="29"/>
                                                 <constraints>
@@ -121,6 +112,15 @@
                                                         <exclude reference="h3h-8w-awm"/>
                                                     </mask>
                                                 </variation>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Data provided by North Temperate Lakes Long-tem Ecological Research site" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RxQ-Ml-mq3">
+                                                <rect key="frame" x="24" y="29" width="332" height="40"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="40" id="nJY-hl-Wx2"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                                <color key="textColor" red="0.87017227559999999" green="0.54250579239999996" blue="0.2720770991" alpha="1" colorSpace="calibratedRGB"/>
+                                                <nil key="highlightedColor"/>
                                             </label>
                                         </subviews>
                                         <constraints>

@@ -18,6 +18,8 @@
 
 - (JJWeatherViewController *)viewControllerAtIndex:(NSUInteger)index storyboard:(UIStoryboard *)storyboard;
 - (NSUInteger)indexOfViewController:(JJWeatherViewController *)viewController;
+- (instancetype) initWithDatabase:(WeatherInfoDB*) db;
+
 @property (nonatomic, strong) WeatherInfoDB * db;// the database
 
 @end

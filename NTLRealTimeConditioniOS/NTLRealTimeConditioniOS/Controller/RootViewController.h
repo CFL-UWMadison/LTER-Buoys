@@ -25,5 +25,6 @@
 -(void) alertForUnconnection;
 -(void)endAutoDisplayTimer;
 -(void)displayFavouriteAsFirstPage;
+-(void) startWeatherDBTimer;
 @end
 

@@ -8,10 +8,11 @@
 
 #import "Weather.h"
 #import <Foundation/Foundation.h>
-#import <objc/objc-runtime.h>
+#import <objc/objc.h>
 
 @implementation Weather
 
+/*
 // Insert code here to add functionality to your managed object subclass
 -(NSString*) description{
     NSMutableString* description = [NSMutableString stringWithString:@""];
@@ -30,6 +31,6 @@
     }
     
     return description;
-}
+}*/
 
 @end

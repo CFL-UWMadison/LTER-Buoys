@@ -31,16 +31,22 @@
 @implementation WeatherModelController
 
 - (instancetype)init {
+    return [self initWithDatabase:nil];
+}
+
+-(instancetype) initWithDatabase:(WeatherInfoDB*) db {
     self = [super init];
     if (self) {
-        // Create the data model.
-        //self.db = [WeatherInfoDB sharedDB];
-        _lakesWeatherData = [self.db allLakes];
-          }
+        self.db = db;
+    }
     return self;
 }
 
+
 - (JJWeatherViewController*)viewControllerAtIndex:(NSUInteger)index storyboard:(UIStoryboard *)storyboard {
+    
+    //update the database
+    _lakesWeatherData = [self.db allLakes];
     
     // Return the data view controller for the given index.
     if (([self.lakesWeatherData count] == 0) || (index >= [self.lakesWeatherData count])) {
@@ -49,9 +55,6 @@
 
     // Create a new view controller and pass suitable data.
     JJWeatherViewController *wvc = [storyboard instantiateViewControllerWithIdentifier:@"JJWeatherViewController"];
-    
-    //update the database
-    _lakesWeatherData = [self.db allLakes];
     
     //set the data
     wvc.lake = [self.lakesWeatherData objectAtIndex:index];
@@ -74,6 +77,7 @@
 
 #pragma mark - Page View Controller Data Source
 
+// This is necessary to notice that the view controller will only be recreated through this method 
 - (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController
 {       
     

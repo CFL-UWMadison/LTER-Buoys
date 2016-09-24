@@ -18,20 +18,17 @@ NS_ASSUME_NONNULL_BEGIN
 @interface Weather (CoreDataProperties)
 
 @property ( nonatomic,retain,nullable) NSNumber *airTemp;
-@property (nullable, nonatomic, retain) NSNumber *airTempF;
 @property (nullable, nonatomic, retain) NSString *lakeId;
 @property (nullable, nonatomic, retain) NSString *lakeName;
 @property (nullable, nonatomic, retain) NSDate *sampleDate;
 @property (nullable, nonatomic, retain) NSDate *secchiEstTimestamp;
 @property (nullable, nonatomic, retain) NSNumber *waterTemp;
-@property (nullable, nonatomic, retain) NSNumber *waterTempF;
 @property (nullable, nonatomic, retain) NSNumber *windDir;
 @property (nullable, nonatomic, retain) NSNumber *windSpeed;
 @property (nullable,nonatomic,retain)NSNumber * thermoclineDepth;
 @property (nullable,nonatomic,retain)NSNumber * phychoMedian;
 @property (nullable,nonatomic,retain)NSNumber * secchiEst;
 @property (nullable,nonatomic,retain)UIImage* windDirImage;
-@property (nullable,nonatomic,retain)NSNumber* favourite;
 @property (nullable,nonatomic,retain) NSNumber* windGust;
 
 @end

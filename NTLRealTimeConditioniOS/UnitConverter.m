@@ -14,8 +14,6 @@
 +(NSNumber*)fToC:(NSNumber *)faran{
     double f = [faran doubleValue];
     double c = (f - 32)/1.8;
-    
-    
     return [[NSNumber alloc] initWithDouble:c];
 }
 

@@ -40,9 +40,14 @@
     if (self) {
         _isNetworkOn = YES;
         self.delegate = db;
+   //     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(testNetwork:) name:@"NetworkDidCheckNotification" object:nil];
         [self startDetectingNetworkStatus];
     }
     return self;
+}
+
+-(void) testNetwork: (NSNotification*) note{
+    NSLog(@"%@", [note.userInfo description]);
 }
 
 -(void) startDetectingNetworkStatus{
@@ -59,25 +64,30 @@
     
 }
 
--(void) reachabilityChanged:(NSNotification *)note{
-    Reachability* curReach = [note object];
-    NSParameterAssert([curReach isKindOfClass:[Reachability class]]);
-    [self sendNetworkDidCheckNotification:curReach];
-}
-
-
 -(NSString*) getDataServiceURL{
     return @"http://thalassa.limnology.wisc.edu:8080/LakeConditionService/webapi/lakeConditions";
 }
 
 // The data will be transferred to the delegate (WeatherDB) for further process
--(void) getDataFromWeb{
+-(void) getWeatherData{
     
     NSURL* url = [NSURL URLWithString:[self getDataServiceURL]];
     NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:self.delegate delegateQueue:nil];
     NSURLRequest* request = [[NSURLRequest alloc] initWithURL:url];
     NSURLSessionTask* getLakeInfo = [session dataTaskWithRequest:request];
     [getLakeInfo resume];
+}
+
+-(void) reachabilityChanged:(NSNotification *)note{
+    Reachability* curReach = [note object];
+    NSParameterAssert([curReach isKindOfClass:[Reachability class]]);
+    int delayTime = 0.1;
+    // If I don't delay it for some time, it seems that something will prevent the code to be
+    // excuted on the main queue, and it won't send a notification.
+    dispatch_after(delayTime, dispatch_get_main_queue(), ^(void){
+        [self sendNetworkDidCheckNotification:curReach];
+     });
+
 }
 
 
@@ -89,11 +99,12 @@
     // add network info to userInfo
     NSMutableDictionary* userInfo = [[NSMutableDictionary alloc] init];
     [userInfo setObject:[NSNumber numberWithBool:_isNetworkOn] forKey:@"isNetworkOn"];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"NetworkDidCheckNotification" object:self userInfo:userInfo];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"NetworkDidCheckNotification" object:nil userInfo:userInfo];
     
 }
 
 -(BOOL)decideWhetherNetworkIsOn:(Reachability*) reachability{
+    
     
     NetworkStatus netStatus =  [reachability currentReachabilityStatus];
     BOOL connectionRequired = [reachability connectionRequired];
@@ -116,12 +127,7 @@
             
     }
     
-    
     // I still have some doubt on connection required.
-    if(connectionRequired){
-        return NO;
-    }
-    
     return YES;
 }
 

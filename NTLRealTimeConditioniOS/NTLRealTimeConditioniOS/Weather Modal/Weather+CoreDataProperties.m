@@ -14,18 +14,15 @@
 @implementation Weather (CoreDataProperties)
 
 @dynamic airTemp;
-@dynamic airTempF;
 @dynamic lakeId;
 @dynamic lakeName;
 @dynamic sampleDate;
 @dynamic secchiEstTimestamp;
 @dynamic waterTemp;
-@dynamic waterTempF;
 @dynamic windDir;
 @dynamic windSpeed;
 @dynamic thermoclineDepth;
 @dynamic phychoMedian;
 @dynamic secchiEst;
 @dynamic windDirImage;
-@dynamic favourite;
 @end

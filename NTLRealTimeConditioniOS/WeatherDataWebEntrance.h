@@ -12,14 +12,16 @@
 
 #import <Foundation/Foundation.h>
 #import "WeatherInfoDB.h"  
+#import "WeatherDBDataEntranceProtocal.h"
 
 @class WeatherInfoDB;
 
-@interface WeatherDataWebEntrance : NSObject
+@interface WeatherDataWebEntrance : NSObject <WeatherDBDataEntranceProtocal>
 @property (nonatomic, strong) id delegate;
 @property (nonatomic, readonly) BOOL isNetworkOn;
 
--(void) getDataFromWeb;
+-(void) getWeatherData;
 -(instancetype) initWithDatabase: (WeatherInfoDB*) db;
+
 
 @end
