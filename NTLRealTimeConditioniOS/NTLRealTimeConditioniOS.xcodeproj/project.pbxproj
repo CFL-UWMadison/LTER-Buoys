@@ -97,7 +97,6 @@
 		954567331D75761900DA81B4 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
 		954567341D75761A00DA81B4 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		954567361D75767F00DA81B4 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
-		954567381D75BEBD00DA81B4 /* UserSettingDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserSettingDelegate.h; sourceTree = "<group>"; };
 		9576565B1D78D47E0039D617 /* IphoneModelSizeIdentifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IphoneModelSizeIdentifier.h; sourceTree = "<group>"; };
 		9576565C1D78D47E0039D617 /* IphoneModelSizeIdentifier.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IphoneModelSizeIdentifier.m; sourceTree = "<group>"; };
 		9576565E1D78DA2B0039D617 /* ModelIdentifierTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModelIdentifierTest.m; sourceTree = "<group>"; };
@@ -241,7 +240,6 @@
 				95FED3531C485429008DE29D /* RootViewController.m */,
 				95FFD9B11D047E0F00FE9A6E /* UserSetting.h */,
 				95FFD9B21D047E0F00FE9A6E /* UserSetting.m */,
-				954567381D75BEBD00DA81B4 /* UserSettingDelegate.h */,
 			);
 			name = SourceCode;
 			sourceTree = "<group>";
@@ -663,6 +661,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = C658W77DY8;
 				INFOPLIST_FILE = NTLRealTimeConditioniOS/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -680,6 +679,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = C658W77DY8;
 				INFOPLIST_FILE = NTLRealTimeConditioniOS/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

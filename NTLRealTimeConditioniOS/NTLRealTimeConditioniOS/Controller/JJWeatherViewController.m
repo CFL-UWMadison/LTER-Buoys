@@ -19,7 +19,6 @@
 
 @interface JJWeatherViewController()
 // For automatically updating the data
-@property (atomic,strong) NSTimer* timer;
 @property (nonatomic,weak) MenuViewController* mvc;
 
 // I'm trying to get rid of this db dependency. My ideal is JJWeatherViewController only holds the Menu.
@@ -32,7 +31,7 @@
 +(JJWeatherViewController*) newWeatherVCWithDatabase:(WeatherInfoDB*) weatherInfoDB
                                         InStoryBoard:(UIStoryboard*) storyboard{
     JJWeatherViewController* newinstance = [storyboard instantiateViewControllerWithIdentifier:@"JJWeatherViewController"];
-    [newinstance setWeatherDB:weatherInfoDB];
+    //[newinstance setWeatherDB:weatherInfoDB];
     //[newinstance addNetworkDidCheckNotification];
     
     return newinstance;
@@ -47,8 +46,6 @@
     [[NSNotificationCenter defaultCenter] addObserverForName:@"NetworkDidCheckNotification" object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification * _Nonnull note) {
         [self receiveNetworkNotification:note];
     }];
-    
-    
 }
 
 -(void) receiveNetworkNotification:(NSNotification *) notification{
@@ -108,7 +105,6 @@
 // The current controller will not be used in the future. Only the Root view controller will know it.
 -(void) viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
-    self.db.currentController = self;
 }
 
 -(void) viewWillDisappear:(BOOL)animated{
@@ -186,17 +182,6 @@
 */
 
 
--(void) endTimer{
-    [self.timer invalidate];
-}
-
-//The method for auto refresh
--(void) autoRefresh: (NSTimer*) timer{
-    //[self.db loadWeathers];
-    [self displayData];
-    NSLog(@"auto display");
-}
-
 //the whole display data probably need to be rewritten. This time I need to create two pretty similar case. The first one is for metric and the second is for British. So here comes the question, how do I organize the control.
 -(void)displayData{
     
@@ -263,7 +248,6 @@
         self.airTempUnit.text = @"";
     }
     
-    
     //display water temperature
     double waterTempF = [self celeciusToF:[self.lake.waterTemp doubleValue]];
     if (waterTempF>= 23 && waterTempF <=122) {
@@ -300,8 +284,6 @@
        // self.windGustPrompt.text = @"GUST";
     }
 
-    
-    
     self.windDir.text = [NSString stringWithFormat:@"%.00f°", [self.lake.windDir doubleValue]];
     
     //Display Wind direction.
@@ -512,16 +494,10 @@
 //present the disclaimer over the current page.
 - (IBAction)showAbout:(id)sender {
     
-    
     MenuViewController* mvc = [[MenuViewController alloc] init];
-    
     mvc.currentController = self;
     mvc.modalPresentationStyle = UIModalPresentationOverCurrentContext;
     [self presentViewController:mvc animated:YES completion:nil];
-    
-    /*DisclaimerViewController* dvc = [[DisclaimerViewController alloc] init];
-    dvc.modalPresentationStyle = UIModalPresentationOverCurrentContext;
-    [self presentViewController:dvc animated:YES completion:nil];*/
 }
 
 

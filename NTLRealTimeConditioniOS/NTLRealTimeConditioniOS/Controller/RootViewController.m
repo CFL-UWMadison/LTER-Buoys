@@ -40,10 +40,9 @@
     self.justUpdated = us.justUpdated;
 
     // Set Up database
-    self.weatherInfoDB = [WeatherInfoDB sharedDB];
+    self.weatherInfoDB = [[WeatherInfoDB alloc] initDB];
     
     // I need to take care of the app relaunch
-    //[self.weatherInfoDB setAppRelaunch:YES];
     self.weatherInfoDB.delegate = self;
     [self updateWeatherData:self.weatherInfoDB];
     [self.weatherInfoDB homepageToTheFirst];
@@ -69,7 +68,7 @@
     self.view.gestureRecognizers = self.lakePageViewController.gestureRecognizers;
 }
 
-// I have to the
+
 -(void) addNetworkStatusNotification{
     [[NSNotificationCenter defaultCenter] addObserverForName:@"NetworkDidCheckNotification" object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification * _Nonnull note) {
         [self reachabilityChanged:note];
@@ -104,7 +103,7 @@
 
 -(void)displayFavouriteAsFirstPage{
     
-    if([[WeatherInfoDB sharedDB] homepageToTheFirst]){
+    if([self.weatherInfoDB homepageToTheFirst]){
         JJWeatherViewController *favouriteVC = [self.modelController viewControllerAtIndex:0
                                                                             storyboard:self.storyboard];
         NSArray* vControllers = @[favouriteVC];
@@ -115,6 +114,10 @@
 // You can the time by changing the 60. Be aware that 60 is in seconds
 -(void) startWeatherDBTimer{
     [self.weatherInfoDB startTimer: 60];
+}
+
+-(void) endWeatherDBTimer{
+    [self.weatherInfoDB endTimer];
 }
 
 - (void) viewDidAppear:(BOOL)animated{

@@ -49,6 +49,9 @@
     if([touch.view isDescendantOfView:self.menuTable]){
         return NO;
     }
+    if ([touch.view isDescendantOfView:self.returnButton]){
+        return NO;
+    }
     return YES;
 }
 
@@ -156,4 +159,9 @@
 }
 
 
+- (IBAction)returnButtonClicked:(id)sender {
+    [self dismissViewControllerAnimated:YES completion:^{
+        [self.currentController displayData];
+    }];
+}
 @end

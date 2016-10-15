@@ -41,7 +41,7 @@
 +(instancetype) sharedDB;
 
 -(NSString*) itemArchivePath;
-
+- (void) endWeatherDBTimer;
 
 //Save the any data updated in the program to the Core data databse
 -(BOOL) saveChanges;
@@ -59,5 +59,5 @@
 -(BOOL) noHomepage;
 -(void) startTimer:(int) timeIntervalInSeconds;
 -(void) endTimer;
-
+- (instancetype) initDB;
 @end

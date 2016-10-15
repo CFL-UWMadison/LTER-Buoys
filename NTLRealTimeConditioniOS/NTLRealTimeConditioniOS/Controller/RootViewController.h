@@ -23,8 +23,8 @@
 @property (nonatomic,strong) UINavigationController* nvc;
 
 -(void) alertForUnconnection;
--(void)endAutoDisplayTimer;
 -(void)displayFavouriteAsFirstPage;
 -(void) startWeatherDBTimer;
+-(void) endWeatherDBTimer;
 @end
 

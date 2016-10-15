@@ -22,6 +22,8 @@
 @property (weak, nonatomic) IBOutlet UIVisualEffectView *backgroundView;
 @property (nonatomic) BOOL isBritish;
 @property (nonatomic, strong) JJWeatherViewController* currentController;
+@property (weak, nonatomic) IBOutlet UIButton *returnButton;
+- (IBAction)returnButtonClicked:(id)sender;
 
 
 

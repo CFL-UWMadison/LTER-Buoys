@@ -26,7 +26,7 @@ NSString* const serverURL = @"";
 @property (nonatomic) NSMutableArray* privateLakeWeathers;
 @property(nonatomic,strong) NSManagedObjectContext *localStoreContext;
 @property(nonatomic,strong) NSManagedObjectModel *weatherCoreDataModel;
-@property (nonatomic) int hardCodeLakeNum; // I forgot when I did this.....
+@property (nonatomic) int hardCodeLakeNum; // I forgot why I did this.....
 @property (nonatomic, strong) WeatherPropertyModifier* modifier;
 
 @end
@@ -34,35 +34,21 @@ NSString* const serverURL = @"";
 
 @implementation WeatherInfoDB
 
-//there is only one database in the whole program. Singleton
-+(instancetype) sharedDB{
-    static WeatherInfoDB* db;
-    if(!db){
-        db = [[self alloc] initPrivate];
-    }
-    return db;
-}
 
 -(instancetype) init{
     return [WeatherInfoDB sharedDB];
 }
 
-/*
--(instancetype) initWhenFirstLaunch{
-    self.appRelaunch = YES;
-    [self fetchDataIfAppRelaunch];
-    
-}*/
-
 //Override the accessor, let the allLakes to a private immutable array
 -(NSArray*) allLakes{
-    return [self.privateLakeWeathers copy];
+    //return [self.privateLakeWeathers copy];
+    return self.privateLakeWeathers;
 }
 
 
 
 //This is the private method for initializing the database. It's a part of the singleton design
--(instancetype) initPrivate{
+-(instancetype) initDB{
     self = [super init];
     if (self) {
         
@@ -123,7 +109,7 @@ NSString* const serverURL = @"";
 localPersistanceURL{
     NSError* error;
     if (![psc addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:localPersistanceURL options:nil error:&error]) {
-        [NSException raise:@"Open fail" format:[error localizedDescription]];
+        [NSException raise:@"Open fail" format:@"%@", [error localizedDescription]];
     }
 }
 
@@ -279,7 +265,7 @@ localPersistanceURL{
 
 
 // This method will get process the data returned from web entrance, and start the chain of
-// modify the current data in the memeory and ask the delegate to respond
+// modify the current data in the memory and ask the delegate to respond
 - (void) URLSession:(NSURLSession *)session dataTask:(NSURLSessionDataTask *)dataTask didReceiveData:(NSData *)data{
     NSArray* jsonArray = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
     
@@ -292,11 +278,6 @@ localPersistanceURL{
     [self modifyEachLakeDataBasedOnNewJsonArray:jsonArray];
     
     [self callDelegateToRespondToDataChange: self.delegate];
-    
-    dispatch_async(dispatch_get_main_queue(), ^{
-        self.currentController.unconnected = NO;
-        [self.currentController displayData];
-    });
 }
 
 -(void) modifyEachLakeDataBasedOnNewJsonArray:(NSArray*) jsonArray{
