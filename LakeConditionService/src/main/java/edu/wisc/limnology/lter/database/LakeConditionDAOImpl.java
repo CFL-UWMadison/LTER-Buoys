@@ -30,8 +30,9 @@ public class LakeConditionDAOImpl implements LakeConditionDAO {
 				while (rs.next()) {
 					
 					LakeCondition lakeCondition = new LakeCondition();
+					
 					lakeCondition.setSampleDate(DbUtil.toDate(rs.getTimestamp("sampledate")));
-					lakeCondition.setLakeName(rs.getString("lakename"));
+					lakeCondition.setLakeName(rs.getString("Lakename"));
 					lakeCondition.setLakeId(rs.getString("lakeid"));
 					lakeCondition.setAirTemp(DbUtil.toDouble(rs.getBigDecimal("airtemp")));
 					lakeCondition.setWaterTemp(DbUtil.toDouble(rs.getBigDecimal("watertemp")));
@@ -41,6 +42,7 @@ public class LakeConditionDAOImpl implements LakeConditionDAO {
 					if ("ME".equals(DbUtil.trim(rs.getString("lakeid")))){
 					lakeCondition.setSecchiEst(DbUtil.toDouble(rs.getBigDecimal("secchi_est")));
 					lakeCondition.setSecchiEstTimestamp(DbUtil.toDate(rs.getTimestamp("secchi_timestamp")));
+					lakeCondition.setWindGust(DbUtil.toDouble(rs.getBigDecimal("windgust")));	
 					lakeCondition.setPhycoMedian(DbUtil.toDouble(rs.getBigDecimal("phyco_median")));
 					}
 					lakeConditions.add(lakeCondition);
@@ -80,8 +82,10 @@ public class LakeConditionDAOImpl implements LakeConditionDAO {
 
 			if (rs != null) {
 				while (rs.next()) {
+					
+					
 					lakeCondition.setSampleDate(DbUtil.toDate(rs.getTimestamp("sampledate")));
-					lakeCondition.setLakeName(rs.getString("lakename"));
+					lakeCondition.setLakeName(rs.getString("Lakename"));
 					lakeCondition.setLakeId(rs.getString("lakeid"));
 					lakeCondition.setAirTemp(DbUtil.toDouble(rs.getBigDecimal("airtemp")));
 					lakeCondition.setWaterTemp(DbUtil.toDouble(rs.getBigDecimal("watertemp")));
@@ -92,8 +96,9 @@ public class LakeConditionDAOImpl implements LakeConditionDAO {
 					lakeCondition.setSecchiEst(DbUtil.toDouble(rs.getBigDecimal("secchi_est")));
 					lakeCondition.setSecchiEstTimestamp(DbUtil.toDate(rs.getTimestamp("secchi_timestamp")));
 					lakeCondition.setPhycoMedian(DbUtil.toDouble(rs.getBigDecimal("phyco_median")));
+					lakeCondition.setWindGust(DbUtil.toDouble(rs.getBigDecimal("windgust")));
+					lakeCondition.setPhycoMedian(DbUtil.toDouble(rs.getBigDecimal("phyco_median")));
 					}
-					
 				}
 			}
 		} catch (SQLException e) {

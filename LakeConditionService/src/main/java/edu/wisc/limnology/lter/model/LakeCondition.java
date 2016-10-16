@@ -22,6 +22,7 @@ public class LakeCondition {
 	private Date sampleTime;
 	private Double thermoclineDepth;
 	private Date secchiEstTimestamp;
+	private Double windGust;
 
 	SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	
@@ -88,8 +89,7 @@ public class LakeCondition {
 	public void setWindDir(Integer windDir) {
 		this.windDir = windDir;
 	}
-	
-	
+	@XmlElement(nillable=true)
 	public Double getSecchiEst() {
 		return secchiEst;
 	}
@@ -129,6 +129,14 @@ public class LakeCondition {
 
 	public void setThermoclineDepth(Double thermoclineDepth) {
 		this.thermoclineDepth = thermoclineDepth;
+	}
+
+	public void setWindGust(Double windGust){
+		this.windGust = windGust;
+	}
+
+	public Double getWindGust(){
+		return this.windGust;
 	}
 
 	@Override
