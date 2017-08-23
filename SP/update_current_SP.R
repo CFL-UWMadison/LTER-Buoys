@@ -1,67 +1,90 @@
 #Update the table buoy_current_conditions for Sparkling Lake
 library(RMySQL)
 
-currentFile <- "/triton/BuoyData/sp_current.csv"
+currentMet <- "/triton/BuoyData/SP/sp_current_met.csv"
+currentLimno <- "/triton/BuoyData/SP/sp_current_limno.csv"
 
-if (file.exists(currentFile)) {
+if ( file.exists(currentMet) && file.exists(currentLimno) ) {
   
-  df.A <- read.csv(currentFile,header=F,stringsAsFactors=FALSE)
+  message(date()," Sparkling current met & limno exist and will now be processed")
+  
+  df.A <- read.csv(currentMet,header=F,stringsAsFactors=FALSE)
   #timestamp,lakeid,airtemp,watertemp,windspeed,winddir
+  df.B <- read.csv(currentLimno,header=F,stringsAsFactors=FALSE)
+  #timestamp,lakeid,thermocline_depth
   
-  nfields <- 7  
+  nfields <- 8  
   
   ###Assign field names. These must match the database field names
-  fields <- c("sampledate","lakeid","airtemp","watertemp","windspeed","winddir","lakename")
+  fields <- c("sampledate","lakeid","airtemp","watertemp","windspeed","winddir","lakename","thermocline_depth")
   ### Assign formatting to each field. Strings (%s) get extra single quotes
-  fmt <- c("'%s'","'%s'","%.3f","%.3f","%.3f","%.3f","'%s'")
+  fmt <- c("'%s'","'%s'","%.3f","%.3f","%.3f","%.3f","'%s'","%.1f")
 
   ### Assign local variables, must use the same name as database field
   sampledate <- df.A[1,1]
-  lakeid <- df.A[1,2]
+  lakeid <- "SP"
   airtemp <- df.A[1,3]
   watertemp <- df.A[1,4]
   windspeed <- df.A[1,5]
   winddir <- df.A[1,6]
   lakename = "Sparkling Lake"
+  thermocline_depth <- df.B[1,3]
 
   ###Create the mask that says which field have valued entries
   mask<-0  
   for (i in 1:nfields) {
     if (is.na(eval(parse(text=fields[i])))) {mask[i]<-0} else {mask[i]<-1}
   }
- 
-  ###Delete the old record
-  conn <- dbConnect(MySQL(),dbname="dbmaker", client.flag=CLIENT_MULTI_RESULTS) 
-  sql <- sprintf("delete from buoy_current_conditions where lakeid='%s'",lakeid)
-  result <- dbGetQuery(conn,sql)
+  
+  if (!is.null(airtemp)) {
+  
+    ###Delete the old record
+    conn <- dbConnect(MySQL(),dbname="dbmaker", client.flag=CLIENT_MULTI_RESULTS) 
+    sql <- sprintf("delete from buoy_current_conditions where lakeid='%s'",lakeid)
+    result <- dbGetQuery(conn,sql)
+  
+    ###Develop a SQL command
+    sql <- "insert into buoy_current_conditions ("
+    for (i in 1:nfields) {
+      if (mask[i]) { sql <- paste(sql,fields[i],",",sep="") }  #valued fields
+    }
+    sql <- substr(sql,1,nchar(sql)-1)  #remove last comma and extend
+    sql <- paste(sql,") values (",sep="")
+    for (i in 1:nfields) {
+      if (mask[i]) { sql <- paste(sql,fmt[i],",",sep="") }     #add fmts of valued fields
+    }
+    sql <- substr(sql,1,nchar(sql)-1) #remove last comma and close
+    sql <- paste(sql,")",sep="") 
+  
+  
+    ###Build a string of the sprintf function. This puts values into fields.
+    scmd <- "sprintf(sql,"
+    for (i in 1:nfields) {
+     if (mask[i]) { scmd <- paste(scmd,fields[i],",",sep="") } #field values
+    }
+    scmd <- substr(scmd,1,nchar(scmd)-1) #remove last comma and clean up
+    scmd <- paste(scmd,")",sep="") 
+    #print(scmd)
+  
+    ###Get the SQL command back by parsing
+    sql <- eval(parse(text=scmd))
+    #print(sql)
+    result <- dbGetQuery(conn,sql) 
+    dbDisconnect(conn)  
 
-  ###Develop a SQL command
-  sql <- "insert into buoy_current_conditions ("
-  for (i in 1:nfields) {
-    if (mask[i]) { sql <- paste(sql,fields[i],",",sep="") }  #valued fields
+    #This might be necessary:
+    #detach("package:RMySQL", unload=TRUE)
+    #detach("package:DBI", unload=TRUE) 
+    #detach("package:methods", unload=TRUE)     
+    
+    #See what packages are loaded:
+    #.(packages())
+    
+    message("Updating current_SP completed ",date()," ",airtemp)
+  } else {
+     message(date(),"SP data was null; no update")
   }
-  sql <- substr(sql,1,nchar(sql)-1)  #remove last comma and extend
-  sql <- paste(sql,") values (",sep="")
-  for (i in 1:nfields) {
-    if (mask[i]) { sql <- paste(sql,fmt[i],",",sep="") }     #add fmts of valued fields
-  }
-  sql <- substr(sql,1,nchar(sql)-1) #remove last comma and close
-  sql <- paste(sql,")",sep="") 
-
-
-  ###Build a string of the sprintf function. This puts values into fields.
-  scmd <- "sprintf(sql,"
-  for (i in 1:nfields) {
-   if (mask[i]) { scmd <- paste(scmd,fields[i],",",sep="") } #field values
-  }
-  scmd <- substr(scmd,1,nchar(scmd)-1) #remove last comma and clean up
-  scmd <- paste(scmd,")",sep="") 
-  #print(scmd)
-
-  ###Get the SQL command back by parsing
-  sql <- eval(parse(text=scmd))
-  #print(sql)
-  result <- dbGetQuery(conn,sql)  
-  dbDisconnect(conn)  
-
+  
+} else {
+  message(date()," Error running update_current_SP.R : Sparkling current met and/or limno DO NOT exist")
 }

@@ -1,9 +1,12 @@
 #Update the table sensor_trout_lake_russ_met_hi_res for Sparkling Lake
 library(RMySQL)
 
-latestFile <- "/triton/BuoyData/tr_latest_limno.csv"
+latestFile <- "/triton/BuoyData/TR/tr_latest_limno.csv"
+message(latestFile)
 
-if (file.exists(latestFile)) {
+
+#if (file.exists(latestFile)) {
+  message("tr_latest_limno exists")
   
   df.A <- read.csv(latestFile,header=T,stringsAsFactors=FALSE)
   nrecords <- nrow(df.A)
@@ -71,4 +74,7 @@ if (file.exists(latestFile)) {
   ###Disconnect from the database
   dbDisconnect(conn) 
   file.remove(latestFile)
-}#if
+#}
+# else {
+#   message("tr_latest_limno does not exist")
+# }

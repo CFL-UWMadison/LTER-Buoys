@@ -63,7 +63,7 @@ if (file.exists(latestWtemp)) {
       }
       df.X <- rbind(df.X,tempX)
 
-## For very large files writing each entry is much faster than building the final data frame
+# For very large files writing each entry is much faster than building the final data frame
 #       if (file.exists(outputFile)) {
 #         write.table(tempX,file=outputFile,sep=",",col.names=FALSE,append=TRUE,quote=FALSE,row.names=FALSE)
 #       }
@@ -81,5 +81,6 @@ if (file.exists(latestWtemp)) {
   else {
     write.table(df.X,file=outputFile,sep=",",col.names=TRUE,append=FALSE,quote=FALSE,row.names=FALSE)
   }
-  #file.remove(latestWtemp)
+
+  file.remove(latestWtemp)
 }#if file exists

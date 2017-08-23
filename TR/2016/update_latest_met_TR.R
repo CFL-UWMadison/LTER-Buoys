@@ -9,24 +9,18 @@ if (file.exists(latestFile)) {
   nrecords <- nrow(df.A)
   #nrecords <- 1
   
-  nfields <- 41 
+  nfields <- 30 
   
   ###Assign field names. These must match the database field names
   fields <- c("sampledate","year4","month","daynum","sampletime","data_freq","air_temp","flag_air_temp","rel_hum","flag_rel_hum",
               "wind_speed","flag_wind_speed","wind_dir","flag_wind_dir","barom_pres_mbar","flag_barom_pres_mbar","par","flag_par",
-              "ysi_wtemp","flag_ysi_wtemp","ysi_spcond","flag_ysi_spcond","ysi_dosat","flag_ysi_dosat","ysi_do","flag_ysi_do",
-              "sat_vapor_pres","flag_sat_vapor_pres","vapor_pres","flag_vapor_pres",
-              "promini_co2_corr","flag_promini_co2_corr","promini_co2_bptemp","flag_promini_co2_bptemp","promini_co2_bp","flag_promini_co2_bp",
-              "gp_co2_conc","flag_gp_co2_conc","gp_co2_temp","flag_gp_co2_temp","cumulative_precipitation")
-              
-              
+              "opt_wtemp","flag_opt_wtemp","opt_dosat_raw","flag_opt_dosat_raw","opt_do_raw","flag_opt_do_raw",
+              "sat_vapor_pres","flag_sat_vapor_pres","vapor_pres","flag_vapor_pres","cumulative_precipitation","cr10_battery")
   ### Assign formatting to each field. Strings (%s) get extra single quotes
   fmt <- c("'%s'","%.0f","%.0f","%.0f","'%s'","%.0f","%.3f","'%s'","%.1f","'%s'",
            "%.3f","'%s'","%.1f","'%s'","%.1f","'%s'","%.1f","'%s'",
-           "%.2f","'%s'","%.1f","'%s'","%.1f","'%s'","%.2f","'%s'", 
-           "%.3f","'%s'","%.3f","'%s'",
-           "%.3f","'%s'","%.3f","'%s'","%.3f","'%s'",              
-           "%.3f","'%s'","%.3f","'%s'","%.2f")
+           "%.3f","'%s'","%.1f","'%s'","%.3f","'%s'",
+           "%.3f","'%s'","%.3f","'%s'","%.2f","%.3f")
 
   
   ###Connect to the database
@@ -51,35 +45,20 @@ if (file.exists(latestFile)) {
     barom_pres_mbar <- df.A[r,15]
     flag_barom_pres_mbar <- df.A[r,16]     
     par <- df.A[r,17]
-    flag_par <- df.A[r,18]
-    
-    ysi_wtemp <- df.A[r,19]
-    flag_ysi_wtemp <- df.A[r,20]
-    ysi_spcond <- df.A[r,21]
-    flag_ysi_spcond <- df.A[r,22]
-    ysi_dosat <- df.A[r,23]
-    flag_ysi_dosat <- df.A[r,24]
-    ysi_do <- df.A[r,25]
-    flag_ysi_do <- df.A[r,26]
-    
-    sat_vapor_pres <- df.A[r,27]
-    flag_sat_vapor_pres <- df.A[r,28]    
-    vapor_pres <- df.A[r,29]
-    flag_vapor_pres <- df.A[r,30]
+    flag_par <- df.A[r,18]    
+    opt_wtemp <- df.A[r,19]
+    flag_opt_wtemp <- df.A[r,20]
+    opt_dosat_raw <- df.A[r,21]
+    flag_opt_dosat_raw <- df.A[r,22]
+    opt_do_raw <- df.A[r,23]
+    flag_opt_do_raw <- df.A[r,24]       
+    sat_vapor_pres <- df.A[r,25]
+    flag_sat_vapor_pres <- df.A[r,26]    
+    vapor_pres <- df.A[r,27]
+    flag_vapor_pres <- df.A[r,28]
+    cumulative_precipitation <- df.A[r,29]
+    cr10_battery <- df.A[r,30]
 
-    promini_co2_corr <- df.A[r,31]    
-    flag_promini_co2_corr <- df.A[r,32]    
-    promini_co2_bptemp <- df.A[r,33]    
-    flag_promini_co2_bptemp <- df.A[r,34]    
-    promini_co2_bp <- df.A[r,35]    
-    flag_promini_co2_bp <- df.A[r,36] 
-    
-    gp_co2_conc <- df.A[r,37]
-    flag_gp_co2_conc <- df.A[r,38]
-    gp_co2_temp <- df.A[r,39]
-    flag_gp_co2_temp <- df.A[r,40]
-  
-    cumulative_precipitation <- df.A[r,41]
 
     ###Create the mask that says which field have valued entries
     mask<-0  

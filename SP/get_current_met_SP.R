@@ -1,6 +1,8 @@
 #Read in LATEST.PRN; Generate CSV for table buoy_current_conditions
 
-latestMet <- "SP_LATEST_VAISALA.PRN"
+# Define the PRN files being used as input
+#latestMet <- "SP_LATEST_VAISALA.PRN"
+latestMet <- "SP_LATEST_LUFFT.PRN"
 latestWtemp <- "SP_LATEST_WTEMP.PRN"
 outputFile <- "sp_current_met.csv"
 
@@ -34,11 +36,21 @@ if (file.exists(latestMet) ) {
   
   #Convert sampledate to localtime (CDT in summer)
   tmp <- as.POSIXct(df.A[numRows,1],tz="America/Guatemala")
-  sampledate <- format(tmp,tz="America/Chicago")
+  #sampledate <- format(tmp,tz="America/Chicago") #Use this in summer
+  #Add an extra hour in fall since the datalogger subracts an hour
+  sampledate <- format(tmp,tz="America/New_YorK") #Use this in fall
   #sampledate <- df.A[numRows,1]  #timestamp comes in CST (-6)
-  airtemp <- df.A[numRows,7]
-  windspeed <- df.A[numRows,5]
-  winddir <- df.A[numRows,3]
+  
+  ## Vaisala ordering
+  #airtemp <- df.A[numRows,7]
+  #windspeed <- df.A[numRows,5]
+  #winddir <- df.A[numRows,3]
+  
+  ## Lufft
+  airtemp <- df.A[numRows,3]
+  windspeed <- df.A[numRows,6]
+  winddir <- df.A[numRows,8]
+  
   tempX$sampledate <- sampledate
   tempX$lakeid <- "SP"
   if (!is.na(as.numeric(airtemp))) {tempX$airtemp <- airtemp}

@@ -1,8 +1,8 @@
 #Read in LATEST.PRN; Generate CSV of thermocline estimate for table buoy_current_conditions
 library(rLakeAnalyzer)
 
-latestFile <- "SP_LATEST_WTEMP.PRN"
-outputFile <- "sp_current_limno.csv"
+latestFile <- "TR_LATEST.PRN"
+outputFile <- "tr_current_limno.csv"
 
 if (file.exists(latestFile)) {
   
@@ -29,28 +29,28 @@ if (file.exists(latestFile)) {
   tmp <- as.POSIXct(df.A[numRows,1],tz="America/Guatemala")
   #sampledate <- format(tmp,tz="America/Chicago") #use in summer
   sampledate <- format(tmp,tz="America/New_York") #use in fall
+  #sampledate <- df.A[numRows,1]
   tempX$sampledate <- sampledate
-  tempX$lakeid <- "SP"
+  tempX$lakeid <- "TR"
 
-
-  depths <- c(0,0.25,0.5,0.75,1,1.25,1.5,2,2.5,3,3.5,4,4.5,5,6,7,8,9,10,11,12,13,14,16,18)
+  depths <- c(0,0.25,0.5,0.75,1,1.5,2,2.5,3,3.5,4,5,6,7,8,9,10,11,12,13,14,16,20,25,30)
   numdepths <- 25
   wtemp <- 0
   badDataFlag <- FALSE 
   for (i in 1:numdepths) {
-    wt <- df.A[numRows,i+2]
+    wt <- df.A[numRows,i+4]
     if (!is.na(wt)) {wtemp[i] <- wt} else {badDataFlag <- TRUE} 
   }
   
   if (badDataFlag == FALSE) {
-    tempX$thermocline <- thermo.depth(wtemp, depths, seasonal=FALSE)
+    tempX$thermocline <- thermo.depth(wtemp, depths, seasonal=TRUE)
   } else {
     tempX$thermocline <- as.character("")
   }
   
   
-  #print(depths)
-  #print(wtemp)
+  print(depths)
+  print(wtemp)
   
   
   df.X <- rbind(df.X,tempX)

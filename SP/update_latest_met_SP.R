@@ -1,7 +1,26 @@
-#Update the table sensor_sparkling_lake_met_hi_res for Sparkling Lake
+#Update the tables sensor_sparkling_lake_met_hi_res and ios_app_sp for Sparkling Lake
+#on the hour
 library(RMySQL)
 
 latestFile <- "/triton/BuoyData/SP/sp_latest_met.csv"
+
+### Special function to find average wind direction average developed by Misuta
+avgWindDir <- function(V) {
+  N <- length(V)
+  D <- vector()
+  D[1] <- V[1]
+  for (i in 2:N) {
+    delta <- V[i]-D[i-1]
+    if (delta < -180) D[i] <- D[i-1]+delta+360
+    if (abs(delta) < 180) D[i] <- D[i-1]+delta
+    if (delta > 180) D[i] <- D[i-1]+delta-360
+    if (delta==180) return(NA)    
+  }
+  avgDir <- sum(D)/N
+  while (avgDir < 0) avgDir <- avgDir+360
+  return(avgDir)
+}
+###
 
 if (file.exists(latestFile)) {
   
@@ -9,8 +28,14 @@ if (file.exists(latestFile)) {
   nrecords <- nrow(df.A)
   #nrecords <- 1
   
-  nfields <- 31
+  ###Connect to the database
+  conn <- dbConnect(MySQL(),dbname="dbmaker", client.flag=CLIENT_MULTI_RESULTS)   
   
+  
+  ############################### sensor_sparking_lake_met_hi_res ###########################################
+  
+  
+  nfields <- 31  
   ###Assign field names. These must match the database field names
   fields <- c("sampledate","year4","month","daynum","sampletime","air_temp","flag_air_temp","rel_hum","flag_rel_hum",
               "wind_speed_2m","flag_wind_speed_2m","sat_vapor_pres","flag_sat_vapor_pres","vapor_pres","flag_vapor_pres",
@@ -22,10 +47,7 @@ if (file.exists(latestFile)) {
            "%.3f","'%s'","%.3f","'%s'","%.3f","'%s'",
            "%.3f","'%s'","%.2f","'%s'","%.2f","'%s'","%.2f","'%s'",
            "%.2f","'%s'","%.0f","'%s'","%.2f","%.3f","%.3f","%.0f")
-
   
-  ###Connect to the database
-  conn <- dbConnect(MySQL(),dbname="dbmaker", client.flag=CLIENT_MULTI_RESULTS)   
   
   ### Assign local variables, must use the same name as database field
   for (r in 1:nrecords) {
@@ -96,10 +118,71 @@ if (file.exists(latestFile)) {
     #sql <- paste(sql,"IGNORE",sep=" ")
     #print(sql)
     result <- dbGetQuery(conn,sql)  
+   
+ }#for
+  
+  ############################### ios_app_sp ###########################################
+  
+  
+  nfields <- 10  
+  ###Assign field names. These must match the database field names
+  fields <- c("sampledate","year4","month","daynum","hour","air_temp","rel_hum","wind_speed","wind_dir","barom_pres")
+
+  ### Assign formatting to each field. Strings (%s) get extra single quotes
+  fmt <- c("'%s'","%.0f","%.0f","%.0f","%.0f","%.2f","%.0f","%.1f","%.0f","%.0f")
+
+  #Get sampledate from dataframe but in CST; Convert to CDT
+  tmpdate <- as.POSIXct(df.A[1,1],tz="America/Guatemala")
+  sampledate <- format(tmpdate,tz="America/Chicago")
+  lt <- strptime(sampledate,tz="America/Chicago",format="%Y-%m-%d %H:%M:%S")
+  hour <- 100*as.numeric(format(lt,"%H"))
+  year4 <- as.numeric(format(lt,"%Y"))
+  month <- as.numeric(format(lt,"%m"))
+  daynum <- as.numeric(format(lt,"%j"))
+
+  air_temp <- mean(df.A[,6])
+  rel_hum <- mean(df.A[,8])
+  wind_speed <- mean(df.A[,10])
+  barom_pres <- mean(df.A[,26])
+  wind_dir <- avgWindDir(df.A[,24])
+   
+  ###Create the mask that says which fields have valued entries
+  mask<-0  
+  for (i in 1:nfields) {
+    value <- eval(parse(text=fields[i]))
+    if ( is.na(value) || (value=="")) {mask[i]<-0} else {mask[i]<-1}
+  }
     
-  }#for
+  ###Develop a SQL command
+  sql <- "insert ignore into ios_app_sp ("
+  for (i in 1:nfields) {
+    if (mask[i]) { sql <- paste(sql,fields[i],",",sep="") }  #valued fields
+  }
+  sql <- substr(sql,1,nchar(sql)-1)  #remove last comma and extend
+  sql <- paste(sql,") values (",sep="")
+  for (i in 1:nfields) {
+    if (mask[i]) { sql <- paste(sql,fmt[i],",",sep="") }     #add fmts of valued fields
+  }
+  sql <- substr(sql,1,nchar(sql)-1) #remove last comma and close
+  sql <- paste(sql,")",sep="") 
+        
+  ###Build a string of the sprintf function. This puts values into fields.
+  scmd <- "sprintf(sql,"
+  for (i in 1:nfields) {
+    if (mask[i]) { scmd <- paste(scmd,fields[i],",",sep="") } #field values
+  }
+  scmd <- substr(scmd,1,nchar(scmd)-1) #remove last comma and clean up
+  scmd <- paste(scmd,")",sep="") 
+  #print(scmd)
+    
+  ###Get the SQL command back by parsing
+  sql <- eval(parse(text=scmd))
+  print(sql)
+  result <- dbGetQuery(conn,sql)   
   
   ###Disconnect from the database
   dbDisconnect(conn) 
+  message("Latest SP met updated")
+ 
   file.remove(latestFile)
 }#if

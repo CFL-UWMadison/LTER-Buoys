@@ -1,14 +1,36 @@
 #Read in LATEST.PRN; Generate CSV for table sensor_trout_lake_met_hi_res
 
-latestFile <- "TR_LATEST.PRN"
+latestLufft <- "TR_LATEST_LUFFT.PRN"
+latestVaisala <- "TR_LATEST_VAISALA.PRN"
+latestVaporPres <- "TR_LATEST_VAPORPRES.PRN"
+latestYSI <- "TR_LATEST_YSI.PRN"
+latestProMini <- "TR_LATEST_PROMINI.PRN"
+latesteosGP <- "TR_LATEST_EOSGP.PRN"
+
 rangeFile <- "range_checks_new.csv"
 outputFile <- "tr_latest_met.csv"
 
-if (file.exists(latestFile)) {
+
+## Below is a dummy process that allows the write.table functions at the bottom of the script
+## to operate. I don't know why it works that way.
+dumfile <- "aaa.csv"
+df.A <- read.csv(latestProMini,header=F,stringsAsFactors=FALSE)
+write.table(df.A,file=dumfile,sep=",",col.names=FALSE,append=FALSE,quote=FALSE,row.names=FALSE)
+
+
+if (file.exists(latestLufft)) {
   
-  df.A <- read.csv(latestFile,header=F,stringsAsFactors=FALSE)
+  
+  df.L <- read.csv(latestLufft,header=F,stringsAsFactors=FALSE)
+  df.VS <- read.csv(latestVaisala,header=F,stringsAsFactors=FALSE)
+  df.VP <- read.csv(latestVaporPres,header=F,stringsAsFactors=FALSE)
+  df.Y <- read.csv(latestYSI,header=F,stringsAsFactors=FALSE)
+  df.PM <- read.csv(latestProMini,header=F,stringsAsFactors=FALSE)
+  df.GP <- read.csv(latesteosGP,header=F,stringsAsFactors=FALSE)
+ 
+  
   #  
-  df.B <- read.csv(rangeFile,header=T,stringsAsFactors=FALSE)
+  df.R <- read.csv(rangeFile,header=T,stringsAsFactors=FALSE)
   #
   #Create a destination data frame for met data. The variable names match those in the destination database.
   df.X <- data.frame(sampledate=character(1),
@@ -28,25 +50,41 @@ if (file.exists(latestFile)) {
                      barom_pres_mbar=numeric(1),
                      flag_barom_pres_mbar=character(1),
                      par=numeric(1),
-                     flag_par=character(1),
-                     opt_wtemp=numeric(1),
-                     flag_opt_wtemp=character(1),                     
-                     opt_dosat_raw=numeric(1),
-                     flag_opt_dosat_raw=character(1),                     
-                     opt_do_raw=numeric(1),
-                     flag_opt_do_raw=character(1),                                   
+                     flag_par=character(1),                     
+ 
+                     ysi_temp=numeric(1),
+                     flag_ysi_temp=character(1),
+                     ysi_spcond=numeric(1),
+                     flag_ysi_spcond=character(1),                                        
+                     ysi_dosat=numeric(1),
+                     flag_ysi_dosat=character(1),                     
+                     ysi_do=numeric(1),
+                     flag_ysi_do=character(1),
+                     
                      sat_vapor_pres=numeric(1),
                      flag_sat_vapor_pres=character(1),
                      vapor_pres=numeric(1),
                      flag_vapor_pres=character(1),
+                     
+                     promini_co2_corr=numeric(1),
+                     flag_promini_co2_corr=character(1), 
+                     promini_co2_bptemp=numeric(1),
+                     flag_promini_co2_bptemp=character(1),  
+                     promini_co2_bp=numeric(1),
+                     flag_promini_co2_bp=character(1),                     
+                     
+                     gp_co2_conc=numeric(1),
+                     flag_gp_co2_conc=character(1), 
+                     gp_co2_temp=numeric(1),
+                     flag_gp_co2_temp=character(1),
+                     
+                     
                      cumulative_precipitation=numeric(1),
-                     rad_battery=numeric(1),
-                     cr10_battery=numeric(1),
                      stringsAsFactors=FALSE)
   
-  #Create a single row like df.B for temporary storage
+  #Create a single row like df.R for temporary storage
   tempX <- df.X  #Permanently empty template.
-  #Remove the empty row from df.B
+  #Remove the empty row from df.R
   df.X <- df.X[-1,]
   
   options(scipen=999) #This disables scientific notation for values
@@ -65,26 +103,28 @@ if (file.exists(latestFile)) {
   windDirMin <- 0
   windSpeedMax <- 20.0
   windSpeedMin <- 0
-  dOptoPPMMax <- df.B[250,month+1]
-  dOptoPPMMin <- df.B[251,month+1]
-  dOptoSatMax <- df.B[252,month+1]
-  dOptoSatMin <- df.B[253,month+1]
-  dOptoTempMax <- df.B[256,month+1]
-  dOptoTempMin <- df.B[257,month+1]
-  satVapPressMax <- df.B[258,month+1]
-  satVapPressMin <- df.B[259,month+1]
-  PrecipMax <- df.B[262,month+1]  #not used
-  PrecipMin <- df.B[263,month+1]  #not used
+  dOptoPPMMax <- df.R[250,month+1]
+  dOptoPPMMin <- df.R[251,month+1]
+  dOptoSatMax <- df.R[252,month+1]
+  dOptoSatMin <- df.R[253,month+1]
+  dOptoTempMax <- df.R[256,month+1]
+  dOptoTempMin <- df.R[257,month+1]
+  satVapPressMax <- df.R[258,month+1]
+  satVapPressMin <- df.R[259,month+1]
+  PrecipMax <- df.R[262,month+1]  #not used
+  PrecipMin <- df.R[263,month+1]  #not used
+  
   
   ###Loop through the records in the PRN file
-  numRows <- nrow(df.A)
+  numRows <- nrow(df.L)
   for (a in 1:numRows) {    
+  #for (a in 1:10) {  
     
     #Re-initialize sensor &flag columns of tempX as null. Values are filled in below only if not null
     for (c in 6:ncol(tempX)) { tempX[1,c] <- as.character("") }
            
     #Enter date and time info
-    timeStamp <- df.A[a,1]
+    timeStamp <- df.L[a,1]
     tempX$sampledate <- timeStamp
     lt <- strptime(timeStamp, tz="America/Chicago", format="%Y-%m-%d %H:%M:%S")  
     tempX$month <- as.numeric(format(lt,"%m"))
@@ -93,91 +133,122 @@ if (file.exists(latestFile)) {
     tempX$sampletime <- as.character(format(lt,"%T"))
     tempX$data_freq <- 1
     
-    #airTemp (3)
-    val <- as.numeric(df.A[a,3])
+    #air_temp (L2)
+    val <- as.numeric(df.L[a,2])
     if (!is.na(val)) { tempX$air_temp <- val }  
 
-    #relHum (4)
-    val <- as.numeric(df.A[a,4])
+    #relHum (L3)
+    val <- as.numeric(df.L[a,3])
     if (!is.na(val)) { tempX$rel_hum <- val }
-     
-    #dOptoTemp (30)
-    val <- as.numeric(df.A[a,30])
+    
+    #airPress (L4)
+    val <- as.numeric(df.L[a,4])
     if (!is.na(val)) {
-       tempX$opt_wtemp <- val
-       if ( (val<dOptoTempMin) || (val>dOptoTempMax) ) { tempX$flag_opt_wtemp <- "H" }
-    }
-
-    #dOptoSat (31)
-    val <- as.numeric(df.A[a,31])  
-    if (!is.na(val)) {
-      tempX$opt_dosat_raw <- val
-      if ( (val<dOptoSatMin) || (val>dOptoSatMax) ) { tempX$flag_opt_dosat_raw <- "H" }
-    }    
-
-    #dOptoPPM (32)
-    val <- as.numeric(df.A[a,32])
-    if (!is.na(val)) {
-      tempX$opt_do_raw <- val
-      if ( (val<dOptoPPMMin) || (val>dOptoPPMMax) ) { tempX$flag_opt_do_raw <- "H" }
-    }    
-        
-    #windSpeed (33)
-    val <- as.numeric(df.A[a,33])   
+      tempX$barom_pres_mbar <- val
+      if ( (val<airPressMin) || (val>airPressMax) ) { tempX$flag_barom_pres_mbar <- "H" }
+    }       
+    
+    #windSpeed (L5)
+    val <- as.numeric(df.L[a,5])   
     if (!is.na(val)) {
       tempX$wind_speed <- val
       if ( (val<windSpeedMin) || (val>windSpeedMax) ) { tempX$flag_wind_speed <- "H" } 
     }    
     
-    #windDir (34)
-    val <- as.numeric(df.A[a,34])
+    #windDir (L7)
+    val <- as.numeric(df.L[a,7])
     if (!is.na(val)) {
       tempX$wind_dir <- val
       if ( (val<windDirMin) || (val>windDirMax) ) { tempX$flag_wind_dir <- "H" }
-    }      
-        
-    #airPress (35)
-    val <- as.numeric(df.A[a,35])
-    if (!is.na(val)) {
-      tempX$barom_pres_mbar <- val
-      if ( (val<airPressMin) || (val>airPressMax) ) { tempX$flag_barom_pres_mbar <- "H" }
-    }      
-        
-    #PAR (36)
-    val <- as.numeric(df.A[a,36])
-    if (!is.na(val)) { tempX$par <- val }
-
-    #satVapPress (37)
-    val <- as.numeric(df.A[a,37])
+    }          
+    
+    #satVapPress (VP2)
+    val <- as.numeric(df.VP[a,2])
     if (!is.na(val)) {
       tempX$sat_vapor_pres <- val
       if ( (val<satVapPressMin) || (val>satVapPressMax) ) { tempX$flag_sat_vapor_pres <- "H"}
     }      
-       
-    #vapPress (38)
-    val <- as.numeric(df.A[a,38])
-    if (!is.na(val)) { tempX$vapor_pres <- val }
-        
-    #precipVaisala (39)
-    val <- as.numeric(df.A[a,39])
-    if (!is.na(val)&&(val<7999)) { tempX$cumulative_precipitation <- val }
+    
+    #vapPress (VP3)
+    val <- as.numeric(df.VP[a,3])
+    if (!is.na(val))  tempX$vapor_pres <- val 
+    #message(tempX$vapor_pres)
+                         
+    #ysi_temp (Y2)
+    val <- as.numeric(df.Y[a,2])
+    if (!is.na(val)) {
+       tempX$ysi_temp <- val
+       if ( (val<dOptoTempMin) || (val>dOptoTempMax) ) { tempX$flag_ysi_temp <- "H" }
+    }
 
-    #loggerBatt (40)
-    val <- as.numeric(df.A[a,40])
-    if (!is.na(val)) { tempX$cr10_battery <- val }    
+    #ysi_spcond (Y3)
+    val <- as.numeric(df.Y[a,3])  
+    if (!is.na(val)) tempX$ysi_spcond <- val
+   
+    #ysi_dosat (Y5)
+    val <- as.numeric(df.Y[a,5])
+    if (!is.na(val)) {
+      tempX$ysi_dosat <- val
+      if ( (val<dOptoSatMin) || (val>dOptoSatMax) ) { tempX$flag_ysi_dosat <- "H" }
+    }
+  
+    #ysi_do (Y6)
+    val <- as.numeric(df.Y[a,6])
+    if (!is.na(val)) {
+      tempX$ysi_do <- val
+      if ( (val<dOptoPPMMin) || (val>dOptoPPMMax) ) { tempX$flag_ysi_do <- "H" }
+    }          
+  
+    #PAR (L8)
+    val <- as.numeric(df.L[a,8])
+    if (!is.na(val)) { tempX$par <- val }
     
-    #radioBatt (41)
-    val <- as.numeric(df.A[a,41])
-    if (!is.na(val)) { tempX$rad_battery <- val }    
+    #promini_co2_corr (PM 2)
+    val <- as.numeric(df.PM[a,2])
+    if (!is.na(val)) { tempX$promini_co2_corr <- val }
+    flag_promini_co2_corr <- ""
     
+    #promini_co2_bptemp (PM 3)
+    val <- as.numeric(df.PM[a,3])
+    if (!is.na(val)) { tempX$promini_co2_bptemp <- val }
+    flag_promini_co2_bptemp <- ""
+
+    #promini_co2_bp (PM 4)
+    val <- as.numeric(df.PM[a,4])
+    if (!is.na(val)) { tempX$promini_co2_bp <- val }
+    flag_promini_co2_bp <- ""
+
+    
+    #gp_co2_conc (GP 2)
+    val <- as.numeric(df.GP[a,2])
+    if (!is.na(val)) { tempX$gp_co2_conc <- val }
+    flag_gp_co2_conc <- ""
+    
+    #gp_co2_temp (GP 3)
+    val <- as.numeric(df.GP[a,3])
+    if (!is.na(val)) { tempX$gp_co2_temp <- val }
+    flag_gp_co2_temp <- ""
+    
+    #precipVaisala (VS9)
+    val <- as.numeric(df.VS[a,9])
+    if (!is.na(val)&&(val<7999)) { tempX$cumulative_precipitation <- val }
+       
     df.X <- rbind(df.X,tempX)
   }#for a
+   
   
   if (file.exists(outputFile)) {
-    write.table(df.X,file=outputFile,sep=",",col.names=FALSE,append=TRUE,quote=FALSE,row.names=FALSE)
+    write.table(df.X,file=outputFile,sep=",",col.names=FALSE,append=TRUE,quote=FALSE,row.names=FALSE) 
   }
   else {
     write.table(df.X,file=outputFile,sep=",",col.names=TRUE,append=FALSE,quote=FALSE,row.names=FALSE)
   }
-  #file.remove(latestFile)
+  
+  file.remove(latestLufft)
+  file.remove(latestVaisala)
+  file.remove(latestVaporPres)
+  file.remove(latestYSI)
+  file.remove(latestProMini)
+  file.remove(latesteosGP) 
+
 }#if file exists

@@ -1,6 +1,6 @@
 #Read in LATEST.PRN; Generate CSV for table sensor_trout_lake_russ_watertemp_hi_res
 
-latestFile <- "TR_LATEST_WTEMP.PRN"
+latestFile <- "TR_LATEST.PRN"
 outputFile <- "tr_latest_limno.csv"
 
 if (file.exists(latestFile)) {
@@ -53,7 +53,7 @@ if (file.exists(latestFile)) {
       tempX$wtemp <- as.character("")
       tempX$flag_wtemp <- as.character("")
       
-      val <- as.numeric(df.A[a,d+1])
+      val <- as.numeric(df.A[a,d+4])
 
       if (!is.na(val)) {
         tempX$wtemp <- val
